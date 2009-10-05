@@ -6,10 +6,10 @@ require 'spec/rake/spectask'
  
 GEM = "inploy"
 GEM_VERSION = "0.2.0"
-SUMMARY = "FIXME Summary"
-AUTHOR = "FIXME Author"
-EMAIL = "FIXME Email"
-HOMEPAGE = "FIXME HomePage"
+SUMMARY = "Rails deployment"
+AUTHOR = "Diego Carrion"
+EMAIL = "dc.rec1@gmail.com"
+HOMEPAGE = "http://www.diegocarrion.com"
 
  
 spec = Gem::Specification.new do |s|
