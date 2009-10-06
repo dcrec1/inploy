@@ -4,7 +4,10 @@ def deploy
   @deploy ||= Inploy::Deploy.new
 end
 
-require "config/deploy.rb"
+begin
+  require "config/deploy.rb"
+rescue Exception
+end
 
 namespace :inploy do
   namespace :local do
