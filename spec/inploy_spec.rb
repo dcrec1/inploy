@@ -19,30 +19,48 @@ describe Inploy::Deploy do
   context "on setup" do
     it "should clone the repository with the application name" do
       expect_setup_with @user, @path
-      @object.setup
+      @object.remote_setup
     end
 
     it "should dont execute init.sh if doesnt exists" do
       dont_accept_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && .init.sh'"
-      @object.setup
+      @object.remote_setup
     end
 
     it "should take /opt as the default path" do
       @object.path = nil
       expect_setup_with @user, '/opt'
-      @object.setup
+      @object.remote_setup
     end
 
     it "should take root as the default user" do
       @object.user = nil
       expect_setup_with 'root', @path
-      @object.setup
+      @object.remote_setup
     end
 
-    it "should execute init.sh if exists" do
-      file_exists 'init.sh'
-      expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && ./init.sh'"
-      @object.setup
+    it "should execute local setup" do
+      expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:setup'"
+      @object.remote_setup
+    end
+  end
+
+  context "on local setup" do
+    it "should run migrations" do
+      expect_command "rake db:migrate RAILS_ENV=production"
+      @object.local_setup
+    end
+
+    it "should run init.sh if exists" do
+      file_exists "init.sh"
+      expect_command "./init.sh"
+      @object.local_setup
+    end
+
+    it "should run init.sh if doesnt exists" do
+      file_doesnt_exists "init.sh"
+      dont_accept_command "./init.sh"
+      @object.local_setup
     end
   end
 
@@ -59,6 +77,10 @@ describe Inploy::Deploy do
     @object.remote_update
   end
 
+  context "on local setup" do
+
+  end
+
   context "on update" do
     before :each do
       stub_commands
@@ -66,33 +88,33 @@ describe Inploy::Deploy do
 
     it "should pull the repository" do
       expect_command "git pull origin master"
-      @object.update
+      @object.local_update
     end
 
     it "should run the migrations for production" do
       expect_command "rake db:migrate RAILS_ENV=production"
-      @object.update
+      @object.local_update
     end
 
     it "should restart the server" do
       expect_command "touch tmp/restart.txt"
-      @object.update
+      @object.local_update
     end
 
     it "should clean the public cache" do
       expect_command "rm -R -f public/cache"
-      @object.update
+      @object.local_update
     end
 
     it "should not package the assets if asset_packager exists" do
       dont_accept_command "rake asset:packager:build_all"
-      @object.update
+      @object.local_update
     end
 
     it "should package the assets if asset_packager exists" do
       @object.stub!(:tasks).and_return("rake acceptance rake asset:packager:build_all rake asset:packager:create_yml")
       expect_command "rake asset:packager:build_all"
-      @object.update
+      @object.local_update
     end
   end
 end

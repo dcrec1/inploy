@@ -10,28 +10,37 @@ module Inploy
       @user || 'root'
     end
 
-    def setup
-      remote_run "cd #{path} && sudo git clone #{repository} #{application} && sudo chown -R #{user} #{application}"
-      remote_run "cd #{application_path} && ./init.sh" if File.exists?("init.sh")
-    end
-
     def application_path
       "#{path}/#{application}"
+    end
+
+    def remote_setup
+      remote_run "cd #{path} && sudo git clone #{repository} #{application} && sudo chown -R #{user} #{application}"
+      remote_run "cd #{application_path} && rake inploy:local:setup"
+    end
+
+    def local_setup
+      migrate_database
+      run "./init.sh" if File.exists?("init.sh")
     end
 
     def remote_update
       remote_run "cd #{application_path} && rake inploy:update"
     end
 
-    def update
+    def local_update
       run "git pull origin master"
-      rake "db:migrate RAILS_ENV=production"
+      migrate_database
       run "rm -R -f public/cache"
       rake_if_included "asset:packager:build_all"
       run "touch tmp/restart.txt"
     end
 
     private
+
+    def migrate_database
+      rake "db:migrate RAILS_ENV=production"
+    end
 
     def tasks
       `rake -T`

@@ -10,7 +10,7 @@ namespace :inploy do
 
   desc "Setup"
   task :setup do
-    deploy.setup
+    deploy.remote_setup
   end
 
   desc "Deploy"
@@ -20,6 +20,13 @@ namespace :inploy do
 
   desc "Update"
   task :update do
-    deploy.update
+    deploy.local_update
+  end
+
+  namespace :local do
+    desc "Local Setup"
+    task :setup do
+      deploy.local_setup
+    end
   end
 end
