@@ -21,6 +21,10 @@ module Inploy
 
     def local_setup
       migrate_database
+      run "mkdir -p tmp/pids"
+      Dir.glob("config/*.sample").each do |file|
+        FileUtils.cp file, file.gsub(".sample", '')
+      end
       run "./init.sh" if File.exists?("init.sh")
     end
 

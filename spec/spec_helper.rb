@@ -4,6 +4,13 @@ require 'rubygems'
 require 'inploy'
 require 'spec'
 require 'ruby-debug'
+require 'fakefs'
+
+FakeFS.activate!
+
+def mute(object)
+  object.stub!(:puts)
+end
 
 def stub_commands
   Kernel.stub!(:system)
@@ -26,5 +33,9 @@ def file_doesnt_exists(file)
 end
 
 def file_exists(file)
-  stub_file file, true
+  FileUtils.touch file
+end
+
+def path_exists(path)
+  FileUtils.mkdir_p path
 end

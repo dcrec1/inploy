@@ -13,7 +13,7 @@ describe Inploy::Deploy do
     @object.repository = @repository = 'git://'
     @object.application = @application = "robin"
     stub_commands
-    file_doesnt_exists 'init.sh'
+    mute @object
   end
 
   context "on setup" do
@@ -62,6 +62,18 @@ describe Inploy::Deploy do
       dont_accept_command "./init.sh"
       @object.local_setup
     end
+
+    it "should ensure folder tmp/pids exists" do
+      expect_command "mkdir -p tmp/pids"
+      @object.local_setup
+    end
+
+    it "should copy config/*.sample to config/*" do
+      path_exists "config"
+      file_exists "config/database.yml.sample"
+      @object.local_setup
+      File.exists?("config/database.yml").should be_true
+    end
   end
 
   it "should do a remote update running the inploy:update task" do
@@ -77,13 +89,9 @@ describe Inploy::Deploy do
     @object.remote_update
   end
 
-  context "on local setup" do
-
-  end
-
   context "on update" do
     before :each do
-      stub_commands
+      @object.stub!(:tasks).and_return("rake acceptance rake spec rake asset:packager:create_yml")
     end
 
     it "should pull the repository" do
@@ -116,5 +124,10 @@ describe Inploy::Deploy do
       expect_command "rake asset:packager:build_all"
       @object.local_update
     end
+  end
+
+  it "should return tasks as an string of rake tasks" do
+    @object.instance_eval "def tasks_proxy; tasks; end"
+    @object.tasks_proxy.should eql(`rake -T`)
   end
 end
