@@ -1,8 +1,56 @@
+h2. ABOUT:
+
+Inploy is a Rails plugin to deploy applications in a easier way. You can use Inploy from a remote machine or from the local machine, too. It's integrated with Git, Rake and intended to do most of the common work, so you don't need to.
+
+Actually, Inploy has four rake tasks:
+
+* inploy:remote:setup
+
+- connects to a list of servers
+- clones a git repository
+- runs inploy:local:setup
+
+* inploy:remote:update
+
+- connects to a list of servers
+- runs inploy:local:update
+
+* inploy:local:setup
+
+- creates directory tmp/pids
+- copies config/*.sample files to config/*
+- executes init.sh file case it exists
+- migrates the database for the production environment
+
+* inploy:local:update
+
+- pulls the repository
+- migrates the database for the production environment
+- cleans the cache in public/cache
+- package the assets if asset:packager:build_all task exists
+- touch tmp/restart.txt
+
+h2. INSTALLATION:
+
+<pre><code>script/plugin install git://github.com/dcrec1/inploy.git</code></pre>
+
+h2. CONFIGURATION
+
+Create a config/deploy.rb file and configure it something like this:
+
+<pre><code>deploy.application = "signal"
+deploy.repository = 'git://github.com/dcrec1/signal.git'
+deploy.user = 'dcrec1'
+deploy.hosts = ['hooters', 'geni']
+deploy.path = '/opt'</code></pre>
+
+Path and user are optional, default values are /opt and root.
+
 h2. LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 FIX
+Copyright (c) 2009
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
