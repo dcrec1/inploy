@@ -1,3 +1,5 @@
+require File.expand_path(File.dirname(__FILE__) + '/../inploy')
+
 def deploy
   @deploy ||= Inploy::Deploy.new
 end
