@@ -43,6 +43,7 @@ module Inploy
     private
 
     def secure_copy(src, dest)
+      log "mv #{src} #{dest}"
       FileUtils.cp src, dest unless File.exists?(dest)
     end
 
@@ -69,8 +70,12 @@ module Inploy
     end
 
     def run(command)
-      puts command
+      log command
       Kernel.system command
+    end
+
+    def log(command)
+      puts command
     end
   end
 end
