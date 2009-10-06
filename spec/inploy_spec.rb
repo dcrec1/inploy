@@ -1,17 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-def stub_commands
-  Kernel.stub!(:system)
-end
-
-def expect_command(command)
-  Kernel.should_receive(:system).with(command)
-end
-
-def dont_accept_command(command)
-  Kernel.should_not_receive(:system).with(command)
-end
-
 def expect_setup_with(user, path)
   expect_command "ssh #{user}@#{@host} 'cd #{path} && sudo git clone #{@repository} #{@application} && sudo chown -R #{user} #{@application}'"
 end
@@ -24,23 +12,38 @@ describe Inploy::Deploy do
     @object.path = @path = '/city'
     @object.repository = @repository = 'git://'
     @object.application = @application = "robin"
+    stub_commands
+    file_doesnt_exists 'init.sh'
   end
 
-  it "should do the setup cloning the repository with the application name" do
-    expect_command "ssh #{@user}@#{@host} 'cd #{@path} && sudo git clone #{@repository} #{@application} && sudo chown -R #{@user} #{@application}'"
-    @object.setup
-  end
+  context "on setup" do
+    it "should clone the repository with the application name" do
+      expect_setup_with @user, @path
+      @object.setup
+    end
 
-  it "should take /opt as the default path" do
-    @object.path = nil
-    expect_setup_with @user, '/opt'
-    @object.setup
-  end
+    it "should dont execute init.sh if doesnt exists" do
+      dont_accept_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && .init.sh'"
+      @object.setup
+    end
 
-  it "should take root as the default user" do
-    @object.user = nil
-    expect_setup_with 'root', @path
-    @object.setup
+    it "should take /opt as the default path" do
+      @object.path = nil
+      expect_setup_with @user, '/opt'
+      @object.setup
+    end
+
+    it "should take root as the default user" do
+      @object.user = nil
+      expect_setup_with 'root', @path
+      @object.setup
+    end
+
+    it "should execute init.sh if exists" do
+      file_exists 'init.sh'
+      expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && ./init.sh'"
+      @object.setup
+    end
   end
 
   it "should do a remote update running the inploy:update task" do

@@ -12,6 +12,7 @@ module Inploy
 
     def setup
       remote_run "cd #{path} && sudo git clone #{repository} #{application} && sudo chown -R #{user} #{application}"
+      remote_run "cd #{application_path} && ./init.sh" if File.exists?("init.sh")
     end
 
     def application_path
