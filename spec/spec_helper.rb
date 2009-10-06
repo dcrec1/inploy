@@ -32,8 +32,8 @@ def file_doesnt_exists(file)
   stub_file file, false
 end
 
-def file_exists(file)
-  FileUtils.touch file
+def file_exists(file, opts = {})
+  File.open(file, 'w') { |f| f.write (opts[:content] || '') }
 end
 
 def path_exists(path)

@@ -23,7 +23,7 @@ module Inploy
       migrate_database
       run "mkdir -p tmp/pids"
       Dir.glob("config/*.sample").each do |file|
-        FileUtils.cp file, file.gsub(".sample", '')
+        secure_copy file, file.gsub(".sample", '')
       end
       run "./init.sh" if File.exists?("init.sh")
     end
@@ -41,6 +41,10 @@ module Inploy
     end
 
     private
+
+    def secure_copy(src, dest)
+      FileUtils.cp src, dest unless File.exists?(dest)
+    end
 
     def migrate_database
       rake "db:migrate RAILS_ENV=production"
