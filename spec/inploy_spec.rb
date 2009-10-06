@@ -51,6 +51,12 @@ describe Inploy::Deploy do
       @object.local_setup
     end
 
+    it "should run migration at least" do
+      Kernel.should_receive(:system).ordered
+      Kernel.should_receive(:system).with("rake db:migrate RAILS_ENV=production").ordered
+      @object.local_setup
+    end
+
     it "should run init.sh if exists" do
       file_exists "init.sh"
       expect_command "./init.sh"
