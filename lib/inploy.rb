@@ -22,15 +22,35 @@ module Inploy
       remote_run "cd #{application_path} && rake inploy:update"
     end
 
+    def update
+      run "git pull origin master"
+      rake "db:migrate RAILS_ENV=production"
+      run "rm -R -f public/cache"
+      rake_if_included "asset:packager:build_all"
+      run "touch tmp/restart.txt"
+    end
+
     private
+
+    def tasks
+      `rake -T`
+    end
+
+    def rake_if_included(command)
+      rake command if tasks.include?("rake #{command}")
+    end
+
+    def rake(command)
+      run "rake #{command}"
+    end
 
     def remote_run(command)
       hosts.each do |host|
-        execute "ssh #{user}@#{host} '#{command}'"
+        run "ssh #{user}@#{host} '#{command}'"
       end
     end
 
-    def execute(command)
+    def run(command)
       puts command
       Kernel.system command
     end
