@@ -7,26 +7,27 @@ end
 require "config/deploy.rb"
 
 namespace :inploy do
-
-  desc "Setup"
-  task :setup do
-    deploy.remote_setup
-  end
-
-  desc "Deploy"
-  task :deploy do
-    deploy.remote_update
-  end
-
-  desc "Update"
-  task :update do
-    deploy.local_update
-  end
-
   namespace :local do
     desc "Local Setup"
     task :setup do
       deploy.local_setup
+    end
+
+    desc "Local Update"
+    task :update do
+      deploy.local_update
+    end
+  end
+
+  namespace :remote do
+    desc "Remote Setup"
+    task :setup do
+      deploy.remote_setup
+    end
+
+    desc "Remote Update"
+    task :update do
+      deploy.remote_update
     end
   end
 end
