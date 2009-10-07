@@ -19,6 +19,7 @@ module Inploy
     end
 
     def local_setup
+      rake "gems:install"
       run "mkdir -p tmp/pids"
       Dir.glob("config/*.sample").each do |file|
         secure_copy file, file.gsub(".sample", '')

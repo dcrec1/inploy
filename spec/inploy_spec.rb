@@ -46,7 +46,7 @@ describe Inploy::Deploy do
       @object.local_setup
     end
 
-    it "should run migration at least" do
+    it "should run migration at the last thing" do
       Kernel.should_receive(:system).ordered
       Kernel.should_receive(:system).with("rake db:migrate RAILS_ENV=production").ordered
       @object.local_setup
@@ -83,6 +83,11 @@ describe Inploy::Deploy do
       file_exists "config/database.yml.sample"
       @object.local_setup
       File.open("config/database.yml").read.should eql(content)
+    end
+
+    it "should install gems" do
+      expect_command "rake gems:install"
+      @object.local_setup
     end
   end
 
