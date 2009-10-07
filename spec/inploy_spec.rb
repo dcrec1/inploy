@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 def expect_setup_with(user, path)
-  expect_command "ssh #{user}@#{@host} 'cd #{path} && sudo git clone #{@repository} #{@application} && sudo chown -R #{user} #{@application}'"
+  expect_command "ssh #{user}@#{@host} 'cd #{path} && git clone #{@repository} #{@application} && cd #{@application} && rake inploy:local:setup'"
 end
 
 describe Inploy::Deploy do
@@ -17,7 +17,7 @@ describe Inploy::Deploy do
   end
 
   context "on setup" do
-    it "should clone the repository with the application name" do
+    it "should clone the repository with the application name and execute local setup" do
       expect_setup_with @user, @path
       @object.remote_setup
     end
@@ -36,11 +36,6 @@ describe Inploy::Deploy do
     it "should take root as the default user" do
       @object.user = nil
       expect_setup_with 'root', @path
-      @object.remote_setup
-    end
-
-    it "should execute local setup" do
-      expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:setup'"
       @object.remote_setup
     end
   end
