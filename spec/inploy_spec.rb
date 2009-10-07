@@ -139,6 +139,11 @@ describe Inploy::Deploy do
       expect_command "rake asset:packager:build_all"
       @object.local_update
     end
+
+    it "should install gems" do
+      expect_command "rake gems:install"
+      @object.local_update
+    end
   end
 
   it "should return tasks as an string of rake tasks" do

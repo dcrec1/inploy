@@ -19,7 +19,7 @@ module Inploy
     end
 
     def local_setup
-      rake "gems:install"
+      install_gems
       run "mkdir -p tmp/pids"
       Dir.glob("config/*.sample").each do |file|
         secure_copy file, file.gsub(".sample", '')
@@ -34,6 +34,7 @@ module Inploy
 
     def local_update
       run "git pull origin master"
+      install_gems
       migrate_database
       run "rm -R -f public/cache"
       rake_if_included "asset:packager:build_all"
@@ -76,6 +77,10 @@ module Inploy
 
     def log(command)
       puts command
+    end
+
+    def install_gems
+      rake "gems:install"
     end
   end
 end
