@@ -76,7 +76,7 @@ module Inploy
     end
 
     def log(command)
-      puts command
+      puts "Inploy => #{command}"
     end
 
     def install_gems
