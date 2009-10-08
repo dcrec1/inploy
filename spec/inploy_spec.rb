@@ -101,20 +101,22 @@ describe Inploy::Deploy do
     end
   end
 
-  it "should do a remote update running the inploy:update task" do
-    expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:update'"
-    @object.remote_update
-  end
-
-  it "should exec the commands in all hosts" do
-    @object.hosts = ['host0', 'host1', 'host2']
-    3.times.each do |i|
-      expect_command "ssh #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:update'"
+  context "on remote update" do
+    it "should run inploy:local:update task in the server" do
+      expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update'"
+      @object.remote_update
     end
-    @object.remote_update
+
+    it "should exec the commands in all hosts" do
+      @object.hosts = ['host0', 'host1', 'host2']
+      3.times.each do |i|
+        expect_command "ssh #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update'"
+      end
+      @object.remote_update
+    end
   end
 
-  context "on update" do
+  context "on local update" do
     before :each do
       @object.stub!(:tasks).and_return("rake acceptance rake spec rake asset:packager:create_yml")
     end

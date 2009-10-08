@@ -27,7 +27,7 @@ module Inploy
     end
 
     def remote_update
-      remote_run "cd #{application_path} && rake inploy:update"
+      remote_run "cd #{application_path} && rake inploy:local:update"
     end
 
     def local_update
