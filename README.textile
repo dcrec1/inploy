@@ -17,9 +17,9 @@ Actually, Inploy has four rake tasks:
 
 * inploy:local:setup
 
+- copies config/*.sample files to config/*
 - installs gems
 - creates directory tmp/pids
-- copies config/*.sample files to config/*
 - executes init.sh file case it exists
 - migrates the database for the production environment
 
