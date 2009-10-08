@@ -19,11 +19,11 @@ module Inploy
     end
 
     def local_setup
-      install_gems
-      run "mkdir -p tmp/pids"
       Dir.glob("config/*.sample").each do |file|
         secure_copy file, file.gsub(".sample", '')
       end
+      install_gems
+      run "mkdir -p tmp/pids"
       run "./init.sh" if File.exists?("init.sh")
       migrate_database
     end

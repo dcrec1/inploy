@@ -89,6 +89,16 @@ describe Inploy::Deploy do
       expect_command "rake gems:install"
       @object.local_setup
     end
+
+    it "should copy config/*.sample files before installing gems" do
+      file_exists "config/gems.yml.sample"
+      @object.stub!(:install_gems).and_raise(Exception.new)
+      begin
+        @object.local_setup
+      rescue Exception
+        File.exists?("config/gems.yml").should be_true
+      end
+    end
   end
 
   it "should do a remote update running the inploy:update task" do
