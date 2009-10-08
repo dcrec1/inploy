@@ -19,9 +19,7 @@ module Inploy
     end
 
     def local_setup
-      Dir.glob("config/*.sample").each do |file|
-        secure_copy file, file.gsub(".sample", '')
-      end
+      copy_sample_files
       install_gems
       run "mkdir -p tmp/pids"
       run "./init.sh" if File.exists?("init.sh")
@@ -42,6 +40,12 @@ module Inploy
     end
 
     private
+
+    def copy_sample_files
+      Dir.glob("config/*.sample").each do |file|
+        secure_copy file, file.gsub(".sample", '')
+      end
+    end
 
     def secure_copy(src, dest)
       log "mv #{src} #{dest}"
