@@ -1,1 +1,1 @@
-require 'inploy/default'
+require 'inploy/deploy'

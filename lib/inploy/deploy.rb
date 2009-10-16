@@ -1,10 +1,15 @@
 module Inploy
-  class Default
+  class Deploy
     attr_accessor :repository, :user, :application, :hosts, :path
 
     def initialize
       @path = '/opt'
       @user = 'root'
+    end
+
+    def template=(template)
+      require "inploy/#{template}"
+      self.extend eval(camelize(template))
     end
 
     def remote_setup
@@ -33,6 +38,10 @@ module Inploy
     end
 
     private
+
+    def camelize(string)
+      string.to_s.gsub(/\/(.?)/) { "::" + $1.upcase }.gsub(/(^|_)(.)/) { $2.upcase }
+    end
 
     def application_path
       "#{path}/#{application}"
