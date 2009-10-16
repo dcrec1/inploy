@@ -4,9 +4,9 @@ def expect_setup_with(user, path)
   expect_command "ssh #{user}@#{@host} 'cd #{path} && git clone #{@repository} #{@application} && cd #{@application} && rake inploy:local:setup'"
 end
 
-describe Inploy::Deploy do
+describe Inploy::Default do
   before :each do
-    @object = Inploy::Deploy.new
+    @object = Inploy::Default.new
     @object.user = @user = 'batman'
     @object.hosts = [@host = 'gothic']
     @object.path = @path = '/city'
