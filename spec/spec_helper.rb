@@ -33,7 +33,7 @@ def file_doesnt_exists(file)
 end
 
 def file_exists(file, opts = {})
-  File.open(file, 'w') { |f| f.write (opts[:content] || '') }
+  File.open(file, 'w') { |f| f.write(opts[:content] || '') }
 end
 
 def path_exists(path)

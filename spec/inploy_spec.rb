@@ -28,15 +28,11 @@ describe Inploy::Deploy do
     end
 
     it "should take /opt as the default path" do
-      @object.path = nil
-      expect_setup_with @user, '/opt'
-      @object.remote_setup
+      @object.class.new.path.should eql('/opt')
     end
 
     it "should take root as the default user" do
-      @object.user = nil
-      expect_setup_with 'root', @path
-      @object.remote_setup
+      @object.class.new.user.should eql('root')
     end
   end
 

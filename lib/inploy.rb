@@ -1,15 +1,12 @@
 module Inploy
   class Deploy
     attr_accessor :repository, :user, :application, :hosts, :path
-
-    def path
-      @path || '/opt'
+    
+    def initialize
+      @path = '/opt'
+      @user = 'root'
     end
-
-    def user
-      @user || 'root'
-    end
-
+    
     def application_path
       "#{path}/#{application}"
     end
