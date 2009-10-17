@@ -35,7 +35,7 @@ describe Inploy::Deploy do
       mute subject
     end
 
-    context "on setup" do
+    context "on remote setup" do
       it "should clone the repository with the application name and execute local setup" do
         expect_setup_with @user, @path
         subject.remote_setup
