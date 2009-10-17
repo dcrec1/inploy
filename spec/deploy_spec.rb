@@ -101,10 +101,7 @@ describe Inploy::Deploy do
     end
 
     context "on remote update" do
-      it "should run inploy:local:update task in the server" do
-        expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update'"
-        subject.remote_update
-      end
+      it_should_behave_like "remote update"
 
       it "should exec the commands in all hosts" do
         subject.hosts = ['host0', 'host1', 'host2']

@@ -6,13 +6,14 @@ module Inploy
 
     def remote_update
       run "git push ssh://[#{user}@#{host}]/home/#{user}/rails_app/#{application} master"
+      super
     end
-
-    private
     
     def path
       @path ||= "/home/#{user}/rails_app"
     end
+
+    private
 
     def tmp_path
       "/tmp/#{application}"

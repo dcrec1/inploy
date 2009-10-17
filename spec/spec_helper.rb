@@ -8,6 +8,13 @@ require 'spec'
 require 'ruby-debug'
 require 'fakefs'
 
+shared_examples_for "remote update" do
+  it "should run inploy:local:update task in the server" do
+    expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update'"
+    subject.remote_update
+  end
+end
+
 FakeFS.activate!
 
 def mute(object)
