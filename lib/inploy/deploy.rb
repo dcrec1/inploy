@@ -15,10 +15,9 @@ module Inploy
 
     def local_setup
       copy_sample_files
-      install_gems
-      create_folders 'tmp/pids', 'db'
+      create_folders 'tmp/pids', 'db', 'public/stylesheets'
       run "./init.sh" if File.exists?("init.sh")
-      migrate_database
+      after_update_code
     end
 
     def remote_update

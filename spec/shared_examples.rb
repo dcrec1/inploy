@@ -1,4 +1,8 @@
 shared_examples_for "local setup" do
+  before :each do
+    stub_tasks
+  end
+  
   it "should run migrations" do
     expect_command "rake db:migrate RAILS_ENV=production"
     subject.local_setup
@@ -31,6 +35,11 @@ shared_examples_for "local setup" do
     expect_command "mkdir -p db"
     subject.local_setup
   end
+  
+  it "should ensure folder public/stylesheets exists" do
+    expect_command "mkdir -p public/stylesheets"
+    subject.local_setup
+  end
 
   it "should copy config/*.sample to config/*" do
     path_exists "config"
@@ -61,6 +70,12 @@ shared_examples_for "local setup" do
     rescue Exception
       File.exists?("config/gems.yml").should be_true
     end
+  end
+  
+  it "should package the assets if asset_packager exists" do
+    subject.stub!(:tasks).and_return("rake acceptance rake asset:packager:build_all rake asset:packager:create_yml")
+    expect_command "rake asset:packager:build_all"
+    subject.local_setup
   end
 end
 
