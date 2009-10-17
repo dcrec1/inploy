@@ -113,10 +113,6 @@ describe Inploy::Deploy do
     end
 
     context "on local update" do
-      before :each do
-        stub_tasks
-      end
-
       it "should pull the repository" do
         expect_command "git pull origin master"
         subject.local_update

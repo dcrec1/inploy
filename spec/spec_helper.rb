@@ -16,6 +16,10 @@ shared_examples_for "remote update" do
 end
 
 shared_examples_for "local update" do
+  before :each do
+    stub_tasks
+  end
+  
   it "should run the migrations for production" do
     expect_command "rake db:migrate RAILS_ENV=production"
     subject.local_update
