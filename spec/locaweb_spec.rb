@@ -12,6 +12,7 @@ describe Inploy::Deploy do
       subject.user = @user = 'batman'
       subject.hosts = [@host = 'gothic']
       subject.application = @application = "robin"
+      stub_commands
       mute subject
     end
 
@@ -31,7 +32,6 @@ describe Inploy::Deploy do
     context "on remote update" do
       before :each do
         @path = subject.path
-        stub_commands
       end
       
       it "should push to the repository" do
@@ -40,6 +40,14 @@ describe Inploy::Deploy do
       end
       
       it_should_behave_like "remote update"
+    end
+    
+    context "on local update" do
+      before :each do
+        stub_tasks
+      end
+      
+      it_should_behave_like "local update"
     end
   end
 end

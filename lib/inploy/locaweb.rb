@@ -9,6 +9,10 @@ module Inploy
       super
     end
     
+    def local_update
+      after_update_code
+    end
+    
     def path
       @path ||= "/home/#{user}/rails_app"
     end

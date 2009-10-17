@@ -6,7 +6,7 @@ module Inploy
 
     def template=(template)
       require "inploy/#{template}"
-      self.extend eval(camelize(template))
+      extend eval(camelize(template))
     end
 
     def remote_setup
@@ -27,6 +27,12 @@ module Inploy
 
     def local_update
       run "git pull origin master"
+      after_update_code
+    end
+    
+    private
+    
+    def after_update_code
       install_gems
       migrate_database
       run "rm -R -f public/cache"
