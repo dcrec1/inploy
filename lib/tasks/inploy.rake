@@ -1,4 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/../inploy')
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..'))
+require 'inploy'
 
 def deploy
   @deploy ||= Inploy::Deploy.new
