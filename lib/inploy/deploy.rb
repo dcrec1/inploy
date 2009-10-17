@@ -16,7 +16,7 @@ module Inploy
     def local_setup
       copy_sample_files
       install_gems
-      run "mkdir -p tmp/pids"
+      create_folders 'tmp/pids', 'db'
       run "./init.sh" if File.exists?("init.sh")
       migrate_database
     end

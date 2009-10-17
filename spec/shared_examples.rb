@@ -26,6 +26,11 @@ shared_examples_for "local setup" do
     expect_command "mkdir -p tmp/pids"
     subject.local_setup
   end
+  
+  it "should ensure folder db exists" do
+    expect_command "mkdir -p db"
+    subject.local_setup
+  end
 
   it "should copy config/*.sample to config/*" do
     path_exists "config"

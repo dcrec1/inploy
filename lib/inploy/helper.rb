@@ -1,5 +1,13 @@
 module Inploy
   module Helper
+    def create_folders(*folders)
+      folders.each { |folder| create_folder folder }
+    end
+    
+    def create_folder(path)
+      run "mkdir -p #{path}"
+    end
+    
     def host
       hosts.first
     end
