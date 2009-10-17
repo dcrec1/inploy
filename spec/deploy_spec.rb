@@ -1,17 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-def expect_setup_with(user, path)
-  expect_command "ssh #{user}@#{@host} 'cd #{path} && git clone #{@repository} #{@application} && cd #{@application} && rake inploy:local:setup'"
-end
-
 describe Inploy::Deploy do
-
-  it "should take /opt as the default path" do
-    subject.path.should eql('/opt')
-  end
-
-  it "should take root as the default user" do
-    subject.user.should eql('root')
+  
+  def expect_setup_with(user, path)
+    expect_command "ssh #{user}@#{@host} 'cd #{path} && git clone #{@repository} #{@application} && cd #{@application} && rake inploy:local:setup'"
   end
 
   it "should be extendable" do

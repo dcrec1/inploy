@@ -1,5 +1,9 @@
 module Inploy
   module Helper
+    def host
+      hosts.first
+    end
+    
     def camelize(string)
       string.to_s.gsub(/\/(.?)/) { "::" + $1.upcase }.gsub(/(^|_)(.)/) { $2.upcase }
     end

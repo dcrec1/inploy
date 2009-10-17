@@ -1,7 +1,7 @@
 module Inploy
   module Locaweb
     def remote_setup
-      run "git clone . #{tmp_path} && tar czf - #{tmp_path} | ssh #{user}@#{host} 'tar xzfv - -C / && mv #{tmp_path} /home/#{user}/rails_app/ && cd /home/#{user}/rails_app/#{application} && rake inploy:local:setup'"
+      run "git clone . #{tmp_path} && tar czf - #{tmp_path} | ssh #{user}@#{host} 'tar xzfv - -C / && mv #{tmp_path} #{path}/ && cd #{path}/#{application} && rake inploy:local:setup'"
     end
 
     def remote_update
@@ -9,13 +9,13 @@ module Inploy
     end
 
     private
+    
+    def path
+      @path ||= "/home/#{user}/rails_app"
+    end
 
     def tmp_path
       "/tmp/#{application}"
-    end
-
-    def host
-      hosts.first
     end
   end
 end

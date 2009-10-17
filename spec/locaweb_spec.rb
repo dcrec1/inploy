@@ -1,6 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Inploy::Deploy do
+  
+  def expect_setup_in(path)
+    expect_command "git clone . /tmp/#{@application} && tar czf - /tmp/#{@application} | ssh #{@user}@#{@host} 'tar xzfv - -C / && mv /tmp/#{@application} #{path}/ && cd #{path}/#{@application} && rake inploy:local:setup'"
+  end
 
   context "with template locaweb" do
     before :each do
@@ -13,7 +17,13 @@ describe Inploy::Deploy do
 
     context "on remote setup" do
       it "should clone the repository with the application name and execute local setup" do
-        expect_command "git clone . /tmp/#{@application} && tar czf - /tmp/#{@application} | ssh #{@user}@#{@host} 'tar xzfv - -C / && mv /tmp/#{@application} /home/#{@user}/rails_app/ && cd /home/#{@user}/rails_app/#{@application} && rake inploy:local:setup'"
+        expect_setup_in "/home/#{@user}/rails_app"
+        subject.remote_setup
+      end
+      
+      it "should accept a custom path" do
+        subject.path = path = '/home/xpto/apps'
+        expect_setup_in path
         subject.remote_setup
       end
     end

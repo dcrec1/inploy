@@ -4,11 +4,6 @@ module Inploy
     
     attr_accessor :repository, :user, :application, :hosts, :path
 
-    def initialize
-      @path = '/opt'
-      @user = 'root'
-    end
-
     def template=(template)
       require "inploy/#{template}"
       self.extend eval(camelize(template))
