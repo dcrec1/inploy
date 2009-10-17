@@ -32,12 +32,8 @@ def dont_accept_command(command)
   Kernel.should_not_receive(:system).with(command)
 end
 
-def stub_file(file, result)
-  File.stub!(:exists?).with(file).and_return(result)
-end
-
 def file_doesnt_exists(file)
-  stub_file file, false
+  File.delete file
 end
 
 def file_exists(file, opts = {})

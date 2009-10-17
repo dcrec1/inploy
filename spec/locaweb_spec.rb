@@ -38,6 +38,15 @@ describe Inploy::Deploy do
       it_should_behave_like "remote update"
     end
     
+    context "on local setup" do
+      it "should create symbolic link" do
+        expect_command "ln -s /home/#{@user}/rails_app/#{@application}/public /home/#{@user}/public_html/#{@application}"
+        subject.local_setup
+      end
+      
+      it_should_behave_like "local setup"
+    end
+    
     context "on local update" do
       it_should_behave_like "local update"
     end

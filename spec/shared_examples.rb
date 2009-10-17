@@ -1,3 +1,64 @@
+shared_examples_for "local setup" do
+  it "should run migrations" do
+    expect_command "rake db:migrate RAILS_ENV=production"
+    subject.local_setup
+  end
+
+  it "should run migration at the last thing" do
+    Kernel.should_receive(:system).ordered
+    Kernel.should_receive(:system).with("rake db:migrate RAILS_ENV=production").ordered
+    subject.local_setup
+  end
+
+  it "should run init.sh if exists" do
+    file_exists "init.sh"
+    expect_command "./init.sh"
+    subject.local_setup
+  end
+
+  it "should run init.sh if doesnt exists" do
+    file_doesnt_exists "init.sh"
+    dont_accept_command "./init.sh"
+    subject.local_setup
+  end
+
+  it "should ensure folder tmp/pids exists" do
+    expect_command "mkdir -p tmp/pids"
+    subject.local_setup
+  end
+
+  it "should copy config/*.sample to config/*" do
+    path_exists "config"
+    file_exists "config/database.yml.sample"
+    subject.local_setup
+    File.exists?("config/database.yml").should be_true
+  end
+
+  it "should not copy config/*.sample to config/* if destination file exists" do
+    content = "asfasfasfe"
+    path_exists "config"
+    file_exists "config/database.yml", :content => content
+    file_exists "config/database.yml.sample"
+    subject.local_setup
+    File.open("config/database.yml").read.should eql(content)
+  end
+
+  it "should install gems" do
+    expect_command "rake gems:install"
+    subject.local_setup
+  end
+
+  it "should copy config/*.sample files before installing gems" do
+    file_exists "config/gems.yml.sample"
+    subject.stub!(:install_gems).and_raise(Exception.new)
+    begin
+      subject.local_setup
+    rescue Exception
+      File.exists?("config/gems.yml").should be_true
+    end
+  end
+end
+
 shared_examples_for "remote update" do
   before :each do
     @path = subject.path

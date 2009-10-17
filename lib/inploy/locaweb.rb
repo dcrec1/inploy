@@ -1,12 +1,17 @@
 module Inploy
   module Locaweb
     def remote_setup
-      run "git clone . #{tmp_path} && tar czf - #{tmp_path} | ssh #{user}@#{host} 'tar xzfv - -C / && mv #{tmp_path} #{path}/ && cd #{path}/#{application} && rake inploy:local:setup'"
+      run "git clone . #{tmp_path} && tar czf - #{tmp_path} | ssh #{user}@#{host} 'tar xzfv - -C / && mv #{tmp_path} #{path}/ && cd #{application_path} && rake inploy:local:setup'"
     end
 
     def remote_update
-      run "git push ssh://[#{user}@#{host}]/home/#{user}/rails_app/#{application} master"
+      run "git push ssh://[#{user}@#{host}]#{application_path} master"
       super
+    end
+    
+    def local_setup
+      super
+      run "ln -s #{application_path}/public /home/#{user}/public_html/#{application}"
     end
     
     def local_update
