@@ -1,5 +1,5 @@
 module Inploy
-  class Locaweb < Deploy
+  module Locaweb
     def remote_setup
       run "git clone . #{tmp_path} && tar czf - #{tmp_path} | ssh #{user}@#{host} 'tar xzfv - -C / && mv #{tmp_path} /home/#{user}/rails_app/ && cd /home/#{user}/rails_app/#{application} && rake inploy:local:setup'"
     end

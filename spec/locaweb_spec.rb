@@ -1,9 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe Inploy::Locaweb do
+describe Inploy::Deploy do
 
-  context "configured" do
+  context "with template locaweb" do
     before :each do
+      subject.template = :locaweb
       subject.user = @user = 'batman'
       subject.hosts = [@host = 'gothic']
       subject.application = @application = "robin"
