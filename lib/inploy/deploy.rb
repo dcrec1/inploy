@@ -15,7 +15,7 @@ module Inploy
 
     def local_setup
       copy_sample_files
-      create_folders 'tmp/pids', 'db', 'public/stylesheets'
+      create_folders 'tmp/pids', 'db'
       run "./init.sh" if File.exists?("init.sh")
       after_update_code
     end
@@ -35,6 +35,7 @@ module Inploy
       install_gems
       migrate_database
       run "rm -R -f public/cache"
+      rake_if_included "more:parse"
       rake_if_included "asset:packager:build_all"
       run "touch tmp/restart.txt"
     end

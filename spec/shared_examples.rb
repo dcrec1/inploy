@@ -8,9 +8,9 @@ shared_examples_for "local setup" do
     subject.local_setup
   end
 
-  it "should run migration at the last thing" do
-    Kernel.should_receive(:system).ordered
-    Kernel.should_receive(:system).with("rake db:migrate RAILS_ENV=production").ordered
+  it "should run migration after installing gems" do
+    expect_command("rake gems:install").ordered
+    expect_command("rake db:migrate RAILS_ENV=production").ordered
     subject.local_setup
   end
 
@@ -33,11 +33,6 @@ shared_examples_for "local setup" do
   
   it "should ensure folder db exists" do
     expect_command "mkdir -p db"
-    subject.local_setup
-  end
-  
-  it "should ensure folder public/stylesheets exists" do
-    expect_command "mkdir -p public/stylesheets"
     subject.local_setup
   end
 
@@ -75,6 +70,24 @@ shared_examples_for "local setup" do
   it "should package the assets if asset_packager exists" do
     subject.stub!(:tasks).and_return("rake acceptance rake asset:packager:build_all rake asset:packager:create_yml")
     expect_command "rake asset:packager:build_all"
+    subject.local_setup
+  end
+  
+  it "should parse less files if more exists" do
+    subject.stub!(:tasks).and_return("rake acceptance rake more:parse rake asset:packager:create_yml")
+    expect_command "rake more:parse"
+    subject.local_setup
+  end
+  
+  it "should not parse less files if more doesnt exist" do
+    dont_accept_command "rake more:parse"
+    subject.local_setup
+  end
+  
+  it "should parse less files before package assets" do
+    subject.stub!(:tasks).and_return("rake more:parse rake asset:packager:build_all")
+    expect_command("rake more:parse").ordered
+    expect_command("rake asset:packager:build_all").ordered
     subject.local_setup
   end
 end
@@ -123,6 +136,24 @@ shared_examples_for "local update" do
 
   it "should install gems" do
     expect_command "rake gems:install"
+    subject.local_update
+  end
+  
+  it "should parse less files if more exists" do
+    subject.stub!(:tasks).and_return("rake acceptance rake more:parse rake asset:packager:create_yml")
+    expect_command "rake more:parse"
+    subject.local_update
+  end
+  
+  it "should not parse less files if more doesnt exist" do
+    dont_accept_command "rake more:parse"
+    subject.local_update
+  end
+  
+  it "should parse less files before package assets" do
+    subject.stub!(:tasks).and_return("rake more:parse rake asset:packager:build_all")
+    expect_command("rake more:parse").ordered
+    expect_command("rake asset:packager:build_all").ordered
     subject.local_update
   end
 end
