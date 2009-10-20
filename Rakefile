@@ -5,7 +5,7 @@ require 'rake/gempackagetask'
 require 'spec/rake/spectask'
 
 GEM = "inploy"
-GEM_VERSION = "1.0.0"
+GEM_VERSION = "1.0.1"
 SUMMARY = "Rails deployment made easy"
 AUTHOR = "Diego Carrion"
 EMAIL = "dc.rec1@gmail.com"
@@ -17,7 +17,7 @@ spec = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.summary = SUMMARY
   s.require_paths = ['lib']
-  s.files = FileList['lib/**/*.rb' '[A-Z]*'].to_a
+  s.files = FileList['lib/**/*', '[A-Z]*'].to_a
 
   s.author = AUTHOR
   s.email = EMAIL
