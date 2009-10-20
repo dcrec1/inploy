@@ -10,7 +10,7 @@ module Inploy
     end
 
     def remote_setup
-      remote_run "cd #{path} && git clone #{repository} #{application} && cd #{application} && rake inploy:local:setup"
+      remote_run "cd #{path} && git clone --depth 1 #{repository} #{application} && cd #{application} && rake inploy:local:setup"
     end
 
     def local_setup
