@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Inploy::Deploy do
   
   def expect_setup_in(path)
-    expect_command "git clone . /tmp/#{@application} && tar czf - /tmp/#{@application} | ssh #{@user}@#{@host} 'tar xzfv - -C / && mv /tmp/#{@application} #{path}/ && cd #{path}/#{@application} && rake inploy:local:setup'"
+    expect_command "rm -Rf /tmp/#{@application} && git clone . /tmp/#{@application} && tar czf - /tmp/#{@application} | ssh #{@user}@#{@host} 'tar xzfv - -C ~/ && mv ~/tmp/#{@application} #{path}/ && cd #{path}/#{@application} && rake inploy:local:setup'"
   end
 
   context "with template locaweb" do
