@@ -1,2 +1,3 @@
 inploy.gemspec
 pkg
+*.swp
