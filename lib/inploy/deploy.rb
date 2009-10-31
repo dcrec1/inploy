@@ -4,6 +4,10 @@ module Inploy
 
     attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch
 
+    def initialize
+      @branch = 'master'
+    end
+
     def template=(template)
       require "inploy/#{template}"
       extend eval(camelize(template))
