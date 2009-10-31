@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Inploy::Deploy do
   
   def expect_setup_with(user, path)
-    expect_command "ssh #{@ssh_opts} #{user}@#{@host} 'cd #{path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} && git checkout -f -b #{@branch} origin/#{@branch} && rake inploy:local:setup'"
+    expect_command "ssh #{@ssh_opts} #{user}@#{@host} 'cd #{path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} && $($(git branch | grep -vq #{@branch}) && git checkout -f -b #{@branch} origin/#{@branch}) || rake inploy:local:setup'"
   end
 
   it "should be extendable" do

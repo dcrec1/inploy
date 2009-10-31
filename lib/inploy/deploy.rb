@@ -14,7 +14,7 @@ module Inploy
     end
 
     def remote_setup
-      remote_run "cd #{path} && git clone --depth 1 #{repository} #{application} && cd #{application} && git checkout -f -b #{branch} origin/#{branch} && rake inploy:local:setup"
+      remote_run "cd #{path} && git clone --depth 1 #{repository} #{application} && cd #{application} && $($(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}) || rake inploy:local:setup"
     end
 
     def local_setup
