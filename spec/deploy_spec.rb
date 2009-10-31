@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Inploy::Deploy do
   
   def expect_setup_with(user, path)
-    expect_command "ssh #{@ssh_opts} #{user}@#{@host} 'cd #{path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} && rake inploy:local:setup'"
+    expect_command "ssh #{@ssh_opts} #{user}@#{@host} 'cd #{path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} && git checkout -f -b #{@branch} origin/#{@branch} && rake inploy:local:setup'"
   end
 
   it "should be extendable" do
@@ -24,6 +24,7 @@ describe Inploy::Deploy do
       subject.repository = @repository = 'git://'
       subject.application = @application = "robin"
 			subject.ssh_opts = @ssh_opts = "-A"
+			subject.branch = @branch = "onions"
       stub_commands
       mute subject
     end
@@ -58,7 +59,7 @@ describe Inploy::Deploy do
 
     context "on local update" do
       it "should pull the repository" do
-        expect_command "git pull origin master"
+        expect_command "git pull origin #{@branch}"
         subject.local_update
       end
 

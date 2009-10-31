@@ -50,7 +50,8 @@ deploy.repository = 'git://github.com/dcrec1/signal.git'
 deploy.user = 'dcrec1'
 deploy.hosts = ['hooters', 'geni']
 deploy.path = '/opt'
-deploy.ssh_opts = '-A '</code></pre>
+deploy.ssh_opts = '-A '
+deploy.branch = 'master'</code></pre>
 
 Path and user are optional, default values are /opt and root.
 
