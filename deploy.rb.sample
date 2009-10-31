@@ -6,4 +6,4 @@ deploy.path = '/var/local/apps'
 
 # optional advanced settings
 # deploy.ssh_opts = '-A'
-
+# deploy.branch = 'master'
