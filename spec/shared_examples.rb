@@ -98,7 +98,7 @@ shared_examples_for "remote update" do
   end
 
   it "should run inploy:local:update task in the server" do
-    expect_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update'"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update'"
     subject.remote_update
   end
 end
