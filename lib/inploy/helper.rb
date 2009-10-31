@@ -49,7 +49,7 @@ module Inploy
 
     def remote_run(command)
       hosts.each do |host|
-        run "ssh #{user}@#{host} '#{command}'"
+        run "ssh #{ssh_opts} #{user}@#{host} '#{command}'"
       end
     end
 

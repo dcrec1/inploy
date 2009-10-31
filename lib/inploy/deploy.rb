@@ -2,7 +2,7 @@ module Inploy
   class Deploy
     include Helper
 
-    attr_accessor :repository, :user, :application, :hosts, :path
+    attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts
 
     def template=(template)
       require "inploy/#{template}"

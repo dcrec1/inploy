@@ -49,7 +49,8 @@ Create a config/deploy.rb file and configure it something like this:
 deploy.repository = 'git://github.com/dcrec1/signal.git'
 deploy.user = 'dcrec1'
 deploy.hosts = ['hooters', 'geni']
-deploy.path = '/opt'</code></pre>
+deploy.path = '/opt'
+deploy.ssh_opts = '-A '</code></pre>
 
 Path and user are optional, default values are /opt and root.
 
