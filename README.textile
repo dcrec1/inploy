@@ -53,7 +53,7 @@ deploy.path = '/opt'
 deploy.ssh_opts = '-A '
 deploy.branch = 'master'</code></pre>
 
-Path and user are optional, default values are /opt and root.
+branch is optional, default value is master.
 
 h2. LICENSE:
 
