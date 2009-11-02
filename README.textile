@@ -50,10 +50,11 @@ deploy.repository = 'git://github.com/dcrec1/signal.git'
 deploy.user = 'dcrec1'
 deploy.hosts = ['hooters', 'geni']
 deploy.path = '/opt'
-deploy.ssh_opts = '-A '
-deploy.branch = 'master'</code></pre>
 
-branch is optional, default value is master.
+# OPTIONALS
+
+deploy.ssh_opts = '-A'      # default empty
+deploy.branch = 'production' # default master</code></pre>
 
 h2. LICENSE:
 
