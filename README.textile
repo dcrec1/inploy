@@ -39,7 +39,15 @@ Actually, Inploy has four rake tasks:
 
 h2. INSTALLATION:
 
+As a plugin:
+
 <pre><code>script/plugin install git://github.com/dcrec1/inploy.git</code></pre>
+
+As a gem:
+
+<pre><code>sudo gem install inploy</code></pre>
+
+Please remember that when used as a gem, Inploy should be available in the deploy servers.
 
 h2. CONFIGURATION
 
@@ -53,7 +61,7 @@ deploy.path = '/opt'
 
 # OPTIONALS
 
-deploy.ssh_opts = '-A'      # default empty
+deploy.ssh_opts = '-A'       # default empty
 deploy.branch = 'production' # default master</code></pre>
 
 h2. LICENSE:
