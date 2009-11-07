@@ -32,7 +32,7 @@ module Inploy
     end
 
     def migrate_database
-      rake "db:migrate RAILS_ENV=production"
+      rake "db:migrate RAILS_ENV=#{environment}"
     end
 
     def tasks
@@ -63,7 +63,7 @@ module Inploy
     end
 
     def install_gems
-      rake "gems:install"
+      rake "gems:install RAILS_ENV=#{environment}"
     end
   end
 end
