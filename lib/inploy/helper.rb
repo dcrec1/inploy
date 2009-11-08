@@ -40,7 +40,7 @@ module Inploy
     end
 
     def rake_if_included(command)
-      rake command if tasks.include?("rake #{command}")
+      rake command if tasks.include?("rake #{command.split[0]}")
     end
 
     def rake(command)
