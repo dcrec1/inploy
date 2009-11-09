@@ -42,7 +42,7 @@ module Inploy
       run "rm -R -f public/cache"
       rake_if_included "more:parse"
       rake_if_included "asset:packager:build_all"
-      rake_if_included "hoptoad:deploy TO=production"
+      rake_if_included "hoptoad:deploy TO=production REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
       run "touch tmp/restart.txt"
     end
   end
