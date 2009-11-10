@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Inploy::Deploy do
 
-  def expect_setup_with(branch)
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} && git checkout -f -b #{branch} origin/#{branch} && git submodule update --init && rake inploy:local:setup'"
+  def expect_setup_with(branch, environment = 'production')
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} && git checkout -f -b #{branch} origin/#{branch} && git submodule update --init && rake inploy:local:setup environment=#{environment}'"
   end
 
   def setup(subject)
@@ -65,7 +65,7 @@ describe Inploy::Deploy do
       it "should exec the commands in all hosts" do
         subject.hosts = ['host0', 'host1', 'host2']
         3.times.each do |i|
-          expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update'"
+          expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update environment=production'"
         end
         subject.remote_update
       end
