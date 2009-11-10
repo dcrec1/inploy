@@ -63,7 +63,7 @@ module Inploy
     end
 
     def install_gems
-      rake "gems:install"
+      rake "gems:install RAILS_ENV=production"
     end
   end
 end
