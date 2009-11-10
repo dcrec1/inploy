@@ -9,7 +9,7 @@ shared_examples_for "local setup" do
   end
 
   it "should run migration after installing gems" do
-    expect_command("rake gems:install").ordered
+    expect_command("rake gems:install RAILS_ENV=production").ordered
     expect_command("rake db:migrate RAILS_ENV=production").ordered
     subject.local_setup
   end
@@ -53,7 +53,7 @@ shared_examples_for "local setup" do
   end
 
   it "should install gems" do
-    expect_command "rake gems:install"
+    expect_command "rake gems:install RAILS_ENV=production"
     subject.local_setup
   end
 
@@ -135,7 +135,7 @@ shared_examples_for "local update" do
   end
 
   it "should install gems" do
-    expect_command "rake gems:install"
+    expect_command "rake gems:install RAILS_ENV=production"
     subject.local_update
   end
 
