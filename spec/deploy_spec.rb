@@ -32,6 +32,10 @@ describe Inploy::Deploy do
     subject.remote_setup
   end
 
+  it "should use production as the default environment" do
+    subject.environment.should eql("production")
+  end
+
   context "configured" do
     before :each do
       setup subject

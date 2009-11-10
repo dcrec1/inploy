@@ -2,10 +2,11 @@ module Inploy
   class Deploy
     include Helper
 
-    attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch
+    attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment
 
     def initialize
       @branch = 'master'
+      @environment = 'production'
     end
 
     def template=(template)
