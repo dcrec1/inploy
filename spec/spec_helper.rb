@@ -13,7 +13,7 @@ require 'shared_examples'
 FakeFS.activate!
 
 def stub_tasks(object = subject)
-  object.stub!(:tasks).and_return("rake acceptance rake spec rake asset:packager:create_yml")
+  object.stub!(:tasks).and_return("rake acceptance rake spec rake hoptoad:deploy rake asset:packager:create_yml")
 end
 
 def mute(object)

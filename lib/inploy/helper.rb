@@ -3,15 +3,15 @@ module Inploy
     def create_folders(*folders)
       folders.each { |folder| create_folder folder }
     end
-    
+
     def create_folder(path)
       run "mkdir -p #{path}"
     end
-    
+
     def host
       hosts.first
     end
-    
+
     def camelize(string)
       string.to_s.gsub(/\/(.?)/) { "::" + $1.upcase }.gsub(/(^|_)(.)/) { $2.upcase }
     end
@@ -32,7 +32,7 @@ module Inploy
     end
 
     def migrate_database
-      rake "db:migrate RAILS_ENV=production"
+      rake "db:migrate RAILS_ENV=#{environment}"
     end
 
     def tasks
@@ -63,7 +63,7 @@ module Inploy
     end
 
     def install_gems
-      rake "gems:install RAILS_ENV=production"
+      rake "gems:install RAILS_ENV=#{environment}"
     end
   end
 end

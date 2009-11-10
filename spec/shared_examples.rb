@@ -4,13 +4,14 @@ shared_examples_for "local setup" do
   end
 
   it "should run migrations" do
-    expect_command "rake db:migrate RAILS_ENV=production"
+    subject.environment = "env1"
+    expect_command "rake db:migrate RAILS_ENV=#{subject.environment}"
     subject.local_setup
   end
 
   it "should run migration after installing gems" do
-    expect_command("rake gems:install RAILS_ENV=production").ordered
-    expect_command("rake db:migrate RAILS_ENV=production").ordered
+    expect_command("rake gems:install RAILS_ENV=#{subject.environment}").ordered
+    expect_command("rake db:migrate RAILS_ENV=#{subject.environment}").ordered
     subject.local_setup
   end
 
@@ -53,7 +54,8 @@ shared_examples_for "local setup" do
   end
 
   it "should install gems" do
-    expect_command "rake gems:install RAILS_ENV=production"
+    subject.environment = "en3"
+    expect_command "rake gems:install RAILS_ENV=#{subject.environment}"
     subject.local_setup
   end
 
@@ -108,8 +110,8 @@ shared_examples_for "local update" do
     stub_tasks
   end
 
-  it "should run the migrations for production" do
-    expect_command "rake db:migrate RAILS_ENV=production"
+  it "should run the migrations for the environment" do
+    expect_command "rake db:migrate RAILS_ENV=#{subject.environment}"
     subject.local_update
   end
 
@@ -135,7 +137,8 @@ shared_examples_for "local update" do
   end
 
   it "should install gems" do
-    expect_command "rake gems:install RAILS_ENV=production"
+    subject.environment = "env6"
+    expect_command "rake gems:install RAILS_ENV=#{subject.environment}"
     subject.local_update
   end
 
@@ -162,5 +165,11 @@ shared_examples_for "local update" do
     file_exists "config/hosts.yml.sample"
     subject.local_update
     File.exists?("config/hosts.yml").should be_true
+  end
+
+  it "should notify hoptoad" do
+    subject.environment = "env8"
+    expect_command("rake hoptoad:deploy TO=#{subject.environment} REPO=#{subject.repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}").ordered
+    subject.local_update
   end
 end
