@@ -10,6 +10,8 @@ begin
 rescue Exception
 end
 
+deploy.environment ||= ENV['environment']
+
 namespace :inploy do
   namespace :local do
     desc "Local Setup"
