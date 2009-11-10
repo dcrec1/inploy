@@ -111,6 +111,11 @@ shared_examples_for "local update" do
     stub_tasks
   end
 
+  it "should init submodules" do
+    expect_command "git submodule update --init"
+    subject.local_update
+  end
+
   it "should run the migrations for the environment" do
     expect_command "rake db:migrate RAILS_ENV=#{subject.environment}"
     subject.local_update

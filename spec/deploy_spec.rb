@@ -3,7 +3,12 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Inploy::Deploy do
 
   def expect_setup_with(branch, environment = 'production')
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} && git checkout -f -b #{branch} origin/#{branch} && git submodule update --init && rake inploy:local:setup environment=#{environment}'"
+    if branch.eql? 'master'
+      checkout = ""
+    else
+      checkout = "&& $($(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch})"
+    end
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} #{checkout} && rake inploy:local:setup environment=#{environment}'"
   end
 
   def setup(subject)
@@ -44,7 +49,7 @@ describe Inploy::Deploy do
     end
 
     context "on remote setup" do
-      it "should clone the repository with the application name, init submodules and execute local setup" do
+      it "should clone the repository with the application name, checkout the branch and execute local setup" do
         expect_setup_with @branch
         subject.remote_setup
       end
