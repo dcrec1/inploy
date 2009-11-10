@@ -10,7 +10,8 @@ begin
 rescue Exception
 end
 
-deploy.environment ||= ENV['environment']
+
+deploy.environment = ENV['environment'] || deploy.environment
 
 namespace :inploy do
   namespace :local do
