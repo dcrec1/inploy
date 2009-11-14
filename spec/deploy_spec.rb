@@ -45,7 +45,7 @@ describe Inploy::Deploy do
         subject.remote_setup
       end
 
-      it "should dont execute init.sh if doesnt exists" do
+      it "should not execute init.sh if doesnt exists" do
         dont_accept_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && .init.sh'"
         subject.remote_setup
       end
