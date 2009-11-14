@@ -13,7 +13,7 @@ describe Inploy::Deploy do
     end
     
     context "on local setup" do
-      it "should create symbolic link" do
+      it "should restart the server" do
         expect_command "kill -USR2 `cat tmp/pids/unicorn.pid`"
         subject.local_setup
       end
