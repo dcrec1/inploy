@@ -5,7 +5,7 @@ module Inploy
     attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment
 
     def initialize
-      load_server 'passenger'
+      self.server = :passenger
       @branch = 'master'
       @environment = 'production'
     end
@@ -15,7 +15,7 @@ module Inploy
     end
 
     def server=(server)
-      load_server server
+      load_module("servers/#{server}")
     end
 
     def remote_setup
