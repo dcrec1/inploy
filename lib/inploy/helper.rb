@@ -1,12 +1,8 @@
 module Inploy
   module Helper
     def load_module(filename)
-      if File.exists?("config/inploy/#{filename}.rb")
-        require "config/inploy/#{filename}"
-      end
       require "inploy/#{filename}"
-      constant = filename.to_s.split("/").map { |word| camelize(word) }.join "::"
-      extend eval(constant)
+      extend eval(filename.split("/").map { |word| camelize(word) }.join("::"))
     end
     
     def create_folders(*folders)
