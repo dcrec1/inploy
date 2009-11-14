@@ -1,5 +1,18 @@
 module Inploy
   module Helper
+    def load_module(filename)
+      if File.exists?("config/inploy/#{filename}.rb")
+        require "config/inploy/#{filename}"
+      end
+      require "inploy/#{filename}"
+      words = filename.to_s.split("/").map { |word| camelize(word) }
+      extend eval(words.first + '::' + words.last)
+    end
+    
+    def load_server(name)
+      load_module "servers/#{name}"
+    end
+    
     def create_folders(*folders)
       folders.each { |folder| create_folder folder }
     end

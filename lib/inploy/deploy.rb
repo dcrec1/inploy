@@ -5,16 +5,17 @@ module Inploy
     attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment
 
     def initialize
+      load_server 'passenger'
       @branch = 'master'
       @environment = 'production'
     end
 
     def template=(template)
-      load_module(template)
+      load_module("templates/#{template}")
     end
 
     def server=(server)
-      load_module("server/#{server}")
+      load_server server
     end
 
     def remote_setup
@@ -40,10 +41,6 @@ module Inploy
       run "git pull origin #{branch}"
       after_update_code
     end
-
-    def restart_server
-      run "touch tmp/restart.txt"
-    end
     
     private
 
@@ -57,16 +54,6 @@ module Inploy
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
       restart_server
-    end
-    
-    def load_module(filename)
-      if File.exists?("config/inploy/#{filename}.rb")
-        require "config/inploy/#{filename}"
-      else
-        require "inploy/#{filename}"
-      end
-      extend eval(camelize(filename.to_s.split("/").last))
-    end
-    
+    end    
   end
 end
