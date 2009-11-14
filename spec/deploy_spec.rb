@@ -31,12 +31,19 @@ describe Inploy::Deploy do
     expect_setup_with "master"
     subject.remote_setup
   end
+  
+  it "should use production as default environment" do
+    setup subject
+    expect_command "rake db:migrate RAILS_ENV=production"
+    subject.local_setup
+  end
 
   context "configured" do
     before :each do
       setup subject
 			subject.ssh_opts = @ssh_opts = "-A"
 			subject.branch = @branch = "onions"
+			subject.environment = @environment = "staging"
     end
 
     context "on remote setup" do
@@ -52,6 +59,12 @@ describe Inploy::Deploy do
     end
 
     context "on local setup" do
+      
+      it "should use staging for the environment" do
+        expect_command "rake db:migrate RAILS_ENV=staging"
+        subject.local_setup
+      end
+      
       it_should_behave_like "local setup"
     end
 

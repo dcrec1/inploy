@@ -1,16 +1,17 @@
 shared_examples_for "local setup" do
   before :each do
     stub_tasks
+    @environment ||= "production"
   end
 
   it "should run migrations" do
-    expect_command "rake db:migrate RAILS_ENV=production"
+    expect_command "rake db:migrate RAILS_ENV=#{@environment}"
     subject.local_setup
   end
 
   it "should run migration after installing gems" do
-    expect_command("rake gems:install RAILS_ENV=production").ordered
-    expect_command("rake db:migrate RAILS_ENV=production").ordered
+    expect_command("rake gems:install RAILS_ENV=#{@environment}").ordered
+    expect_command("rake db:migrate RAILS_ENV=#{@environment}").ordered
     subject.local_setup
   end
 
@@ -53,7 +54,7 @@ shared_examples_for "local setup" do
   end
 
   it "should install gems" do
-    expect_command "rake gems:install RAILS_ENV=production"
+    expect_command "rake gems:install RAILS_ENV=#{@environment}"
     subject.local_setup
   end
 
@@ -106,10 +107,11 @@ end
 shared_examples_for "local update" do
   before :each do
     stub_tasks
+    @environment ||= "production"
   end
 
-  it "should run the migrations for production" do
-    expect_command "rake db:migrate RAILS_ENV=production"
+  it "should run the migrations" do
+    expect_command "rake db:migrate RAILS_ENV=#{@environment}"
     subject.local_update
   end
 
@@ -135,7 +137,7 @@ shared_examples_for "local update" do
   end
 
   it "should install gems" do
-    expect_command "rake gems:install RAILS_ENV=production"
+    expect_command "rake gems:install RAILS_ENV=#{@environment}"
     subject.local_update
   end
 
