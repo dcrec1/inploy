@@ -36,6 +36,12 @@ describe Inploy::Deploy do
     expect_setup_with "master"
     subject.remote_setup
   end
+  
+  it "should use production as default environment" do
+    setup subject
+    expect_command "rake db:migrate RAILS_ENV=production"
+    subject.local_setup
+  end
 
   it "should use production as the default environment" do
     subject.environment.should eql("production")
@@ -46,21 +52,28 @@ describe Inploy::Deploy do
       setup subject
 			subject.ssh_opts = @ssh_opts = "-A"
 			subject.branch = @branch = "onions"
+			subject.environment = @environment = "staging"
     end
 
     context "on remote setup" do
       it "should clone the repository with the application name, checkout the branch and execute local setup" do
-        expect_setup_with @branch
+        expect_setup_with @branch, @environment
         subject.remote_setup
       end
 
-      it "should dont execute init.sh if doesnt exists" do
+      it "should not execute init.sh if doesnt exists" do
         dont_accept_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && .init.sh'"
         subject.remote_setup
       end
     end
 
     context "on local setup" do
+      
+      it "should use staging for the environment" do
+        expect_command "rake db:migrate RAILS_ENV=staging"
+        subject.local_setup
+      end
+      
       it_should_behave_like "local setup"
     end
 
@@ -70,7 +83,7 @@ describe Inploy::Deploy do
       it "should exec the commands in all hosts" do
         subject.hosts = ['host0', 'host1', 'host2']
         3.times.each do |i|
-          expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update environment=production'"
+          expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{@environment}'"
         end
         subject.remote_update
       end

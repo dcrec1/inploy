@@ -109,6 +109,7 @@ end
 shared_examples_for "local update" do
   before :each do
     stub_tasks
+    @environment ||= "production"
   end
 
   it "should init submodules" do

@@ -10,8 +10,11 @@ module Inploy
     end
 
     def template=(template)
-      require "inploy/#{template}"
-      extend eval(camelize(template))
+      load_module(template)
+    end
+
+    def server=(server)
+      load_module("server/#{server}")
     end
 
     def remote_setup
@@ -38,6 +41,10 @@ module Inploy
       after_update_code
     end
 
+    def restart_server
+      run "touch tmp/restart.txt"
+    end
+    
     private
 
     def after_update_code
@@ -49,7 +56,17 @@ module Inploy
       rake_if_included "more:parse"
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
-      run "touch tmp/restart.txt"
+      restart_server
     end
+    
+    def load_module(filename)
+      if File.exists?("config/inploy/#{filename}.rb")
+        require "config/inploy/#{filename}"
+      else
+        require "inploy/#{filename}"
+      end
+      extend eval(camelize(filename.to_s.split("/").last))
+    end
+    
   end
 end
