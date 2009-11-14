@@ -53,8 +53,8 @@ module Inploy
     end
     
     def load_module(filename)
-      if file = File.exists?("config/inploy/#{filename}")
-        require file
+      if File.exists?("config/inploy/#{filename}.rb")
+        require "config/inploy/#{filename}"
       else
         require "inploy/#{filename}"
       end
