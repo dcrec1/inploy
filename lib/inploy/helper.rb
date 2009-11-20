@@ -32,8 +32,10 @@ module Inploy
     end
 
     def secure_copy(src, dest)
-      log "mv #{src} #{dest}"
-      FileUtils.cp src, dest unless File.exists?(dest)
+      unless File.exists?(dest)
+        log "mv #{src} #{dest}"
+        FileUtils.cp src, dest
+      end
     end
 
     def migrate_database
