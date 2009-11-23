@@ -33,7 +33,7 @@ describe Inploy::Deploy do
     context "on local setup" do
       it "should restart the server" do
         expect_command("thin --pid tmp/pids/thin.pid stop").ordered
-        expect_command("thin --rackup config/config.ru --daemonize\
+        expect_command("thin --rackup config.ru --daemonize\
         --log log/thin.log --pid tmp/pids/thin.pid --environment production\
         --port 4500 start").ordered
         subject.local_setup
