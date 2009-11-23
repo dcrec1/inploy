@@ -21,7 +21,7 @@ shared_examples_for "local setup" do
     subject.local_setup
   end
 
-  it "should run init.sh if doesnt exists" do
+  it "should not run init.sh if doesnt exists" do
     file_doesnt_exists "init.sh"
     dont_accept_command "./init.sh"
     subject.local_setup
