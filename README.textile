@@ -63,6 +63,7 @@ deploy.path = '/opt'
 
 deploy.ssh_opts = '-A'       # default empty
 deploy.branch = 'production' # default master</code></pre>
+deploy.sudo = true           # default false
 
 h2. LICENSE:
 

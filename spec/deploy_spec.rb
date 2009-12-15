@@ -21,6 +21,17 @@ describe Inploy::Deploy do
     subject.application = @application = "robin"
   end
 
+  it "should include sudo when executing commands on the server" do
+    expect_command "ls"
+    subject.run "ls"
+    
+    expect_command "sudo ls"
+    subject.sudo = true
+    subject.run "ls"
+    
+    subject.sudo = false
+  end
+
   it "should be extendable" do
     subject.template = :mouse_over_studio
     subject.remote_setup.should be_true

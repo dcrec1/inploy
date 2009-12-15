@@ -56,13 +56,18 @@ module Inploy
 
     def remote_run(command)
       hosts.each do |host|
-        run "ssh #{ssh_opts} #{user}@#{host} '#{command}'"
+        run "ssh #{ssh_opts} #{user}@#{host} '#{command}'", true
       end
     end
 
-    def run(command)
+    def run(command, disable_sudo = false)
       log command
-      Kernel.system command
+      
+      if disable_sudo
+        Kernel.system command
+      else
+        Kernel.system "#{@sudo}#{command}"
+      end
     end
 
     def log(command)
