@@ -49,6 +49,11 @@ describe Inploy::Deploy do
 
     context "on local update" do
       it_should_behave_like "local update"
+      
+      it "should checkout modified files by Git so the current strategy works" do
+        expect_command "git checkout -f"
+        subject.local_update
+      end
     end
   end
 end

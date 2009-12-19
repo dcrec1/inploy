@@ -16,6 +16,7 @@ module Inploy
       end
 
       def local_update
+        run "git checkout -f"
         after_update_code
       end
 
