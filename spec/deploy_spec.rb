@@ -22,13 +22,14 @@ describe Inploy::Deploy do
   end
 
   it "should include sudo when executing commands on the server" do
+    mute subject
     expect_command "ls"
     subject.run "ls"
-    
+
     expect_command "sudo ls"
     subject.sudo = true
     subject.run "ls"
-    
+
     subject.sudo = false
   end
 
@@ -47,7 +48,7 @@ describe Inploy::Deploy do
     expect_setup_with "master"
     subject.remote_setup
   end
-  
+
   it "should use production as default environment" do
     setup subject
     expect_command "rake db:migrate RAILS_ENV=production"
@@ -79,12 +80,12 @@ describe Inploy::Deploy do
     end
 
     context "on local setup" do
-      
+
       it "should use staging for the environment" do
         expect_command "rake db:migrate RAILS_ENV=staging"
         subject.local_setup
       end
-      
+
       it_should_behave_like "local setup"
     end
 
