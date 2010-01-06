@@ -92,6 +92,12 @@ shared_examples_for "local setup" do
     expect_command("rake asset:packager:build_all").ordered
     subject.local_setup
   end
+
+  it "should create the database" do
+    subject.environment = environment = "whatever"
+    expect_command("rake db:create RAILS_ENV=#{environment}")
+    subject.local_setup
+  end
 end
 
 shared_examples_for "remote update" do

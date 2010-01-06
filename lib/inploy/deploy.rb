@@ -34,6 +34,7 @@ module Inploy
 
     def local_setup
       create_folders 'tmp/pids', 'db'
+      rake "db:create RAILS_ENV=#{environment}"
       run "./init.sh" if File.exists?("init.sh")
       after_update_code
     end
@@ -46,7 +47,7 @@ module Inploy
       run "git pull origin #{branch}"
       after_update_code
     end
-    
+
     private
 
     def after_update_code
@@ -59,6 +60,6 @@ module Inploy
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
       restart_server
-    end    
+    end
   end
 end
