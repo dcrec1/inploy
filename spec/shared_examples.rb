@@ -138,6 +138,11 @@ shared_examples_for "local update" do
     subject.local_update
   end
 
+  it "should clean public assets" do
+    expect_command "rm -R -f public/assets"
+    subject.local_update
+  end 
+
   it "should not package the assets if asset_packager exists" do
     dont_accept_command "rake asset:packager:build_all"
     subject.local_update
