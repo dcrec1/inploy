@@ -4,7 +4,7 @@ module Inploy
       require "inploy/#{filename}"
       extend eval(filename.split("/").map { |word| camelize(word) }.join("::"))
     end
-    
+
     def create_folders(*folders)
       folders.each { |folder| create_folder folder }
     end
@@ -50,6 +50,10 @@ module Inploy
       rake command if tasks.include?("rake #{command.split[0]}")
     end
 
+    def ruby_if_exists(file, opts)
+      run "ruby #{file} #{opts[:params]}" if File.exists?(file)
+    end
+
     def rake(command)
       run "rake #{command}"
     end
@@ -62,7 +66,7 @@ module Inploy
 
     def run(command, disable_sudo = false)
       log command
-      
+
       if disable_sudo
         Kernel.system command
       else

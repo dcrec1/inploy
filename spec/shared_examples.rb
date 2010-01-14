@@ -185,4 +185,16 @@ shared_examples_for "local update" do
     expect_command("rake hoptoad:deploy TO=#{subject.environment} REPO=#{subject.repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}").ordered
     subject.local_update
   end
+
+  it "should notify new relic rpm if exists as plugin" do
+    file_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd"
+    expect_command("ruby vendor/plugins/newrelic_rpm/bin/newrelic_cmd deployments")
+    subject.local_update
+  end
+
+  it "should not notify new relic rpm if doesn't exists as plugin" do
+    file_doesnt_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd"
+    dont_accept_command("ruby vendor/plugins/newrelic_rpm/bin/newrelic_cmd deployments")
+    subject.local_update
+  end
 end
