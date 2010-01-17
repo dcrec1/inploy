@@ -1,7 +1,6 @@
 module Inploy
   class Deploy
     include Helper
-
     attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment
 
     def initialize
@@ -56,11 +55,19 @@ module Inploy
       install_gems
       migrate_database
       run "rm -R -f public/cache"
-      run "rm -R -f public/assets"
+      run "rm -R -f public/assets"  if jammit_is_installed? 
+
       rake_if_included "more:parse"
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
       restart_server
     end
+
+    def jammit_is_installed?
+      File.exists?("config/assets.yml") 
+    end 
+    
   end
+
+  
 end
