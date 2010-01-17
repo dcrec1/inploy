@@ -23,6 +23,7 @@ Actually, Inploy has four rake tasks:
 - installs gems
 - migrates the database for the production environment
 - cleans the cache in public/cache
+- cleans cached assets in public/assets if jammit is installed 
 - parses less files if more:parse tasks exists
 - package the assets if asset:packager:build_all task exists
 - touch tmp/restart.txt
