@@ -138,8 +138,15 @@ shared_examples_for "local update" do
     subject.local_update
   end
 
-  it "should clean public assets" do
+  it "should clean public assets if jammit is installed" do
+    file_exists "config/assets.yml"
     expect_command "rm -R -f public/assets"
+    subject.local_update
+  end
+
+  it "should not clean public assets if jammit is not installed" do
+    file_doesnt_exists "config/assets.yml"
+    dont_accept_command "rm -R -f public/assets" 
     subject.local_update
   end 
 
