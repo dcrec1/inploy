@@ -47,6 +47,10 @@ module Inploy
       after_update_code
     end
 
+    def before_restarting_server(&block)
+     @before_restarting_server = block
+    end
+
     private
 
     def after_update_code
@@ -55,19 +59,18 @@ module Inploy
       install_gems
       migrate_database
       run "rm -R -f public/cache"
-      run "rm -R -f public/assets" if jammit_is_installed? 
+      run "rm -R -f public/assets" if jammit_is_installed?
       rake_if_included "more:parse"
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
       ruby_if_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd", :params => "deployments"
+      instance_eval(&@before_restarting_server) unless @before_restarting_server.nil?
       restart_server
     end
 
     def jammit_is_installed?
-      File.exists?("config/assets.yml") 
-    end 
-    
-  end
+      File.exists?("config/assets.yml")
+    end
 
-  
+  end
 end

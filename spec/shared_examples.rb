@@ -146,9 +146,9 @@ shared_examples_for "local update" do
 
   it "should not clean public assets if jammit is not installed" do
     file_doesnt_exists "config/assets.yml"
-    dont_accept_command "rm -R -f public/assets" 
+    dont_accept_command "rm -R -f public/assets"
     subject.local_update
-  end 
+  end
 
   it "should not package the assets if asset_packager exists" do
     dont_accept_command "rake asset:packager:build_all"
@@ -207,6 +207,15 @@ shared_examples_for "local update" do
   it "should not notify new relic rpm if doesn't exists as plugin" do
     file_doesnt_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd"
     dont_accept_command("ruby vendor/plugins/newrelic_rpm/bin/newrelic_cmd deployments")
+    subject.local_update
+  end
+
+  it "should execute before_restarting_server hook" do
+    subject.before_restarting_server do
+      rake "test"
+    end
+    expect_command("rake test").ordered
+    expect_command("touch tmp/restart.txt").ordered
     subject.local_update
   end
 end
