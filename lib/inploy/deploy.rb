@@ -68,10 +68,5 @@ module Inploy
       instance_eval(&@before_restarting_server) unless @before_restarting_server.nil?
       restart_server
     end
-
-    def jammit_is_installed?
-      File.exists?("config/assets.yml")
-    end
-
   end
 end

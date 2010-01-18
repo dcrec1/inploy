@@ -1,5 +1,9 @@
 module Inploy
   module Helper
+    def jammit_is_installed?
+      File.exists?("config/assets.yml")
+    end
+
     def host
       hosts.first
     end
