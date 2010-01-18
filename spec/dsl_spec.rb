@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe Inploy::Helper do
-  include Inploy::Helper
-  
+describe Inploy::DSL do
+  include Inploy::DSL
+
   it "should recognize a rake task exists even if it has parameters" do
     mute self
     stub_tasks self
