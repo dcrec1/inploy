@@ -31,7 +31,7 @@ describe Inploy::Deploy do
 
     context "on remote update" do
       it "should push to the repository" do
-        expect_command "git push ssh://[#{@user}@#{@host}]/home/#{@user}/rails_app/#{@application} master"
+        expect_command "git push ssh://[#{@user}@#{@host}]/home/#{@user}/rails_app/#{@application} #{branch}"
         subject.remote_update
       end
       
