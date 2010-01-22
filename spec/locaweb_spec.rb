@@ -34,8 +34,12 @@ describe Inploy::Deploy do
         expect_command "git push ssh://[#{@user}@#{@host}]/home/#{@user}/rails_app/#{@application} master"
         subject.remote_update
       end
-
-      it_should_behave_like "remote update"
+      
+      it "should run git checkout -f and inploy:local:update task in the server" do
+        subject.environment = "env10"
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd /home/#{@user}/rails_app/#{@application} && git checkout -f && rake inploy:local:update environment=#{subject.environment}'"
+        subject.remote_update
+      end
     end
 
     context "on local setup" do
@@ -49,11 +53,6 @@ describe Inploy::Deploy do
 
     context "on local update" do
       it_should_behave_like "local update"
-      
-      it "should checkout modified files by Git so the current strategy works" do
-        expect_command "git checkout -f"
-        subject.local_update
-      end
     end
   end
 end
