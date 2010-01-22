@@ -7,7 +7,7 @@ module Inploy
 
       def remote_update
         run "git push ssh://[#{user}@#{host}]#{application_path} master"
-        super ["git checkout -f"]
+        remote_run "cd #{application_path} && git checkout -f && rake inploy:local:update environment=#{environment}"
       end
 
       def local_setup

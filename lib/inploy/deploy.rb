@@ -39,9 +39,8 @@ module Inploy
       after_update_code
     end
 
-    def remote_update(extra_commands = [])
-      extra_commands = "&& #{extra_commands.join(' && ')} " unless extra_commands.size.zero?
-      remote_run "cd #{application_path} #{extra_commands}&& #{@sudo}rake inploy:local:update environment=#{environment}"
+    def remote_update
+      remote_run "cd #{application_path} && #{@sudo}rake inploy:local:update environment=#{environment}"
     end
 
     def local_update
