@@ -7,7 +7,7 @@ module Inploy
 
       def remote_update
         run "git push ssh://[#{user}@#{host}]#{application_path} master"
-        super
+        super ["git checkout -f"]
       end
 
       def local_setup
@@ -16,7 +16,6 @@ module Inploy
       end
 
       def local_update
-        run "git checkout -f"
         after_update_code
       end
 
