@@ -30,12 +30,6 @@ module Inploy
       `rake -T`
     end
 
-    def remote_run(command)
-      hosts.each do |host|
-        run "ssh #{ssh_opts} #{user}@#{host} '#{command}'", true
-      end
-    end
-
     def install_gems
       rake "gems:install RAILS_ENV=#{environment}"
     end

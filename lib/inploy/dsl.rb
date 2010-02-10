@@ -39,6 +39,13 @@ module Inploy
       end
     end
 
+    def remote_run(command)
+      ssh_opts.concat " -p #{port}" if port
+      hosts.each do |host|
+        run "ssh #{ssh_opts} #{user}@#{host} '#{command}'", true
+      end
+    end
+
     def secure_copy(src, dest)
       unless File.exists?(dest)
         log "mv #{src} #{dest}"

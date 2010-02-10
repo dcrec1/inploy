@@ -110,6 +110,12 @@ shared_examples_for "remote update" do
     expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
     subject.remote_update
   end
+
+  it "should ssh with a configured port if exists" do
+    subject.port = 3892
+    expect_command "ssh #{@ssh_opts} -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
+    subject.remote_update
+  end
 end
 
 shared_examples_for "local update" do
