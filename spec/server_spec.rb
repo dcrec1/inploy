@@ -3,18 +3,18 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Inploy::Deploy do
 
   before :each do
-      subject.user = @user = 'batman'
-      subject.hosts = [@host = 'gothic']
-      subject.application = @application = "robin"
-      stub_commands
-      mute subject
+    subject.user = @user = 'batman'
+    subject.hosts = [@host = 'gothic']
+    subject.application = @application = "robin"
+    stub_commands
+    mute subject
   end
 
   context "with server unicorn" do
     before :each do
       subject.server = :unicorn
     end
-    
+
     context "on local setup" do
       it "should restart the server" do
         expect_command "kill -USR2 `cat tmp/pids/unicorn.pid`"
@@ -52,7 +52,7 @@ describe Inploy::Deploy do
         subject.local_setup
       end
     end
-    
+
   end
 
 end

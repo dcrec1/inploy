@@ -35,7 +35,13 @@ describe Inploy::Deploy do
         expect_command "git push ssh://[#{@user}@#{@host}]/home/#{@user}/rails_app/#{@application} #{@branch}"
         subject.remote_update
       end
-      
+
+      it "should push the repository specifying a port if exists" do
+        subject.port = 1234
+        expect_command "git push ssh://[#{@user}@#{@host}:1234]/home/#{@user}/rails_app/#{@application} #{@branch}"
+        subject.remote_update
+      end
+
       it "should run git checkout -f and inploy:local:update task in the server" do
         subject.environment = "env10"
         expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd /home/#{@user}/rails_app/#{@application} && git checkout -f && rake inploy:local:update environment=#{subject.environment}'"
