@@ -59,6 +59,7 @@ module Inploy
       copy_sample_files
       install_gems
       migrate_database
+      run "whenever --update-crontab #{application} --set 'environment=#{environment}'" if File.exists?("config/schedule.rb")
       run "rm -R -f public/cache"
       run "rm -R -f public/assets" if jammit_is_installed?
       rake_if_included "more:parse"

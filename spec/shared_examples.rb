@@ -224,4 +224,16 @@ shared_examples_for "local update" do
     expect_command("touch tmp/restart.txt").ordered
     subject.local_update
   end
+
+  it "should update crontab with whenever if the file config/schedule.rb exists" do
+    file_exists "config/schedule.rb"
+    expect_command "whenever --update-crontab #{subject.application} --set 'environment=#{subject.environment}'"
+    subject.local_update
+  end
+
+  it "should not update crontab with whenever if the file config/schedule.rb doesn't exists" do
+    file_doesnt_exists "config/schedule.rb"
+    dont_accept_command "whenever --update-crontab #{subject.application} --set 'environment=#{subject.environment}'"
+    subject.local_update
+  end
 end
