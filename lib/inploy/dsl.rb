@@ -40,9 +40,9 @@ module Inploy
     end
 
     def remote_run(command)
-      ssh_opts.concat " -p #{port}" if ssh_opts and port
+      port_opts = port ? "-p #{port} " : ''
       hosts.each do |host|
-        run "ssh #{ssh_opts} #{user}@#{host} '#{command}'", true
+        run "ssh #{ssh_opts} #{port_opts}#{user}@#{host} '#{command}'", true
       end
     end
 
