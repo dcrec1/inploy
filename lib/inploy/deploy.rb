@@ -34,6 +34,7 @@ module Inploy
 
     def local_setup
       create_folders 'tmp/pids', 'db'
+      copy_sample_files
       rake "db:create RAILS_ENV=#{environment}"
       run "./init.sh" if File.exists?("init.sh")
       after_update_code
@@ -49,7 +50,7 @@ module Inploy
     end
 
     def before_restarting_server(&block)
-     @before_restarting_server = block
+      @before_restarting_server = block
     end
 
     private

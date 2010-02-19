@@ -69,6 +69,16 @@ shared_examples_for "local setup" do
     end
   end
 
+  it "should copy config/*.sample files before creating the databases" do
+    file_exists "config/stars.yml.sample"
+    subject.stub!(:rake).with("db:create RAILS_ENV=#{subject.environment}").and_raise(Exception.new)
+    begin
+      subject.local_setup
+    rescue Exception
+      File.exists?("config/stars.yml").should be_true
+    end
+  end
+
   it "should package the assets if asset_packager exists" do
     subject.stub!(:tasks).and_return("rake acceptance rake asset:packager:build_all rake asset:packager:create_yml")
     expect_command "rake asset:packager:build_all"
@@ -116,7 +126,7 @@ shared_examples_for "remote update" do
     expect_command "ssh #{@ssh_opts} -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
     subject.remote_update
   end
-  
+
   it "should ssh with a port even if ssh options are not specified" do
     subject.ssh_opts = nil
     subject.port = 3892
