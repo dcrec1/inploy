@@ -5,7 +5,7 @@ require 'rake/gempackagetask'
 require 'spec/rake/spectask'
 
 GEM = "inploy"
-GEM_VERSION = "1.3.0"
+GEM_VERSION = "1.4.0"
 SUMMARY = "Rails deployment made easy"
 AUTHOR = "Diego Carrion"
 EMAIL = "dc.rec1@gmail.com"
