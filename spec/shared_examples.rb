@@ -44,11 +44,27 @@ shared_examples_for "local setup" do
     File.exists?("config/database.yml").should be_true
   end
 
+  it "should copy config/*.example to config/*" do
+    path_exists "config"
+    file_exists "config/database.yml.example"
+    subject.local_setup
+    File.exists?("config/database.yml").should be_true
+  end
+
   it "should not copy config/*.sample to config/* if destination file exists" do
     content = "asfasfasfe"
     path_exists "config"
     file_exists "config/database.yml", :content => content
     file_exists "config/database.yml.sample"
+    subject.local_setup
+    File.open("config/database.yml").read.should eql(content)
+  end
+
+  it "should not copy config/*.example to config/* if destination file exists" do
+    content = "asfasfasfe"
+    path_exists "config"
+    file_exists "config/database.yml", :content => content
+    file_exists "config/database.yml.example"
     subject.local_setup
     File.open("config/database.yml").read.should eql(content)
   end

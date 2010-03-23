@@ -17,8 +17,10 @@ module Inploy
     end
 
     def copy_sample_files
-      Dir.glob("config/*.sample").each do |file|
-        secure_copy file, file.gsub(".sample", '')
+      ["example", "sample"].each do |extension| 
+        Dir.glob("config/*.#{extension}").each do |file|
+          secure_copy file, file.gsub(".#{extension}", '')
+        end
       end
     end
 
