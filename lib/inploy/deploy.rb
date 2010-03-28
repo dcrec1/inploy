@@ -3,7 +3,7 @@ module Inploy
     include Helper
     include DSL
     attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment,
-                  :port, :skip_steps, :skip_steps_array, :cache_dirs
+                  :port, :skip_steps, :cache_dirs
 
     def initialize
       self.server = :passenger
@@ -25,11 +25,6 @@ module Inploy
       @sudo = value.equal?(true) ? 'sudo ' : ''
     end
     
-    def skip_steps=(steps)
-      @skip_steps = steps
-      self.skip_steps_array = steps.split(',').map { |o| o.gsub(/ /,'') } unless steps.nil?
-    end
-
     def remote_setup
       if branch.eql? "master"
         checkout = ""
