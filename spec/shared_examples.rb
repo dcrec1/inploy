@@ -183,6 +183,14 @@ shared_examples_for "local update" do
     end
     subject.local_update
   end
+  
+  it "should not clean the cache if it's on skip_steps" do
+    subject.skip_steps = ['clear_cache']
+    subject.cache_dirs.each do |dir|
+      dont_accept_command "rm -R -f #{dir}"
+    end
+    subject.local_update
+  end
 
   it "should clean public assets if jammit is installed" do
     file_exists "config/assets.yml"

@@ -5,8 +5,10 @@ module Inploy
     end
     
     def clear_cache
-      cache_dirs.each do |dir|
-        run "rm -R -f #{dir}"
+      unless skip_step?('clear_cache')
+        cache_dirs.each do |dir|
+          run "rm -R -f #{dir}"
+        end
       end
     end
 
