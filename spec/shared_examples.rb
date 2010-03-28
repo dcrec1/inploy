@@ -169,8 +169,18 @@ shared_examples_for "local update" do
     subject.local_update
   end
 
-  it "should clean the public cache" do
-    expect_command "rm -R -f public/cache"
+  it "should clean the public/cache by default" do
+    subject.cache_dirs.each do |dir|
+      expect_command "rm -R -f #{dir}"
+    end
+    subject.local_update
+  end
+
+  it "should clean custom cache_dirs" do
+    subject.cache_dirs = ['my/cache', 'i/love/long/cache/paths']
+    subject.cache_dirs.each do |dir|
+      expect_command "rm -R -f #{dir}"
+    end
     subject.local_update
   end
 

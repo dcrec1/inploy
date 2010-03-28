@@ -4,6 +4,12 @@ module Inploy
       skip_steps and skip_steps.include?(step)
     end
     
+    def clear_cache
+      cache_dirs.each do |dir|
+        run "rm -R -f #{dir}"
+      end
+    end
+
     def jammit_is_installed?
       File.exists?("config/assets.yml")
     end

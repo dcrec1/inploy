@@ -2,10 +2,12 @@ module Inploy
   class Deploy
     include Helper
     include DSL
-    attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment, :port, :skip_steps
+    attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment,
+                  :port, :skip_steps, :cache_dirs
 
     def initialize
       self.server = :passenger
+      self.cache_dirs ||= ['public/cache']
       @branch = 'master'
       @environment = 'production'
       @sudo = ''
@@ -22,7 +24,7 @@ module Inploy
     def sudo=(value)
       @sudo = value.equal?(true) ? 'sudo ' : ''
     end
-
+    
     def remote_setup
       if branch.eql? "master"
         checkout = ""
@@ -61,7 +63,7 @@ module Inploy
       install_gems
       migrate_database
       run "whenever --update-crontab #{application} --set 'environment=#{environment}'" if File.exists?("config/schedule.rb")
-      run "rm -R -f public/cache"
+      clear_cache
       run "rm -R -f public/assets" if jammit_is_installed?
       rake_if_included "more:parse"
       rake_if_included "asset:packager:build_all"
