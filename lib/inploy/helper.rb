@@ -3,6 +3,10 @@ module Inploy
     def skip_step?(step)
       skip_steps and skip_steps.include?(step)
     end
+
+    def skip_steps_cmd
+      " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
+    end
     
     def clear_cache
       unless skip_step?('clear_cache')
