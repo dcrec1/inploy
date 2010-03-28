@@ -22,16 +22,21 @@ describe Inploy::Deploy do
     subject.application = @application = "robin"
   end
 
-  it "should include sudo when executing commands on the server" do
-    mute subject
-    expect_command "ls"
-    subject.run "ls"
+  context "when executing a command" do
+    before :each do
+      mute subject
+    end
 
-    expect_command "sudo ls"
-    subject.sudo = true
-    subject.run "ls"
+    it "should include sudo when true" do 
+      expect_command "ls"
+      subject.run "ls"
+    end
 
-    subject.sudo = false
+    it "should not include sudo when false" do
+      subject.sudo = true
+      expect_command "sudo ls"
+      subject.run "ls"
+    end
   end
 
   it "should be extendable" do
