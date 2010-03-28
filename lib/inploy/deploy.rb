@@ -31,9 +31,7 @@ module Inploy
       else
         checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
       end
-
-      skip_steps_cmd = " skip_steps=#{skip_steps}" unless skip_steps.nil?
-      
+      skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
       remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application} #{checkout} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
     end
 
