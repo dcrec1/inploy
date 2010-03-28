@@ -40,7 +40,7 @@ Actually, Inploy has four rake tasks:
 
 h2. SKIP STEPS
 
-You can skip some tasks when running a task, just add "skip_steps" into your rake command line or add "skip_steps" to your deploy.rb to always skip those steps (see "CONFIGURATION" for details).
+You can skip some steps when running a task, just add "skip_steps" into your rake command line or add "skip_steps" to your deploy.rb to always skip those steps (see "CONFIGURATION" for details).
 
 Currently the steps available to skip are:
 
