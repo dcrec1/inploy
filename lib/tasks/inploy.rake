@@ -12,7 +12,7 @@ end
 
 
 deploy.environment = ENV['environment'] || deploy.environment
-deploy.skip_steps = ENV['skip_steps'] || deploy.skip_steps
+deploy.skip_steps = ENV['skip_steps'].split(',') || deploy.skip_steps
 
 namespace :inploy do
   namespace :local do
