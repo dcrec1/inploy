@@ -33,10 +33,24 @@ Actually, Inploy has four rake tasks:
 - pulls the repository
 - installs gems
 - migrates the database for the production environment
-- cleans the cache in public/cache
+- cleans the cache directories (default public/cache)
 - parses less files if more:parse tasks exists
 - package the assets if asset:packager:build_all task exists
 - touch tmp/restart.txt
+
+h2. SKIP STEPS
+
+You can skip some tasks when running a task, just add "skip_steps" into your rake command line or add "skip_steps" to your deploy.rb to always skip those steps (see "CONFIGURATION" for details).
+
+Currently the steps available to skip are:
+
+- install_gems: skip rake gems:install
+- migrate_database: skip rake db:migrate
+- clear_cache: skip removing cache directories
+
+* Usage (params are comma separated):
+
+<pre><code>rake inploy:remote:update skip_steps=install_gems,migrate_database</code></pre>
 
 h2. INSTALLATION:
 
@@ -54,7 +68,8 @@ h2. CONFIGURATION
 
 Create a config/deploy.rb file and configure it something like this:
 
-<pre><code>deploy.application = "signal"
+<pre><code>
+deploy.application = "signal"
 deploy.repository = 'git://github.com/dcrec1/signal.git'
 deploy.user = 'dcrec1'
 deploy.hosts = ['hooters', 'geni']
@@ -62,9 +77,18 @@ deploy.path = '/opt'
 
 # OPTIONALS
 
-deploy.ssh_opts = '-A'       # default empty
-deploy.branch = 'production' # default master
-deploy.sudo = true           # default false</code></pre>
+deploy.ssh_opts = '-A'                            # default empty
+deploy.branch = 'production'                      # default master
+deploy.sudo = true                                # default false
+deploy.cache_dirs = ['public/cache', 'tmp/cache'] # default ['public/cache']
+
+# Use this if you want to skip some steps on update and setup
+# Available options: install_gems, migrate_database, clear_cache
+# This feature is also available on command line
+# eg. rake inploy:update:remote skip_steps=install_gems
+
+deploy.skip_steps = 'install_gems,clear_cache'    # default empty, params are comma separated
+</code></pre>
 
 h2. LICENSE:
 
