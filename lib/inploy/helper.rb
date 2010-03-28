@@ -1,5 +1,9 @@
 module Inploy
   module Helper
+    def skip_step?(step)
+      skip_steps and skip_steps.include?(step)
+    end
+    
     def jammit_is_installed?
       File.exists?("config/assets.yml")
     end
@@ -25,7 +29,7 @@ module Inploy
     end
 
     def migrate_database
-      rake "db:migrate RAILS_ENV=#{environment}"
+      rake "db:migrate RAILS_ENV=#{environment}" unless skip_step?('migrate_database')
     end
 
     def tasks

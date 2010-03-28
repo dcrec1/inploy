@@ -2,7 +2,7 @@ module Inploy
   class Deploy
     include Helper
     include DSL
-    attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment, :port
+    attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment, :port, :skip_steps
 
     def initialize
       self.server = :passenger

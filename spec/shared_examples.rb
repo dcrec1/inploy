@@ -8,6 +8,12 @@ shared_examples_for "local setup" do
     expect_command "rake db:migrate RAILS_ENV=#{subject.environment}"
     subject.local_setup
   end
+  
+  it "should not run migrations if it's on deploy.skip_steps" do
+    subject.skip_steps = ['migrate_database']
+    dont_accept_command "rake db:migrate RAILS_ENV=#{subject.environment}"
+    subject.local_setup
+  end
 
   it "should run migration after installing gems" do
     expect_command("rake gems:install RAILS_ENV=#{subject.environment}").ordered
