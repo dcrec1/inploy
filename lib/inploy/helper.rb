@@ -37,7 +37,7 @@ module Inploy
     end
 
     def install_gems
-      rake "gems:install RAILS_ENV=#{environment}"
+      rake "gems:install RAILS_ENV=#{environment}" unless skip_step?('install_gems')
     end
   end
 end
