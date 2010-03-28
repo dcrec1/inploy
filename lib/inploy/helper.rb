@@ -1,7 +1,7 @@
 module Inploy
   module Helper
     def skip_step?(step)
-      skip_steps and skip_steps.include?(step)
+      skip_steps_array and skip_steps_array.include?(step)
     end
     
     def clear_cache

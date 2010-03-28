@@ -3,7 +3,7 @@ module Inploy
     include Helper
     include DSL
     attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment,
-                  :port, :skip_steps, :cache_dirs
+                  :port, :skip_steps, :skip_steps_array, :cache_dirs
 
     def initialize
       self.server = :passenger
@@ -25,13 +25,21 @@ module Inploy
       @sudo = value.equal?(true) ? 'sudo ' : ''
     end
     
+    def skip_steps=(steps)
+      @skip_steps = steps
+      self.skip_steps_array = steps.split(',').map { |o| o.gsub(/ /,'') } unless steps.nil?
+    end
+
     def remote_setup
       if branch.eql? "master"
         checkout = ""
       else
         checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
       end
-      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application} #{checkout} && #{@sudo}rake inploy:local:setup environment=#{environment}"
+
+      skip_steps_cmd = " skip_steps=#{skip_steps}" unless skip_steps.nil?
+      
+      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application} #{checkout} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
     end
 
     def local_setup
@@ -43,7 +51,8 @@ module Inploy
     end
 
     def remote_update
-      remote_run "cd #{application_path} && #{@sudo}rake inploy:local:update environment=#{environment}"
+      skip_steps_cmd = " skip_steps=#{skip_steps}" unless skip_steps.nil?
+      remote_run "cd #{application_path} && #{@sudo}rake inploy:local:update environment=#{environment}#{skip_steps_cmd}"
     end
 
     def local_update

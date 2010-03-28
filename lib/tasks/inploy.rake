@@ -12,6 +12,7 @@ end
 
 
 deploy.environment = ENV['environment'] || deploy.environment
+deploy.skip_steps = ENV['skip_steps'] || deploy.skip_steps
 
 namespace :inploy do
   namespace :local do
@@ -33,7 +34,7 @@ namespace :inploy do
     end
 
     desc "Remote Update"
-    task :update do
+    task :update do 
       deploy.remote_update
     end
   end

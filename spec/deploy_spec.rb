@@ -2,13 +2,15 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Inploy::Deploy do
 
-  def expect_setup_with(branch, environment = 'production')
+  def expect_setup_with(branch, environment = 'production', skip_steps = nil)
     if branch.eql? 'master'
       checkout = ""
     else
       checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
     end
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} #{checkout} && rake inploy:local:setup environment=#{environment}'"
+    skip_steps_cmd = " skip_steps=#{skip_steps}" unless skip_steps.nil?
+
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} #{checkout} && rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}'"
   end
 
   def setup(subject)
@@ -77,6 +79,12 @@ describe Inploy::Deploy do
         dont_accept_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && .init.sh'"
         subject.remote_setup
       end
+
+      it "should pass skip_steps params to local setup" do
+        subject.skip_steps = 'migrate_dataabse,gems_install' 
+        expect_setup_with @branch, @environment, subject.skip_steps
+        subject.remote_setup
+      end
     end
 
     context "on local setup" do
@@ -97,6 +105,12 @@ describe Inploy::Deploy do
         3.times.each do |i|
           expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{@environment}'"
         end
+        subject.remote_update
+      end
+
+      it "should pass skip_steps params to local update" do
+        subject.skip_steps = 'migrate_dataabse,gems_install'
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{@environment} skip_steps=#{subject.skip_steps}'"
         subject.remote_update
       end
     end

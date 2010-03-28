@@ -10,7 +10,7 @@ shared_examples_for "local setup" do
   end
   
   it "should not run migrations if it's on skip_steps" do
-    subject.skip_steps = ['migrate_database']
+    subject.skip_steps = 'migrate_database'
     dont_accept_command "rake db:migrate RAILS_ENV=#{subject.environment}"
     subject.local_setup
   end
@@ -67,7 +67,7 @@ shared_examples_for "local setup" do
   
   it "should not install gems if it's on skip_steps" do
     subject.environment = "en3"
-    subject.skip_steps = ['install_gems']
+    subject.skip_steps = 'install_gems'
     dont_accept_command "rake gems:install RAILS_ENV=#{subject.environment}"
     subject.local_setup
   end
@@ -185,7 +185,7 @@ shared_examples_for "local update" do
   end
   
   it "should not clean the cache if it's on skip_steps" do
-    subject.skip_steps = ['clear_cache']
+    subject.skip_steps = 'clear_cache'
     subject.cache_dirs.each do |dir|
       dont_accept_command "rm -R -f #{dir}"
     end
