@@ -16,4 +16,4 @@ deploy.cache_dirs = ['public/cache', 'tmp/cache'] # default ['public/cache']
 # This feature is also available on command line
 # eg. rake inploy:update:remote skip_steps=install_gems
 
-deploy.skip_steps = 'install_gems,clear_cache'    # default empty, params are comma separated
+deploy.skip_steps = ['install_gems' , 'clear_cache']    # default none
