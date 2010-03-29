@@ -10,7 +10,7 @@ Actually, Inploy has four rake tasks:
 - clones a git repository
 - runs inploy:local:setup
 
-* inploy:remote:update
+* inploy:remote:update (_alias: inploy:up_)
 
 - connects to a list of servers
 - runs inploy:local:update

@@ -12,11 +12,7 @@ end
 
 
 deploy.environment = ENV['environment'] || deploy.environment
-deploy.skip_steps = if !ENV['skip_steps'].nil?
-  ENV['skip_steps'].split(',')
-else
-  deploy.skip_steps
-end
+deploy.skip_steps = ENV['skip_steps'].split(',') unless ENV['skip_steps'].nil?
 
 namespace :inploy do
   namespace :local do
@@ -41,5 +37,10 @@ namespace :inploy do
     task :update do 
       deploy.remote_update
     end
+  end
+
+  desc "Alias to Remote Update"
+  task :up => "remote:update" do
+    # It's just an alias to Remote Update
   end
 end
