@@ -67,7 +67,7 @@ module Inploy
       run "rm -R -f public/assets" if jammit_is_installed?
       rake_if_included "more:parse"
       rake_if_included "asset:packager:build_all"
-      rake_if_included "hoptoad:deploy TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
+      rake_if_included "hoptoad:deploy RAILS_ENV=#{environment} TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
       ruby_if_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd", :params => "deployments"
       instance_eval(&@before_restarting_server) unless @before_restarting_server.nil?
       restart_server

@@ -252,7 +252,7 @@ shared_examples_for "local update" do
 
   it "should notify hoptoad" do
     subject.environment = "env8"
-    expect_command("rake hoptoad:deploy TO=#{subject.environment} REPO=#{subject.repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}").ordered
+    expect_command("rake hoptoad:deploy RAILS_ENV=#{subject.environment} TO=#{subject.environment} REPO=#{subject.repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}").ordered
     subject.local_update
   end
 
