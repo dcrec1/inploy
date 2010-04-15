@@ -28,6 +28,11 @@ namespace :inploy do
   end
 
   namespace :remote do
+    desc "Remote install"
+    task :install do
+      deploy.remote_install :from => ENV['from']
+    end
+
     desc "Remote Setup"
     task :setup do
       deploy.remote_setup

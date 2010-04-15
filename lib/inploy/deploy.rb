@@ -14,17 +14,21 @@ module Inploy
     end
 
     def template=(template)
-      load_module("templates/#{template}")
+      load_module "templates/#{template}"
     end
 
     def server=(server)
-      load_module("servers/#{server}")
+      load_module "servers/#{server}"
     end
 
     def sudo=(value)
       @sudo = value.equal?(true) ? 'sudo ' : ''
     end
     
+    def remote_install(opts)
+      remote_run "bash < <(wget -O- #{opts[:from]})"
+    end
+
     def remote_setup
       if branch.eql? "master"
         checkout = ""

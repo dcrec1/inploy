@@ -122,5 +122,13 @@ describe Inploy::Deploy do
 
       it_should_behave_like "local update"
     end
+
+    context "on remote install" do
+      it "should execute the code from the url specified by the parameter 'from'" do
+        url = 'http://fake.com/script'
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'bash < <(wget -O- #{url})'"
+        subject.remote_install :from => url
+      end
+    end
   end
 end
