@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'inploy/cgi'
+require 'inploy'
+require 'inploy/cli'
 
 Inploy::CLI.execute ARGV

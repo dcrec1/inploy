@@ -26,6 +26,7 @@ module Inploy
 
     def configure
       if file = configuration_file
+        deploy = self
         eval file.read
         local_variables.each do |variable| 
           send "#{variable}=", eval(variable) rescue nil 

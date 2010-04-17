@@ -159,5 +159,11 @@ describe Inploy::Deploy do
       file_doesnt_exists "deploy.rb"
       lambda { subject.configure }.should_not raise_error
     end
+
+    it "should accept the old school config file 'deploy.lorem = ipsum'" do
+      file_exists "config/deploy.rb", :content => "deploy.application = 'my_application';deploy.user = 'my_user'" 
+      subject.configure
+      subject.user.should eql("my_user")
+    end
   end
 end
