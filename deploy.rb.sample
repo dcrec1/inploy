@@ -1,19 +1,19 @@
-deploy.application = "signal"
-deploy.repository = 'git://github.com/dcrec1/signal.git'
-deploy.hosts = ['hooters', 'geni']
-deploy.path = '/opt'
+application = "signal"
+repository = 'git://github.com/dcrec1/signal.git'
+hosts = ['hooters', 'geni']
+path = '/opt'
 
 # OPTIONALS
 
-deploy.user = 'dcrec1'                            # default deploy
-deploy.ssh_opts = '-A'                            # default empty
-deploy.branch = 'production'                      # default master
-deploy.sudo = true                                # default false
-deploy.cache_dirs = ['public/cache', 'tmp/cache'] # default ['public/cache']
+user = 'dcrec1'                            # default deploy
+ssh_opts = '-A'                            # default empty
+branch = 'production'                      # default master
+sudo = true                                # default false
+cache_dirs = ['public/cache', 'tmp/cache'] # default ['public/cache']
 
 # Use this if you want to skip some steps on update and setup
 # Available options: install_gems, migrate_database, clear_cache
 # This feature is also available on command line
 # eg. rake inploy:update:remote skip_steps=install_gems
 
-deploy.skip_steps = ['install_gems' , 'clear_cache']    # default none
+skip_steps = ['install_gems' , 'clear_cache']    # default none
