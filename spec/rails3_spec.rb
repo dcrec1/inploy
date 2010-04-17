@@ -14,6 +14,7 @@ describe Inploy::Deploy do
   context "with template rails3" do
     before :each do
       subject.template = :rails3
+      subject.path = @path = "/fakie/path"
       subject.user = @user = 'batman'
       subject.hosts = [@host = 'gothic']
       subject.application = @application = "robin"

@@ -72,10 +72,10 @@ Create a config/deploy.rb file and configure it something like this:
 application = "signal"
 repository = 'git://github.com/dcrec1/signal.git'
 hosts = ['hooters', 'geni']
-path = '/opt'
 
 # OPTIONALS
 
+path = '/opt'                              # default /var/local/apps
 user = 'dcrec1'                            # default deploy
 ssh_opts = '-A'                            # default empty
 branch = 'production'                      # default master
@@ -94,7 +94,7 @@ h2. LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009
+Copyright (c) 2010
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

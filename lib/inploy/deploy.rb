@@ -12,6 +12,7 @@ module Inploy
       @branch = 'master'
       @environment = 'production'
       @user = "deploy"
+      @path = "/var/local/apps"
     end
 
     def template=(template)

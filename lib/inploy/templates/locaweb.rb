@@ -1,6 +1,10 @@
 module Inploy
   module Templates
     module Locaweb
+      def self.extended(base)
+        base.path = nil
+      end
+
       def remote_setup
         run "rm -Rf #{tmp_path} && git clone . #{tmp_path} && tar czf - #{tmp_path} | ssh #{user}@#{host} 'tar xzfv - -C ~/ && mv ~#{tmp_path} #{path}/ && cd #{application_path} && rake inploy:local:setup'"
       end

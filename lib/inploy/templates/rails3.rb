@@ -1,7 +1,6 @@
 module Inploy
   module Templates
     module Rails3
-
       def remote_setup
         if branch.eql? "master"
           checkout = ""

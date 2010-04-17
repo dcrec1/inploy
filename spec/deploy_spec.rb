@@ -69,6 +69,10 @@ describe Inploy::Deploy do
     subject.user.should eql("deploy")
   end
 
+  it "should use /var/local/apps as the default path" do
+    subject.path.should eql("/var/local/apps")
+  end
+
   context "configured" do
     before :each do
       setup subject
