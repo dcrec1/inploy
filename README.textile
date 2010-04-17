@@ -1,14 +1,14 @@
 h2. ABOUT:
 
-Inploy was a born as an option to setup and deploy Rails applications in an easier and smarter way. 
+Inploy was born as an option to setup and deploy Rails applications in an easier and smarter way. 
 
-It executes common tasks like migrate the database, install gems, package the assets, clean the cache, notified Hoptoad, restart the server, etc. automatically. This means you will not have a big deploy script calld 'recipe' like with other tools, only a simple deploy script with a few lines.
+It executes automatically common tasks like migrate the database, install gems, package the assets, clean the cache, notify Hoptoad, restart the server, etc. This means you will not have a big deploy script calld 'recipe' like with other tools, only a simple deploy script with a few lines.
 
 It uses Git to version the deploys and to pull only the modifications in each one. This means you will not have a lot of folders in the server (only one) with duplicated code and that ech deploy will be very fast.
 
 It is very flexible, meaning you can create templates specifing how specific tasks must behave. As today, there are templates for Locaweb and for Rails 3.
 
-It works by default with Passenger, but you can specified another servers like Mongrel, Thin and Unicorn.
+It works by default with Passenger, but you can specify another servers like Mongrel, Thin and Unicorn.
 
 You can execute Inploy from a remote machine or from the server machine, meaning anynone can go to the deployment path and with only one command update the code and execute all the tasks.
 
@@ -95,8 +95,7 @@ h2. CONFIGURATION
 
 Create a config/deploy.rb file and configure it something like this:
 
-<pre><code>
-application = "signal"
+<pre><code>application = "signal"
 repository = 'git://github.com/dcrec1/signal.git'
 hosts = ['hooters', 'geni']
 
