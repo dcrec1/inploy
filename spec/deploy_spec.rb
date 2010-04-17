@@ -137,6 +137,13 @@ describe Inploy::Deploy do
         subject.configure
         subject.user.should eql("my_user")
       end
+
+      it "should evaluate deploy.rb case config/deploy.rb doesnt exists" do
+        file_doesnt_exists "config/deploy.rb"
+        file_exists "deploy.rb", :content => "application = 'my_application';user = 'my_user'" 
+        subject.configure
+        subject.user.should eql("my_user")
+      end
     end
   end
 end
