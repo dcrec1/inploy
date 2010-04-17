@@ -1,11 +1,11 @@
 deploy.application = "signal"
 deploy.repository = 'git://github.com/dcrec1/signal.git'
-deploy.user = 'dcrec1'
 deploy.hosts = ['hooters', 'geni']
 deploy.path = '/opt'
 
 # OPTIONALS
 
+deploy.user = 'dcrec1'                            # default deploy
 deploy.ssh_opts = '-A'                            # default empty
 deploy.branch = 'production'                      # default master
 deploy.sudo = true                                # default false

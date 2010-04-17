@@ -11,6 +11,7 @@ module Inploy
       @cache_dirs = %w(public/cache)
       @branch = 'master'
       @environment = 'production'
+      @user = "deploy"
     end
 
     def template=(template)

@@ -64,6 +64,10 @@ describe Inploy::Deploy do
   it "should use production as the default environment" do
     subject.environment.should eql("production")
   end
+  
+  it "should use deploy as the default user" do
+    subject.user.should eql("deploy")
+  end
 
   context "configured" do
     before :each do
