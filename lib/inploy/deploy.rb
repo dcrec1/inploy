@@ -13,6 +13,7 @@ module Inploy
       @environment = 'production'
       @user = "deploy"
       @path = "/var/local/apps"
+      configure
     end
 
     def template=(template)

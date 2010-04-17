@@ -4,7 +4,6 @@ require 'rubygems'
 require 'inploy'
 
 deploy = Inploy::Deploy.new
-deploy.configure
 
 case ARGV.size
 when 0

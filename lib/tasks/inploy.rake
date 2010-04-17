@@ -2,7 +2,6 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..'))
 require 'inploy'
 
 deploy = Inploy::Deploy.new
-deploy.configure
 
 deploy.environment = ENV['environment'] || deploy.environment
 deploy.skip_steps = ENV['skip_steps'].split(',') unless ENV['skip_steps'].nil?
