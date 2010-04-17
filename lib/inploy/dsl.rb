@@ -29,13 +29,17 @@ module Inploy
       run "ruby #{file} #{opts[:params]}" if File.exists?(file)
     end
 
+    def sudo_if_should
+      @sudo ? 'sudo ' : ''
+    end
+
     def run(command, disable_sudo = false)
       log command
 
       if disable_sudo
         Kernel.system command
       else
-        Kernel.system "#{@sudo}#{command}"
+        Kernel.system "#{sudo_if_should}#{command}"
       end
     end
 

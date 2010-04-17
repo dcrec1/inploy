@@ -2,15 +2,15 @@ module Inploy
   class Deploy
     include Helper
     include DSL
+
     attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment,
-                  :port, :skip_steps, :cache_dirs
+                  :port, :skip_steps, :cache_dirs, :sudo
 
     def initialize
       self.server = :passenger
-      self.cache_dirs ||= ['public/cache']
+      @cache_dirs = %w(public/cache)
       @branch = 'master'
       @environment = 'production'
-      @sudo = ''
     end
 
     def template=(template)
@@ -21,8 +21,11 @@ module Inploy
       load_module "servers/#{server}"
     end
 
-    def sudo=(value)
-      @sudo = value.equal?(true) ? 'sudo ' : ''
+    def configure
+      eval File.open("config/deploy.rb").read
+      local_variables.each do |variable| 
+        send "#{variable}=", eval(variable) rescue nil 
+      end
     end
     
     def remote_install(opts)

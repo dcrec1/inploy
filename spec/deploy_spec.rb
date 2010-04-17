@@ -27,12 +27,12 @@ describe Inploy::Deploy do
       mute subject
     end
 
-    it "should include sudo when true" do 
+    it "should not include sudo when not true" do 
       expect_command "ls"
       subject.run "ls"
     end
 
-    it "should not include sudo when false" do
+    it "should include sudo when true" do
       subject.sudo = true
       expect_command "sudo ls"
       subject.run "ls"
@@ -128,6 +128,14 @@ describe Inploy::Deploy do
         url = 'http://fake.com/script'
         expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'bash < <(wget -O- #{url})'"
         subject.remote_install :from => url
+      end
+    end
+
+    context "on configure" do
+      it "should evaluate config/deploy.rb by default" do
+        file_exists "config/deploy.rb", :content => "application = 'my_application';user = 'my_user'" 
+        subject.configure
+        subject.user.should eql("my_user")
       end
     end
   end
