@@ -1,56 +1,18 @@
 h2. ABOUT:
 
-Inploy is a Rails plugin to deploy applications in a easier way. You can use Inploy from a remote machine or from the local machine, too. It's integrated with Git, Rake and intended to do most of the common work, so you don't need to.
+Inploy was a born as an option to setup and deploy Rails applications in an easier and smarter way. 
 
-Actually, Inploy has four rake tasks:
+It executes common tasks like migrate the database, install gems, package the assets, clean the cache, notified Hoptoad, restart the server, etc. automatically. This means you will not have a big deploy script calld 'recipe' like with other tools, only a simple deploy script with a few lines.
 
-* inploy:remote:setup
+It uses Git to version the deploys and to pull only the modifications in each one. This means you will not have a lot of folders in the server (only one) with duplicated code and that ech deploy will be very fast.
 
-- connects to a list of servers
-- clones a git repository
-- runs inploy:local:setup
+It is very flexible, meaning you can create templates specifing how specific tasks must behave. As today, there are templates for Locaweb and for Rails 3.
 
-* inploy:remote:update (_alias: inploy:up_)
+It works by default with Passenger, but you can specified another servers like Mongrel, Thin and Unicorn.
 
-- connects to a list of servers
-- runs inploy:local:update
+You can execute Inploy from a remote machine or from the server machine, meaning anynone can go to the deployment path and with only one command update the code and execute all the tasks.
 
-* inploy:local:setup
-
-- copies config/*.sample files to config/*
-- creates directory tmp/pids
-- executes init.sh file case it exists
-- installs gems
-- migrates the database for the production environment
-- cleans the cache in public/cache
-- cleans cached assets in public/assets if jammit is installed 
-- parses less files if more:parse tasks exists
-- package the assets if asset:packager:build_all task exists
-- touch tmp/restart.txt
-
-* inploy:local:update
-
-- pulls the repository
-- installs gems
-- migrates the database for the production environment
-- cleans the cache directories (default public/cache)
-- parses less files if more:parse tasks exists
-- package the assets if asset:packager:build_all task exists
-- touch tmp/restart.txt
-
-h2. SKIP STEPS
-
-You can skip some steps when running a task, just add "skip_steps" into your rake command line or add "skip_steps" to your deploy.rb to always skip those steps (see "CONFIGURATION" for details).
-
-Currently the steps available to skip are:
-
-- install_gems: skip rake gems:install
-- migrate_database: skip rake db:migrate
-- clear_cache: skip removing cache directories
-
-* Usage (params are comma separated):
-
-<pre><code>rake inploy:remote:update skip_steps=install_gems,migrate_database</code></pre>
+As Inploy is very flexible, now you can also use it to execute an installation shell script in a server from an URL.
 
 h2. INSTALLATION:
 
@@ -64,6 +26,71 @@ As a gem:
 
 Please remember that when used as a gem, Inploy should be available in the deploy servers.
 
+h2. USAGE
+
+When using Inploy with Rake, there are five tasks:
+
+* inploy:remote:install from=url
+
+- connects to a list of servers and executes the script from url
+
+* inploy:remote:setup
+
+- connects to a list of servers
+- clones a git repository
+- executes rake inploy:local:setup
+
+* inploy:remote:update or inploy:up
+
+- connects to a list of servers
+- executes inploy:local:update
+
+* inploy:remote:install
+
+- connects to a list of servers
+- reads the content of url specified by from=url without downloading the file and executes it
+
+* inploy:local:setup
+
+- creates directories db and tmp/pids
+- copies config/*.sample and config/*.example files to config/*
+- creates the database
+- executes init.sh file case it exists
+- inits and updates the git submodules
+- installs gems
+- migrates the database
+- updates the crontab from Whenever if being used
+- cleans the cache, default tmp/cache
+- cleans cached assets in public/assets if Jammit is installed 
+- parses less files if more:parse tasks exists
+- package the assets if asset:packager:build_all task exists
+- notifies Hoptoad about the deploy, specifing the revision, repository and environment
+- notifies NewRelic RPM about the deploy
+- restarts the server
+
+* inploy:local:update
+
+- pulls the repository
+- inits and updates the git submodules
+- copies config/*.sample and config/*.example files to config/*
+- installs gems
+- migrates the database
+- updates the crontab from Whenever if being used
+- cleans the cache, default tmp/cache
+- cleans cached assets in public/assets if Jammit is installed 
+- parses less files if more:parse tasks exists
+- package the assets if asset:packager:build_all task exists
+- notifies Hoptoad about the deploy, specifing the revision, repository and environment
+- notifies NewRelic RPM about the deploy
+- restarts the server
+
+If you don't want to execute Rake, there are a few shortcuts:
+
+inploy = inploy update = rake inploy:remote:update
+inploy install from=url = rake inploy:remote:install from=url
+
+When using inploy as a command, it looks first for config/deploy.rb and then for deploy.rb .
+
 h2. CONFIGURATION
 
 Create a config/deploy.rb file and configure it something like this:
@@ -75,20 +102,56 @@ hosts = ['hooters', 'geni']
 
 # OPTIONALS
 
-path = '/opt'                              # default /var/local/apps
-user = 'dcrec1'                            # default deploy
-ssh_opts = '-A'                            # default empty
-branch = 'production'                      # default master
-sudo = true                                # default false
-cache_dirs = ['public/cache', 'tmp/cache'] # default ['public/cache']
+before_restarting_server do
+  rake "important:task"
+  run "important_command"
+end
 
-# Use this if you want to skip some steps on update and setup
-# Available options: install_gems, migrate_database, clear_cache
-# This feature is also available on command line
-# eg. rake inploy:update:remote skip_steps=install_gems
-
-skip_steps = ['install_gems', 'clear_cache'] #default none
+path = '/opt'                                # default /var/local/apps
+user = 'dcrec1'                              # default deploy
+ssh_opts = '-A'                              # default empty
+branch = 'production'                        # default master
+sudo = true                                  # default false
+cache_dirs = ['public/cache', 'tmp/cache']   # default ['public/cache']
+skip_steps = ['install_gems', 'clear_cache'] # default []
 </code></pre>
+
+h2. SKIP STEPS
+
+You can skip some steps when running a Rake task, just add "skip_steps" into your rake command line or add "skip_steps" to your deploy.rb to always skip those steps.
+
+Currently the steps available to skip are:
+
+- install_gems: skip rake gems:install
+- migrate_database: skip rake db:migrate
+- clear_cache: skip removing cache directories
+
+* Usage (params are comma separated):
+
+<pre><code>rake inploy:remote:update skip_steps=install_gems,migrate_database</code></pre>
+
+h2. HOOKS
+
+Currently the only hook is called before restarting the server. If you need another hook, please fork the project and implemented it or created an issue, it's very easy.
+
+h2. CONTRIBUTORS:
+
+Inploy is brought to you by:
+
+ * Diego Carrion
+ * Douglas Campos
+ * Kristopher Murata
+ * Vitor Pellegrino
+ * Josh Owens
+ * Felipe
+ * trooster
+ * Josef Pospíšil
+ * BrunoGrasselli
+ * Andy Shen
+ * alekenji
+ * Erik Dahlstrand
+ * Carlos Brando
+
 
 h2. LICENSE:
 
