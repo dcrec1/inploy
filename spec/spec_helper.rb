@@ -32,7 +32,7 @@ def dont_accept_command(command)
 end
 
 def file_doesnt_exists(file)
-  File.delete file
+  File.delete file rescue nil
 end
 
 def file_exists(file, opts = {})

@@ -1,5 +1,9 @@
 module Inploy
   module Helper
+    def configuration_file
+      File.open("config/deploy.rb") rescue File.open("deploy.rb") rescue nil
+    end
+
     def skip_step?(step)
       skip_steps and skip_steps.include?(step)
     end

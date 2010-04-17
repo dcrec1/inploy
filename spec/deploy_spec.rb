@@ -130,20 +130,26 @@ describe Inploy::Deploy do
         subject.remote_install :from => url
       end
     end
+  end
 
-    context "on configure" do
-      it "should evaluate config/deploy.rb by default" do
-        file_exists "config/deploy.rb", :content => "application = 'my_application';user = 'my_user'" 
-        subject.configure
-        subject.user.should eql("my_user")
-      end
+  context "on configure" do
+    it "should evaluate config/deploy.rb by default" do
+      file_exists "config/deploy.rb", :content => "application = 'my_application';user = 'my_user'" 
+      subject.configure
+      subject.user.should eql("my_user")
+    end
 
-      it "should evaluate deploy.rb case config/deploy.rb doesnt exists" do
-        file_doesnt_exists "config/deploy.rb"
-        file_exists "deploy.rb", :content => "application = 'my_application';user = 'my_user'" 
-        subject.configure
-        subject.user.should eql("my_user")
-      end
+    it "should evaluate deploy.rb case config/deploy.rb doesnt exists" do
+      file_doesnt_exists "config/deploy.rb"
+      file_exists "deploy.rb", :content => "application = 'my_application';user = 'my_user'" 
+      subject.configure
+      subject.user.should eql("my_user")
+    end
+
+    it "snould not raise exception case config/deploy.rb neither deploy.rb doesnt exist" do
+      file_doesnt_exists "config/deploy.rb"
+      file_doesnt_exists "deploy.rb"
+      lambda { subject.configure }.should_not raise_error
     end
   end
 end

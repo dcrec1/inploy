@@ -22,10 +22,11 @@ module Inploy
     end
 
     def configure
-      file = File.open("config/deploy.rb") rescue File.open("deploy.rb")
-      eval file.read
-      local_variables.each do |variable| 
-        send "#{variable}=", eval(variable) rescue nil 
+      if file = configuration_file
+        eval file.read
+        local_variables.each do |variable| 
+          send "#{variable}=", eval(variable) rescue nil 
+        end
       end
     end
     
