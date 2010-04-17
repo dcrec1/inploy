@@ -3,20 +3,8 @@
 require 'rubygems'
 require 'inploy'
 
-def deploy
-  @deploy ||= Inploy::Deploy.new
-end
-
-def req(file)
-  begin
-    require file
-    true
-  rescue Exception
-    false
-  end
-end
-
-req "deploy.rb" unless req("config/deploy.rb")
+deploy = Inploy::Deploy.new
+deploy.configure
 
 if ARGV.size > 1
   deploy.remote_install :from => ARGV[1].sub('from=', '')
