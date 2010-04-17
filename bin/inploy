@@ -1,15 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'inploy'
+require 'inploy/cgi'
 
-deploy = Inploy::Deploy.new
-
-case ARGV.size
-when 0
-  deploy.remote_update
-when 1
-  deploy.send "remote_#{ARGV[0]}"
-when 2
-  deploy.remote_install :from => ARGV[1].sub('from=', '')
-end
+Inploy::CLI.execute ARGV
