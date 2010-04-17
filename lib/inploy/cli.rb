@@ -1,5 +1,5 @@
-require 'thor'
 require 'rubygems/config_file'
+require 'thor'
 
 # Work around a RubyGems bug
 Gem.configuration
