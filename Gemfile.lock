@@ -1,0 +1,13 @@
+--- 
+dependencies: 
+  thor: 
+    group: 
+    - :default
+    version: ">= 0"
+specs: 
+- thor: 
+    version: 0.13.4
+hash: f71197d0b1b7f081287b5ffc6901bbaba8a0b9fe
+sources: 
+- Rubygems: 
+    uri: http://rubygems.org

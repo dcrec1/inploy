@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+require 'inploy'
+require 'inploy/cli'
+
+Inploy::CLI.start
