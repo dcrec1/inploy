@@ -53,3 +53,5 @@ Spec::Rake::SpecTask.new('rcov') do |t|
   t.rcov = true
   t.rcov_opts = ['--no-html', '-T', '--exclude', 'spec']
 end
+
+task :default => :spec
