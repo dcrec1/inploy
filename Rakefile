@@ -16,8 +16,8 @@ spec = Gem::Specification.new do |s|
   s.version = GEM_VERSION
   s.platform = Gem::Platform::RUBY
   s.summary = SUMMARY
-  s.require_paths = ['lib']
-  s.files = FileList['lib/**/*', '[A-Z]*'].to_a
+  s.files = FileList['lib/**/*','bin/*', '[A-Z]*'].to_a
+  s.executables << "inploy"
 
   s.author = AUTHOR
   s.email = EMAIL
