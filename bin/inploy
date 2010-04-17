@@ -6,8 +6,11 @@ require 'inploy'
 deploy = Inploy::Deploy.new
 deploy.configure
 
-if ARGV.size > 1
-  deploy.remote_install :from => ARGV[1].sub('from=', '')
-else
+case ARGV.size
+when 0
+  deploy.remote_update
+when 1
   deploy.send "remote_#{ARGV[0]}"
+when 2
+  deploy.remote_install :from => ARGV[1].sub('from=', '')
 end
