@@ -288,4 +288,11 @@ shared_examples_for "local update" do
     dont_accept_command "whenever --update-crontab #{subject.application} --set 'environment=#{subject.environment}'"
     subject.local_update
   end
+  
+  it "should not update crontab with whenever if update_crontab is in the skip steps" do
+    file_exists "config/schedule.rb"
+    subject.skip_steps = %w(update_crontab)
+    dont_accept_command "whenever --update-crontab #{subject.application} --set 'environment=#{subject.environment}'"
+    subject.local_update
+  end
 end

@@ -55,5 +55,9 @@ module Inploy
     def install_gems
       rake "gems:install RAILS_ENV=#{environment}" unless skip_step?('install_gems')
     end
+
+    def update_crontab
+      run "whenever --update-crontab #{application} --set 'environment=#{environment}'" if File.exists?("config/schedule.rb") unless skip_step?('update_crontab')
+    end
   end
 end
