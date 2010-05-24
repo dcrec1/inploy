@@ -86,8 +86,9 @@ When using Inploy with Rake, there are five tasks:
 
 If you don't want to execute Rake, there are a few shortcuts:
 
-inploy = inploy update = rake inploy:remote:update
-inploy install from=url = rake inploy:remote:install from=url
+inploy => inploy update => rake inploy:remote:update
+inploy setup => rake inploy:remote:setup
+inploy install from=url => rake inploy:remote:install from=url
 
 When using inploy as a command, it looks first for config/deploy.rb and then for deploy.rb .
 
