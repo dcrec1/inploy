@@ -11,7 +11,7 @@ module Inploy
     def skip_steps_cmd
       " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
     end
-    
+
     def clear_cache
       unless skip_step?('clear_cache')
         cache_dirs.each do |dir|
@@ -37,7 +37,7 @@ module Inploy
     end
 
     def copy_sample_files
-      ["example", "sample"].each do |extension| 
+      ["example", "sample"].each do |extension|
         Dir.glob("config/*.#{extension}").each do |file|
           secure_copy file, file.gsub(".#{extension}", '')
         end

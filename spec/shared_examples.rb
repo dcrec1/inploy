@@ -8,7 +8,7 @@ shared_examples_for "local setup" do
     expect_command "rake db:migrate RAILS_ENV=#{subject.environment}"
     subject.local_setup
   end
-  
+
   it "should not run migrations if it's on skip_steps" do
     subject.skip_steps = ['migrate_database']
     dont_accept_command "rake db:migrate RAILS_ENV=#{subject.environment}"
@@ -64,7 +64,7 @@ shared_examples_for "local setup" do
     expect_command "rake gems:install RAILS_ENV=#{subject.environment}"
     subject.local_setup
   end
-  
+
   it "should not install gems if it's on skip_steps" do
     subject.environment = "en3"
     subject.skip_steps = ['install_gems']
@@ -187,7 +187,7 @@ shared_examples_for "local update" do
     end
     subject.local_update
   end
-  
+
   it "should not clean the cache if it's on skip_steps" do
     subject.skip_steps = ['clear_cache']
     subject.cache_dirs.each do |dir|
@@ -288,7 +288,7 @@ shared_examples_for "local update" do
     dont_accept_command "whenever --update-crontab #{subject.application} --set 'environment=#{subject.environment}'"
     subject.local_update
   end
-  
+
   it "should not update crontab with whenever if update_crontab is in the skip steps" do
     file_exists "config/schedule.rb"
     subject.skip_steps = %w(update_crontab)

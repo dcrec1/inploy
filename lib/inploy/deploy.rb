@@ -28,12 +28,12 @@ module Inploy
       if file = configuration_file
         deploy = self
         eval file.read
-        local_variables.each do |variable| 
-          send "#{variable}=", eval(variable) rescue nil 
+        local_variables.each do |variable|
+          send "#{variable}=", eval(variable) rescue nil
         end
       end
     end
-    
+
     def remote_install(opts)
       remote_run "bash < <(wget -O- #{opts[:from]})"
     end

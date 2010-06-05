@@ -31,7 +31,7 @@ namespace :inploy do
     end
 
     desc "Remote Update"
-    task :update do 
+    task :update do
       deploy.remote_update
     end
   end

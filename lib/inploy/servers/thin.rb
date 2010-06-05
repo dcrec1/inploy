@@ -5,7 +5,7 @@ module Inploy
         run "thin --pid tmp/pids/thin.pid stop"
         run "thin --rackup config.ru --daemonize\
         --log log/thin.log --pid tmp/pids/thin.pid --environment production\
-        --port 4500 start" 
+        --port 4500 start"
       end
     end
   end

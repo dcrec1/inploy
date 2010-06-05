@@ -25,6 +25,6 @@ describe Inploy::CLI do
       @deploy.should_receive(:remote_install).with(:from => 'url')
       subject.class.execute %w(install from=url)
     end
-      
+
   end
 end

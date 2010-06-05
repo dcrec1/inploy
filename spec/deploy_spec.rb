@@ -27,7 +27,7 @@ describe Inploy::Deploy do
       mute subject
     end
 
-    it "should not include sudo when not true" do 
+    it "should not include sudo when not true" do
       expect_command "ls"
       subject.run "ls"
     end
@@ -64,7 +64,7 @@ describe Inploy::Deploy do
   it "should use production as the default environment" do
     subject.environment.should eql("production")
   end
-  
+
   it "should use deploy as the default user" do
     subject.user.should eql("deploy")
   end
@@ -76,9 +76,9 @@ describe Inploy::Deploy do
   context "configured" do
     before :each do
       setup subject
-			subject.ssh_opts = @ssh_opts = "-A"
-			subject.branch = @branch = "onions"
-			subject.environment = @environment = "staging"
+      subject.ssh_opts = @ssh_opts = "-A"
+      subject.branch = @branch = "onions"
+      subject.environment = @environment = "staging"
     end
 
     context "on remote setup" do
@@ -93,7 +93,7 @@ describe Inploy::Deploy do
       end
 
       it "should pass skip_steps params to local setup" do
-        subject.skip_steps = %w(migrate_database gems_install) 
+        subject.skip_steps = %w(migrate_database gems_install)
         expect_setup_with @branch, @environment, subject.skip_steps
         subject.remote_setup
       end
@@ -142,14 +142,14 @@ describe Inploy::Deploy do
 
   context "on configure" do
     it "should evaluate config/deploy.rb by default" do
-      file_exists "config/deploy.rb", :content => "application = 'my_application';user = 'my_user'" 
+      file_exists "config/deploy.rb", :content => "application = 'my_application';user = 'my_user'"
       subject.configure
       subject.user.should eql("my_user")
     end
 
     it "should evaluate deploy.rb case config/deploy.rb doesnt exists" do
       file_doesnt_exists "config/deploy.rb"
-      file_exists "deploy.rb", :content => "application = 'my_application';user = 'my_user'" 
+      file_exists "deploy.rb", :content => "application = 'my_application';user = 'my_user'"
       subject.configure
       subject.user.should eql("my_user")
     end
@@ -161,7 +161,7 @@ describe Inploy::Deploy do
     end
 
     it "should accept the old school config file 'deploy.lorem = ipsum'" do
-      file_exists "config/deploy.rb", :content => "deploy.application = 'my_application';deploy.user = 'my_user'" 
+      file_exists "config/deploy.rb", :content => "deploy.application = 'my_application';deploy.user = 'my_user'"
       subject.configure
       subject.user.should eql("my_user")
     end
