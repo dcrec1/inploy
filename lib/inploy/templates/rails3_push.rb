@@ -39,7 +39,7 @@ module Inploy
 
       def push_code
         hosts.each do |host|
-          run "git push #{user}@#{host}:#{application_path} #{branch}"
+          run "git push -f #{user}@#{host}:#{application_path} #{branch}"
         end
 
         command = []
