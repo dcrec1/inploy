@@ -2,7 +2,7 @@ application = "signal"
 repository = 'git://github.com/dcrec1/signal.git'
 hosts = ['hooters', 'geni']
 
-#this are setted by default
+#this are set by default
 
 #path = '/var/local/apps'
 #user = 'deploy'

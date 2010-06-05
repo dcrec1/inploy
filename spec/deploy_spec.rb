@@ -88,7 +88,7 @@ describe Inploy::Deploy do
       end
 
       it "should not execute init.sh if doesnt exists" do
-        dont_accept_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && .init.sh'"
+        dont_accept_command "ssh #{@user}@#{@host} 'cd #{@path}/#{@application} && ./init.sh'"
         subject.remote_setup
       end
 
@@ -154,7 +154,7 @@ describe Inploy::Deploy do
       subject.user.should eql("my_user")
     end
 
-    it "snould not raise exception case config/deploy.rb neither deploy.rb doesnt exist" do
+    it "should not raise exception case config/deploy.rb neither deploy.rb doesnt exist" do
       file_doesnt_exists "config/deploy.rb"
       file_doesnt_exists "deploy.rb"
       lambda { subject.configure }.should_not raise_error
