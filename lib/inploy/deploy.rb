@@ -60,12 +60,16 @@ module Inploy
     end
 
     def local_update
-      run "git pull origin #{branch}"
+      update_code
       after_update_code
     end
 
     def before_restarting_server(&block)
       @before_restarting_server = block
+    end
+
+    def update_code
+      run "git pull origin #{branch}"
     end
 
     private

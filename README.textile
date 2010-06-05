@@ -1,12 +1,12 @@
 h2. ABOUT:
 
-Inploy was born as an option to setup and deploy Rails applications in an easier and smarter way. 
+Inploy was born as an option to setup and deploy Rails applications in an easier and smarter way.
 
 It executes automatically common tasks like migrate the database, install gems, package the assets, clean the cache, notify Hoptoad, restart the server, etc. This means you will not have a big deploy script calld 'recipe' like with other tools, only a simple deploy script with a few lines.
 
-It uses Git to version the deploys and to pull only the modifications in each one. This means you will not have a lot of folders in the server (only one) with duplicated code and that ech deploy will be very fast.
+It uses Git to version the deploys and to pull or push only the modifications in each one. This means you will not have a lot of folders in the server (only one) with duplicated code and that ech deploy will be very fast.
 
-It is very flexible, meaning you can create templates specifing how specific tasks must behave. As today, there are templates for Locaweb and for Rails 3.
+It is very flexible, meaning you can create templates specifing how specific tasks must behave. As today, there are templates for Locaweb, for Rails 3 using git pull and Rails 3 using git push.
 
 It works by default with Passenger, but you can specify another servers like Mongrel, Thin and Unicorn.
 
@@ -61,7 +61,7 @@ When using Inploy with Rake, there are five tasks:
 - migrates the database
 - updates the crontab from Whenever if being used
 - cleans the cache, default tmp/cache
-- cleans cached assets in public/assets if Jammit is installed 
+- cleans cached assets in public/assets if Jammit is installed
 - parses less files if more:parse tasks exists
 - package the assets if asset:packager:build_all task exists
 - notifies Hoptoad about the deploy, specifing the revision, repository and environment
@@ -77,7 +77,7 @@ When using Inploy with Rake, there are five tasks:
 - migrates the database
 - updates the crontab from Whenever if being used
 - cleans the cache, default tmp/cache
-- cleans cached assets in public/assets if Jammit is installed 
+- cleans cached assets in public/assets if Jammit is installed
 - parses less files if more:parse tasks exists
 - package the assets if asset:packager:build_all task exists
 - notifies Hoptoad about the deploy, specifing the revision, repository and environment
@@ -152,6 +152,7 @@ Inploy is brought to you by:
  * alekenji
  * Erik Dahlstrand
  * Carlos Brando
+ * Thomas Ritz
 
 
 h2. LICENSE:
