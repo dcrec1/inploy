@@ -53,3 +53,9 @@ Spec::Rake::SpecTask.new('rcov') do |t|
   t.rcov = true
   t.rcov_opts = ['--no-html', '-T', '--exclude', 'spec']
 end
+
+desc "Run specs with all the Ruby versions supported"
+task :build do
+  system "rvm 1.8.7 specs"
+  system "rvm 1.9.2 specs"
+end
