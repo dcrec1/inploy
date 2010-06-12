@@ -2,6 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Inploy::Deploy do
 
+  subject { Inploy::Deploy.new }
+
   def expect_setup_with(branch, environment = 'production', skip_steps = nil)
     if branch.eql? 'master'
       checkout = ""

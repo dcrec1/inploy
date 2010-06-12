@@ -2,6 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Inploy::Deploy do
 
+  subject { Inploy::Deploy.new }
+
   context "with template rails3_push" do
     before :each do
       subject.template = :rails3_push

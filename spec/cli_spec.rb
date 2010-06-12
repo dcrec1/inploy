@@ -1,6 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Inploy::CLI do
+
+  subject { Inploy::CLI.new }
+
   context "on execute" do
     before :each do
       Inploy::Deploy.stub!(:new).and_return(@deploy = mock(Object))

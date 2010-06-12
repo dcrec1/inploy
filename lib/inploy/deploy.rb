@@ -25,13 +25,12 @@ module Inploy
     end
 
     def configure
-      if file = configuration_file
-        deploy = self
-        eval file.read
-        local_variables.each do |variable|
-          send "#{variable}=", eval(variable) rescue nil
-        end
-      end
+      configure_from configuration_file if configuration_file
+    end
+
+    def configure_from(file) 
+      deploy = self
+      eval file.read + ';local_variables.each { |variable| deploy.send "#{variable}=", eval(variable.to_s) rescue nil }'
     end
 
     def remote_install(opts)
