@@ -5,7 +5,6 @@ require 'rubygems'
 require 'inploy'
 require 'inploy/cli'
 require 'spec'
-require 'ruby-debug'
 require 'fakefs'
 
 require 'shared_examples'
