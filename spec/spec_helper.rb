@@ -1,6 +1,12 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__)))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
+module Rails
+  module VERSION
+    MAJOR = 2
+  end
+end
+
 require 'rubygems'
 require 'inploy'
 require 'inploy/cli'
