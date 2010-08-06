@@ -26,7 +26,7 @@ def mute(object)
 end
 
 def stub_commands
-  Kernel.stub!(:system)
+  Kernel.stub!(:system).and_return(true)
 end
 
 def expect_command(command)

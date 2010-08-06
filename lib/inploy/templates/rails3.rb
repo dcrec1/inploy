@@ -11,7 +11,13 @@ module Inploy
       end
 
       def install_gems
-        run "bundle install ~/.bundle"
+        run bundle
+      end
+
+      private
+
+      def bundle
+        "bundle install ~/.bundle"
       end
     end
   end

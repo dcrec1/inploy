@@ -76,7 +76,7 @@ module Inploy
     def after_update_code
       run "git submodule update --init"
       copy_sample_files
-      install_gems
+      return unless install_gems
       migrate_database
       update_crontab
       clear_cache
