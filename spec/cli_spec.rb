@@ -29,5 +29,9 @@ describe Inploy::CLI do
       subject.class.execute %w(install from=url)
     end
 
+    it "should execute deploy.remote_rake task when params = ['rake', 'task']" do
+      @deploy.should_receive(:remote_rake).with('db:migrate')
+      subject.class.execute %w(rake db:migrate)
+    end
   end
 end

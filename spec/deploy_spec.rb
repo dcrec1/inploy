@@ -140,6 +140,14 @@ describe Inploy::Deploy do
         subject.remote_install :from => url
       end
     end
+
+    context "on remote rake" do
+      it "should execute the rake task specified as parameter" do
+        task = 'build'
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'rake #{task}'"
+        subject.remote_rake task
+      end
+    end
   end
 
   context "on configure" do

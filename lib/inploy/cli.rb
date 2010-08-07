@@ -8,7 +8,17 @@ module Inploy
       when 1
         deploy.send "remote_#{params.first}"
       when 2
-        deploy.remote_install :from => params.last.sub("from=", "")
+        deploy.send "remote_#{params.first}", parse(params.last)
+      end
+    end
+
+    private
+
+    def self.parse(param)
+      if param.include? '='
+        { :from => param.sub("from=", "") }
+      else
+        param
       end
     end
   end

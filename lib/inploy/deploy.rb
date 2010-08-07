@@ -58,6 +58,10 @@ module Inploy
       remote_run "cd #{application_path} && #{@sudo}rake inploy:local:update environment=#{environment}#{skip_steps_cmd}"
     end
 
+    def remote_rake(task)
+      remote_run "rake #{task}"
+    end
+
     def local_update
       update_code
       after_update_code
