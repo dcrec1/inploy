@@ -142,9 +142,9 @@ describe Inploy::Deploy do
     end
 
     context "on remote rake" do
-      it "should execute the rake task specified as parameter" do
+      it "should execute the rake task specified as parameter for the configured environment" do
         task = 'build'
-        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'rake #{task}'"
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake #{task} RAILS_ENV=#{@environment}'"
         subject.remote_rake task
       end
     end
