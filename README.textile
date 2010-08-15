@@ -63,6 +63,7 @@ When using Inploy with Rake, there are five tasks:
 - cleans the cache, default tmp/cache
 - cleans cached assets in public/assets if Jammit is installed
 - parses less files if more:parse tasks exists
+- parses compass files if config/initializers/compass.rb exists
 - package the assets if asset:packager:build_all task exists
 - notifies Hoptoad about the deploy, specifing the revision, repository and environment
 - notifies NewRelic RPM about the deploy
@@ -79,6 +80,7 @@ When using Inploy with Rake, there are five tasks:
 - cleans the cache, default tmp/cache
 - cleans cached assets in public/assets if Jammit is installed
 - parses less files if more:parse tasks exists
+- parses compass files if config/initializers/compass.rb exists
 - package the assets if asset:packager:build_all task exists
 - notifies Hoptoad about the deploy, specifing the revision, repository and environment
 - notifies NewRelic RPM about the deploy
