@@ -26,15 +26,11 @@ module Inploy
     end
 
     def ruby_if_exists(file, opts)
-      run "ruby #{file} #{opts[:params]}" if File.exists?(file)
+      run "ruby #{file} #{opts[:params]}" if file_exists?(file)
     end
 
     def sudo_if_should
       @sudo ? 'sudo ' : ''
-    end
-
-    def execute(command, options)
-      run command if File.exists?(options[:if_exists])
     end
 
     def run(command, disable_sudo = false)
@@ -55,10 +51,14 @@ module Inploy
     end
 
     def secure_copy(src, dest)
-      unless File.exists?(dest)
+      unless file_exists?(dest)
         log "mv #{src} #{dest}"
         FileUtils.cp src, dest
       end
+    end
+
+    def file_exists?(file)
+      File.exists? file
     end
   end
 end

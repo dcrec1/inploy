@@ -21,7 +21,7 @@ module Inploy
     end
 
     def jammit_is_installed?
-      File.exists?("config/assets.yml")
+      file_exists?("config/assets.yml")
     end
 
     def host
@@ -57,7 +57,7 @@ module Inploy
     end
 
     def update_crontab
-      run "whenever --update-crontab #{application} --set 'environment=#{environment}'" if File.exists?("config/schedule.rb") unless skip_step?('update_crontab')
+      run "whenever --update-crontab #{application} --set 'environment=#{environment}'" if file_exists?("config/schedule.rb") unless skip_step?('update_crontab')
     end
   end
 end

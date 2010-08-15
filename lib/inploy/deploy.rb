@@ -50,7 +50,7 @@ module Inploy
       create_folders 'tmp/pids', 'db'
       copy_sample_files
       rake "db:create RAILS_ENV=#{environment}"
-      run "./init.sh" if File.exists?("init.sh")
+      run "./init.sh" if file_exists?("init.sh")
       after_update_code
     end
 
@@ -86,7 +86,7 @@ module Inploy
       clear_cache
       run "rm -R -f public/assets" if jammit_is_installed?
       rake_if_included "more:parse"
-      execute "compass compile", :if_exists => "config/initializers/compass.rb"
+      run "compass compile" if file_exists?("config/initializers/compass.rb")
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy RAILS_ENV=#{environment} TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
       ruby_if_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd", :params => "deployments"
