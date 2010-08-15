@@ -33,6 +33,10 @@ module Inploy
       @sudo ? 'sudo ' : ''
     end
 
+    def execute(command, options)
+      run command if File.exists?(options[:if_exists])
+    end
+
     def run(command, disable_sudo = false)
       log command
 
