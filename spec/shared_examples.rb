@@ -227,13 +227,13 @@ shared_examples_for "local update" do
 
   it "should execute bundle install if Gemfile exists" do
     file_exists "Gemfile"
-    expect_command "bundle install ~/.bundle"
+    expect_command "bundle install ~/.bundle --without development test"
     subject.local_update
   end
 
   it "should not execute bundle install if Gemfile doesn't exists" do
     file_doesnt_exists "Gemfile"
-    dont_accept_command "bundle install ~/.bundle"
+    dont_accept_command "bundle install ~/.bundle  --without development test"
     subject.local_update
   end
 
