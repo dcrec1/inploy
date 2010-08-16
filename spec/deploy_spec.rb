@@ -4,14 +4,15 @@ describe Inploy::Deploy do
 
   subject { Inploy::Deploy.new }
 
-  def expect_setup_with(branch, environment = 'production', skip_steps = nil)
+  def expect_setup_with(branch, environment = 'production', skip_steps = nil, bundler = false)
     if branch.eql? 'master'
       checkout = ""
     else
       checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
     end
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} #{checkout} && rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}'"
+    bundler_cmd = " && bundle install ~/.bundle" if bundler
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} #{checkout}#{bundler_cmd} && rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}'"
   end
 
   def setup(subject)
@@ -98,6 +99,13 @@ describe Inploy::Deploy do
         subject.skip_steps = %w(migrate_database gems_install)
         expect_setup_with @branch, @environment, subject.skip_steps
         subject.remote_setup
+      end
+      
+      it "should execute bundle install before local setup if Gemfile exists" do
+        file_exists "Gemfile"
+        expect_setup_with @branch, @environment, nil, true
+        subject.remote_setup
+        file_doesnt_exists "Gemfile"
       end
     end
 

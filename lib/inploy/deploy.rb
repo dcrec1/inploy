@@ -43,7 +43,8 @@ module Inploy
       else
         checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
       end
-      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application} #{checkout} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
+      bundle_cmd = " && bundle install ~/.bundle" if file_exists?("Gemfile")
+      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application} #{checkout}#{bundle_cmd} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
     end
 
     def local_setup
