@@ -54,6 +54,7 @@ module Inploy
 
     def install_gems
       rake "gems:install RAILS_ENV=#{environment}" unless skip_step?('install_gems')
+      run "bundle install ~/.bundle"
     end
 
     def update_crontab

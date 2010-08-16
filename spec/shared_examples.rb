@@ -225,6 +225,12 @@ shared_examples_for "local update" do
     subject.local_update
   end
 
+  it "should execute bundle install if Gemfile exists" do
+    file_exists "Gemfile"
+    expect_command "bundle install ~/.bundle"
+    subject.local_update
+  end
+
   it "should parse less files if more exists" do
     subject.stub!(:tasks).and_return("rake acceptance rake more:parse rake asset:packager:create_yml")
     expect_command "rake more:parse"
