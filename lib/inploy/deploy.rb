@@ -38,13 +38,7 @@ module Inploy
     end
 
     def remote_setup
-      if branch.eql? "master"
-        checkout = ""
-      else
-        checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
-      end
-      bundle_cmd = " && bundle install ~/.bundle" if file_exists?("Gemfile")
-      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application} #{checkout}#{bundle_cmd} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
+      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application} #{checkout}#{bundle} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
     end
 
     def local_setup
@@ -77,6 +71,14 @@ module Inploy
     end
 
     private
+
+    def checkout
+      branch.eql?("master") ? "" : "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
+    end
+
+    def bundle
+      " && #{bundle_cmd}" if using_bundler?
+    end
 
     def after_update_code
       run "git submodule update --init"

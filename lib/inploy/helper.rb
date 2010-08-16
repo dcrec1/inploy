@@ -52,9 +52,17 @@ module Inploy
       `rake -T`
     end
 
+    def bundle_cmd
+      "bundle install ~/.bundle"
+    end
+
+    def bundle_install
+      run bundle_cmd
+    end
+
     def install_gems
-      if file_exists?("Gemfile")
-        run "bundle install ~/.bundle"
+      if using_bundler?
+        bundle_install
       else
         rake "gems:install RAILS_ENV=#{environment}" unless skip_step?('install_gems')
       end

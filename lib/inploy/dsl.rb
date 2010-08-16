@@ -33,6 +33,10 @@ module Inploy
       @sudo ? 'sudo ' : ''
     end
 
+    def using_bundler?
+      file_exists?("Gemfile")
+    end
+
     def run(command, disable_sudo = false)
       log command
 

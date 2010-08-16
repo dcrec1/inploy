@@ -35,7 +35,7 @@ describe Inploy::Deploy do
 
     context "on local update" do
       it "should not restart server if bundle fails" do
-        expect_command(subject.send(:bundle)).and_return(false)
+        expect_command("bundle install ~/.bundle").and_return(false)
         dont_accept_command "touch tmp/restart.txt"
         subject.local_update
       end
