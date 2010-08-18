@@ -1,5 +1,19 @@
 module Inploy
   module DSL
+    module ClassMethods
+      def define_callbacks(*callbacks)
+        callbacks.each do |callback|
+          define_method callback do |&block|
+            instance_variable_set "@#{callback}", block
+          end
+        end
+      end
+    end
+
+    def self.included(base)
+      base.extend ClassMethods
+    end
+
     def callback(name)
       instance_variable = instance_variable_get("@#{name.to_s}")
       instance_eval(&instance_variable) unless instance_variable.nil?

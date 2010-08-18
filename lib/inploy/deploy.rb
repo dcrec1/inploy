@@ -4,7 +4,9 @@ module Inploy
     include DSL
 
     attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment,
-                  :port, :skip_steps, :cache_dirs, :sudo
+      :port, :skip_steps, :cache_dirs, :sudo
+
+    define_callbacks :after_setup, :before_restarting_server
 
     def initialize
       self.server = :passenger
@@ -61,14 +63,6 @@ module Inploy
     def local_update
       update_code
       after_update_code
-    end
-
-    def before_restarting_server(&block)
-      @before_restarting_server = block
-    end
-
-    def after_setup(&block)
-      @after_setup = block
     end
 
     def update_code
