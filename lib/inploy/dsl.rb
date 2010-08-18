@@ -1,5 +1,10 @@
 module Inploy
   module DSL
+    def callback(name)
+      instance_variable = instance_variable_get("@#{name.to_s}")
+      instance_eval(&instance_variable) unless instance_variable.nil?
+    end
+
     def create_folder(path)
       run "mkdir -p #{path}"
     end

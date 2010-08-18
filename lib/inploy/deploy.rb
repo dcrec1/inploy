@@ -47,6 +47,7 @@ module Inploy
       rake "db:create RAILS_ENV=#{environment}"
       run "./init.sh" if file_exists?("init.sh")
       after_update_code
+      callback :after_setup
     end
 
     def remote_update
@@ -64,6 +65,10 @@ module Inploy
 
     def before_restarting_server(&block)
       @before_restarting_server = block
+    end
+
+    def after_setup(&block)
+      @after_setup = block
     end
 
     def update_code
@@ -93,7 +98,7 @@ module Inploy
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy RAILS_ENV=#{environment} TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
       ruby_if_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd", :params => "deployments"
-      instance_eval(&@before_restarting_server) unless @before_restarting_server.nil?
+      callback :before_restarting_server
       restart_server
     end
   end

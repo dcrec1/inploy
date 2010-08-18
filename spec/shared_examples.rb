@@ -121,6 +121,14 @@ shared_examples_for "local setup" do
     expect_command("rake db:create RAILS_ENV=#{environment}")
     subject.local_setup
   end
+
+  it "should call the after_setup callback" do
+    subject.after_setup do
+      rake "test"
+    end
+    expect_command("rake test")
+    subject.local_setup
+  end
 end
 
 shared_examples_for "remote update" do
