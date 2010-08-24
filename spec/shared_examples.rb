@@ -169,7 +169,7 @@ shared_examples_for "local update" do
   end
 
   it "should init submodules" do
-    expect_command "cd #{subject.path}/#{subject.application} && git submodule update --init"
+    expect_command "cd #{subject.path}/#{subject.application} && git submodule update --init && cd #{subject.path}/#{subject.application}/#{subject.app_folder}"
     subject.local_update
   end
 

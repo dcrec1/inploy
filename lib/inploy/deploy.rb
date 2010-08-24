@@ -81,7 +81,7 @@ module Inploy
     end
 
     def after_update_code
-      run "cd #{path}/#{application} && git submodule update --init"
+      run "cd #{path}/#{application} && git submodule update --init && cd #{path}/#{application}/#{app_folder}"
       copy_sample_files
       return unless install_gems
       migrate_database
