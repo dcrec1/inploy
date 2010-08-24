@@ -154,6 +154,10 @@ describe Inploy::Deploy do
         expect_command "git pull origin #{@branch}"
         subject.local_update
       end
+      it "should run git submodule command from the toplevel of the working tree" do
+        expect_command "cd #{@path}/#{@application} && git submodule update --init"
+        subject.local_update
+      end
 
       it_should_behave_like "local update"
     end
