@@ -77,7 +77,7 @@ describe Inploy::Deploy do
     subject.path.should eql("/var/local/apps")
   end
 
-  it "should use nil as the default app_path" do
+  it "should use nil as the default app_folder" do
     subject.app_folder.should be_nil
   end
 
