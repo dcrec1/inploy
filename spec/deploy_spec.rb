@@ -141,6 +141,12 @@ describe Inploy::Deploy do
         subject.remote_update
       end
 
+      it "should exec the commands in the app_folder" do
+        subject.app_folder = 'project'
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake inploy:local:update environment=#{@environment}'"
+        subject.remote_update
+      end
+
     end
 
     context "on local update" do
@@ -164,6 +170,12 @@ describe Inploy::Deploy do
       it "should execute the rake task specified as parameter for the configured environment" do
         task = 'build'
         expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake #{task} RAILS_ENV=#{@environment}'"
+        subject.remote_rake task
+      end
+      it "should execute the rake task in app_folder" do
+        subject.app_folder = 'project'
+        task = 'build'
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake #{task} RAILS_ENV=#{@environment}'"
         subject.remote_rake task
       end
     end

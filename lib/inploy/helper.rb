@@ -33,7 +33,11 @@ module Inploy
     end
 
     def application_path
-      "#{path}/#{application}"
+      app_folder.nil? ? "#{path}/#{application}" : "#{path}/#{application}/#{app_folder}"
+    end
+
+    def application_folder
+      app_folder.nil? ? application : "#{application}/#{app_folder}"
     end
 
     def copy_sample_files

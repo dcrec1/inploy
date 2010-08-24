@@ -41,7 +41,7 @@ module Inploy
     end
 
     def remote_setup
-      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{directory} #{checkout}#{bundle} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
+      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application_folder} #{checkout}#{bundle} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
     end
 
     def local_setup
@@ -71,10 +71,6 @@ module Inploy
     end
 
     private
-
-    def directory
-      app_folder.nil? ? application : "#{application}/#{app_folder}"
-    end
 
     def checkout
       branch.eql?("master") ? "" : "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
