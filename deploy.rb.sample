@@ -11,3 +11,4 @@ hosts = ['hooters', 'geni']
 #sudo = false
 #cache_dirs = %w(public/cache)
 #skip_steps = nil
+#app_folder = nil

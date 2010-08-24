@@ -4,7 +4,7 @@ describe Inploy::Deploy do
 
   subject { Inploy::Deploy.new }
 
-  def expect_setup_with(branch, environment = 'production', skip_steps = nil, bundler = false)
+  def expect_setup_with(branch, environment = 'production', skip_steps = nil, bundler = false, app_folder = nil)
     if branch.eql? 'master'
       checkout = ""
     else
@@ -12,7 +12,8 @@ describe Inploy::Deploy do
     end
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
     bundler_cmd = " && bundle install ~/.bundle --without development test" if bundler
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} #{checkout}#{bundler_cmd} && rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}'"
+    directory = app_folder.nil? ? @application : "#{@application}/#{app_folder}"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}'"
   end
 
   def setup(subject)
@@ -76,6 +77,10 @@ describe Inploy::Deploy do
     subject.path.should eql("/var/local/apps")
   end
 
+  it "should use nil as the default app_path" do
+    subject.app_folder.should be_nil
+  end
+
   context "configured" do
     before :each do
       setup subject
@@ -98,6 +103,12 @@ describe Inploy::Deploy do
       it "should pass skip_steps params to local setup" do
         subject.skip_steps = %w(migrate_database gems_install)
         expect_setup_with @branch, @environment, subject.skip_steps
+        subject.remote_setup
+      end
+
+      it "should pass app_folder params to local setup" do
+        subject.app_folder = "project"
+        expect_setup_with @branch, @environment, nil, false, subject.app_folder
         subject.remote_setup
       end
       
