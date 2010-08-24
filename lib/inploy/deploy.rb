@@ -3,7 +3,7 @@ module Inploy
     include Helper
     include DSL
 
-    attr_accessor :repository, :user, :application, :hosts, :path, :ssh_opts, :branch, :environment,
+    attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment,
       :port, :skip_steps, :cache_dirs, :sudo
 
     define_callbacks :after_setup, :before_restarting_server
@@ -15,6 +15,7 @@ module Inploy
       @environment = 'production'
       @user = "deploy"
       @path = "/var/local/apps"
+      @app_folder = nil
       configure
     end
 
@@ -40,7 +41,7 @@ module Inploy
     end
 
     def remote_setup
-      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application} #{checkout}#{bundle} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
+      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{directory} #{checkout}#{bundle} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
     end
 
     def local_setup
@@ -70,6 +71,10 @@ module Inploy
     end
 
     private
+
+    def directory
+      app_folder.nil? ? application : "#{application}/#{app_folder}"
+    end
 
     def checkout
       branch.eql?("master") ? "" : "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
