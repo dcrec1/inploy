@@ -6,6 +6,7 @@ deploy = Inploy::Deploy.new
 deploy.environment = ENV['environment'] || deploy.environment
 deploy.skip_steps = ENV['skip_steps'].split(',') unless ENV['skip_steps'].nil?
 
+
 namespace :inploy do
   namespace :local do
     desc "Local Setup"
@@ -36,6 +37,11 @@ namespace :inploy do
     end
   end
 
+  desc "Alias to Remote Update"
+  task :up => "remote:update"
+end
+
+namespace :in do
   desc "Alias to Remote Update"
   task :up => "remote:update"
 end
