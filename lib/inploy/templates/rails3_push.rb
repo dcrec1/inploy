@@ -47,7 +47,7 @@ module Inploy
         command << "git reset --hard"
         command << "git clean -f -d"
         command << "git submodule update --init"
-        command << "bundle install"
+        command << "bundle install --deployment"
         remote_run command.join(' && ')
       end
 
