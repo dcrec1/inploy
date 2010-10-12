@@ -61,6 +61,10 @@ module Inploy
       remote_run "cd #{application_path} && rake #{task} RAILS_ENV=#{environment}"
     end
 
+    def remote_reset(params)
+      remote_run "cd #{application_path} && git reset --hard #{params[:to]}"
+    end
+
     def local_update
       update_code
       after_update_code

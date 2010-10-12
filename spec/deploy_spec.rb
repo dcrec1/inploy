@@ -121,7 +121,6 @@ describe Inploy::Deploy do
     end
 
     context "on local setup" do
-
       it "should use staging for the environment" do
         expect_command "rake db:migrate RAILS_ENV=staging"
         subject.local_setup
@@ -181,6 +180,14 @@ describe Inploy::Deploy do
         task = 'build'
         expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake #{task} RAILS_ENV=#{@environment}'"
         subject.remote_rake task
+      end
+    end
+
+    context "on remote reset" do
+      it "should execute 'git reset --hard {:to}' in the servers" do
+        commit = "fa3ed118970d8ddb0655be94b4c85d996c695476"
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && git reset --hard #{commit}'"
+        subject.remote_reset :to => commit
       end
     end
   end
