@@ -33,5 +33,10 @@ describe Inploy::CLI do
       @deploy.should_receive(:remote_rake).with('db:migrate')
       subject.class.execute %w(rake db:migrate)
     end
+
+    it "should execute deploy.remote_reset :to => commit when params = ['reset', 'to=commit']" do
+      @deploy.should_receive(:remote_reset).with(:to => '12345')
+      subject.class.execute %w(reset to=12345)
+    end
   end
 end
