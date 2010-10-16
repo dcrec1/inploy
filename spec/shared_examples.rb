@@ -148,6 +148,12 @@ shared_examples_for "remote update" do
     subject.remote_update
   end
 
+  it "should run inploy:local:update task with login_shell" do
+    subject.login_shell = true
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} \"sh -l -c 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'\""
+    subject.remote_update
+  end
+
   it "should ssh with a port even if ssh options are not specified" do
     subject.ssh_opts = nil
     subject.port = 3892
