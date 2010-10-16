@@ -87,6 +87,7 @@ describe Inploy::Deploy do
       subject.ssh_opts = @ssh_opts = "-A"
       subject.branch = @branch = "onions"
       subject.environment = @environment = "staging"
+      subject.login_shell = @login_shell = false
     end
 
     context "on remote setup" do
