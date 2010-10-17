@@ -57,7 +57,7 @@ module Inploy
     end
 
     def bundle_cmd
-      "bundle install ~/.bundle --without development test"
+      "bundle install --path ~/.bundle --without development test"
     end
 
     def bundle_install
