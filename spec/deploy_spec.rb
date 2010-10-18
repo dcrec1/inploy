@@ -11,7 +11,7 @@ describe Inploy::Deploy do
       checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
     end
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
-    bundler_cmd = " && bundle install --path ~/.bundle --without development test" if bundler
+    bundler_cmd = " && bundle install --path ~/.bundle --without development test cucumber" if bundler
     directory = app_folder.nil? ? @application : "#{@application}/#{app_folder}"
     expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}'"
   end
