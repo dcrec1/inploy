@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{inploy}
-  s.version = "1.7.0"
+  s.version = "1.7.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Diego Carrion"]
-  s.date = %q{2010-10-16}
+  s.date = %q{2010-10-18}
   s.default_executable = %q{inploy}
   s.email = %q{dc.rec1@gmail.com}
   s.executables = ["inploy"]
