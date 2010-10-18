@@ -5,7 +5,7 @@ describe Inploy::Deploy do
   subject { Inploy::Deploy.new }
 
   def expect_setup_in(path)
-    expect_command "rm -Rf /tmp/#{@application} && git clone . /tmp/#{@application} && tar czf - /tmp/#{@application} | ssh #{@user}@#{@host} 'tar xzfv - -C ~/ && mv ~/tmp/#{@application} #{path}/ && cd #{path}/#{@application} && rake inploy:local:setup'"
+    expect_command "rm -Rf /tmp/#{@application} && git clone . /tmp/#{@application} && tar czf - /tmp/#{@application} | ssh #{@user}@#{@host} 'tar xzfv - -C ~/ && mv ~/tmp/#{@application} #{path}/ && cd #{path}/#{@application} && rake inploy:local:setup RAILS_ENV=#{subject.environment} environment=#{subject.environment}'"
   end
 
   context "with template locaweb" do
@@ -46,7 +46,7 @@ describe Inploy::Deploy do
 
       it "should run git checkout -f and inploy:local:update task in the server" do
         subject.environment = "env10"
-        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd /home/#{@user}/rails_app/#{@application} && git checkout -f && rake inploy:local:update environment=#{subject.environment}'"
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd /home/#{@user}/rails_app/#{@application} && git checkout -f && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'"
         subject.remote_update
       end
     end

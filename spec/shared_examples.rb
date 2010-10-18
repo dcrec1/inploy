@@ -138,32 +138,32 @@ shared_examples_for "remote update" do
 
   it "should run inploy:local:update task in the server" do
     subject.environment = "env10"
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'"
     subject.remote_update
   end
 
   it "should ssh with a configured port if exists" do
     subject.port = 3892
-    expect_command "ssh #{@ssh_opts} -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
+    expect_command "ssh #{@ssh_opts} -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'"
     subject.remote_update
   end
 
   it "should run inploy:local:update task with login_shell" do
     subject.login_shell = true
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} \"sh -l -c 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'\""
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} \"sh -l -c 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'\""
     subject.remote_update
   end
 
   it "should ssh with a port even if ssh options are not specified" do
     subject.ssh_opts = nil
     subject.port = 3892
-    expect_command "ssh  -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
+    expect_command "ssh  -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'"
     subject.remote_update
   end
 
   it "should pass skip_steps params to local update" do
     subject.skip_steps = skip_steps = %w(migrate_dataabse gems_install)
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{@environment} skip_steps=#{skip_steps.join(',')}'"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{@environment} skip_steps=#{skip_steps.join(',')}'"
     subject.remote_update
   end
 end

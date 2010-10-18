@@ -10,7 +10,7 @@ describe Inploy::Deploy do
     else
       checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
     end
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} #{checkout} && bundle install --path ~/.bundle --without development test cucumber && rake inploy:local:setup environment=#{environment}'"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{@application} #{checkout} && bundle install --path ~/.bundle --without development test cucumber && rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}'"
   end
 
   context "with template rails3" do

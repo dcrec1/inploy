@@ -13,7 +13,7 @@ describe Inploy::Deploy do
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
     bundler_cmd = " && bundle install --path ~/.bundle --without development test cucumber" if bundler
     directory = app_folder.nil? ? @application : "#{@application}/#{app_folder}"
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}'"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}'"
   end
 
   def setup(subject)
@@ -136,14 +136,14 @@ describe Inploy::Deploy do
       it "should exec the commands in all hosts" do
         subject.hosts = ['host0', 'host1', 'host2']
         3.times.each do |i|
-          expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{@environment}'"
+          expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{@environment} environment=#{@environment}'"
         end
         subject.remote_update
       end
 
       it "should exec the commands in the app_folder" do
         subject.app_folder = 'project'
-        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake inploy:local:update environment=#{@environment}'"
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake inploy:local:update RAILS_ENV=#{@environment} environment=#{@environment}'"
         subject.remote_update
       end
 
