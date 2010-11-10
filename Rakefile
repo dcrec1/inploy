@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rubygems/specification'
 require 'rake'
 require 'rake/gempackagetask'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
 GEM = "inploy"
 GEM_VERSION = "1.7.2"
@@ -26,9 +26,8 @@ spec = Gem::Specification.new do |s|
   s.rubyforge_project = GEM # GitHub bug, gem isn't being build when this miss
 end
 
-Spec::Rake::SpecTask.new do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
-  t.spec_opts = %w(-fp --color)
+RSpec::Core::RakeTask.new :spec do |t|
+  t.rspec_opts = %w(-fp --color)
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
@@ -48,8 +47,7 @@ task :make_spec do
 end
 
 desc "Run all examples with RCov"
-Spec::Rake::SpecTask.new('rcov') do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
+RSpec::Core::RakeTask.new :spec do |t|
   t.rcov = true
   t.rcov_opts = ['--no-html', '-T', '--exclude', 'spec']
 end
