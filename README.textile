@@ -30,8 +30,7 @@ h3. Rails 2.3.x note
 
 When using rails 2.3.x, you should include the follow line into you Rakefile:
 
-<pre><code>
-##### Rakefile
+<pre><code>##### Rakefile
 load "tasks/inploy.rake"
 </code></pre>
 
