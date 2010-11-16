@@ -162,7 +162,7 @@ shared_examples_for "remote update" do
   end
 
   it "should pass skip_steps params to local update" do
-    subject.skip_steps = skip_steps = %w(migrate_dataabse gems_install)
+    subject.skip_steps = skip_steps = %w(migrate_database gems_install)
     expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{@environment} skip_steps=#{skip_steps.join(',')}'"
     subject.remote_update
   end
