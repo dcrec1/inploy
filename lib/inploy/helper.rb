@@ -61,7 +61,7 @@ module Inploy
     end
 
     def bundle_install
-      run bundle_cmd
+      run bundle_cmd unless skip_step?('bundle_install')
     end
 
     def install_gems
