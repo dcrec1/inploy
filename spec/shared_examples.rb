@@ -148,6 +148,13 @@ shared_examples_for "remote update" do
     subject.remote_update
   end
 
+  it "should not run bundle install if it's on skip_steps" do
+    subject.environment = "en3"
+    subject.skip_steps = ['bundle_install']
+    dont_accept_command "bundle install --path ~/.bundle  --without development test cucumber"
+    subject.local_setup
+  end
+
   it "should run inploy:local:update task with login_shell" do
     subject.login_shell = true
     expect_command "ssh #{@ssh_opts} #{@user}@#{@host} \"sh -l -c 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'\""
