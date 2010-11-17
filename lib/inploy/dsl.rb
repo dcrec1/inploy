@@ -74,7 +74,7 @@ module Inploy
     end
 
     def login_shell_wrap(cmd)
-      login_shell ? "\"sh -l -c '#{cmd}'\"" : "'#{cmd}'"
+      login_shell ? "\"bash -l -c '#{cmd}'\"" : "'#{cmd}'"
     end
 
     def secure_copy(src, dest)

@@ -150,7 +150,7 @@ shared_examples_for "remote update" do
 
   it "should run inploy:local:update task with login_shell" do
     subject.login_shell = true
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} \"sh -l -c 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'\""
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} \"bash -l -c 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'\""
     subject.remote_update
   end
 
