@@ -45,7 +45,7 @@ module Inploy
         command = []
         command << "cd #{application_path}"
         command << "git reset --hard"
-        command << "git clean -f -d"
+        command << "git clean -f -d -e public/system" # Keeps paperclip uploaded files
         command << "git submodule update --init"
         command << "bundle install --deployment" unless skip_step?('bundle_install')
         remote_run command.join(' && ')
