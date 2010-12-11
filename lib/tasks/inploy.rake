@@ -43,5 +43,5 @@ end
 
 namespace :in do
   desc "Alias to Remote Update"
-  task :up => "remote:update"
+  task :up => "inploy:remote:update"
 end
