@@ -138,26 +138,39 @@ shared_examples_for "remote update" do
 
   it "should run inploy:local:update task in the server" do
     subject.environment = "env10"
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'"
     subject.remote_update
   end
 
   it "should ssh with a configured port if exists" do
     subject.port = 3892
-    expect_command "ssh #{@ssh_opts} -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
+    expect_command "ssh #{@ssh_opts} -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'"
+    subject.remote_update
+  end
+
+  it "should not run bundle install if it's on skip_steps" do
+    subject.environment = "en3"
+    subject.skip_steps = ['bundle_install']
+    dont_accept_command "bundle install --path ~/.bundle  --without development test cucumber"
+    subject.local_setup
+  end
+
+  it "should run inploy:local:update task with login_shell" do
+    subject.login_shell = true
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} \"bash -l -c 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'\""
     subject.remote_update
   end
 
   it "should ssh with a port even if ssh options are not specified" do
     subject.ssh_opts = nil
     subject.port = 3892
-    expect_command "ssh  -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{subject.environment}'"
+    expect_command "ssh  -p 3892 #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{subject.environment}'"
     subject.remote_update
   end
 
   it "should pass skip_steps params to local update" do
-    subject.skip_steps = skip_steps = %w(migrate_dataabse gems_install)
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{@environment} skip_steps=#{skip_steps.join(',')}'"
+    subject.skip_steps = skip_steps = %w(migrate_database gems_install)
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{subject.environment} environment=#{@environment} skip_steps=#{skip_steps.join(',')}'"
     subject.remote_update
   end
 end
@@ -235,13 +248,13 @@ shared_examples_for "local update" do
 
   it "should execute bundle install if Gemfile exists" do
     file_exists "Gemfile"
-    expect_command "bundle install ~/.bundle --without development test"
+    expect_command "bundle install --path ~/.bundle --without development test cucumber"
     subject.local_update
   end
 
   it "should not execute bundle install if Gemfile doesn't exists" do
     file_doesnt_exists "Gemfile"
-    dont_accept_command "bundle install ~/.bundle  --without development test"
+    dont_accept_command "bundle install --path ~/.bundle  --without development test cucumber"
     subject.local_update
   end
 

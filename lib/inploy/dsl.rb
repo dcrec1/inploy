@@ -69,8 +69,12 @@ module Inploy
     def remote_run(command)
       port_opts = port ? "-p #{port} " : ''
       hosts.each do |host|
-        run "ssh #{ssh_opts} #{port_opts}#{user}@#{host} '#{command}'", true
+        run "ssh #{ssh_opts} #{port_opts}#{user}@#{host} #{login_shell_wrap(command)}", true
       end
+    end
+
+    def login_shell_wrap(cmd)
+      login_shell ? "\"bash -l -c '#{cmd}'\"" : "'#{cmd}'"
     end
 
     def secure_copy(src, dest)

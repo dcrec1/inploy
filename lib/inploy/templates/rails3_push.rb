@@ -16,7 +16,7 @@ module Inploy
 
         command = []
         command << "cd #{application_path}"
-        command << "rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
+        command << "rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}"
         remote_run command.join(' && ')
       end
 
@@ -25,7 +25,7 @@ module Inploy
 
         command = []
         command << "cd #{application_path}"
-        command << "rake inploy:local:update environment=#{environment}#{skip_steps_cmd}"
+        command << "rake inploy:local:update RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}"
         remote_run command.join(' && ')
       end
 
@@ -45,9 +45,9 @@ module Inploy
         command = []
         command << "cd #{application_path}"
         command << "git reset --hard"
-        command << "git clean -f -d"
+        command << "git clean -f -d -e public/system" # Keeps paperclip uploaded files
         command << "git submodule update --init"
-        command << "bundle install"
+        command << "bundle install --deployment" unless skip_step?('bundle_install')
         remote_run command.join(' && ')
       end
 

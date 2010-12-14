@@ -11,9 +11,9 @@ describe Inploy::Deploy do
       checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
     end
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
-    bundler_cmd = " && bundle install ~/.bundle --without development test" if bundler
+    bundler_cmd = " && bundle install --path ~/.bundle --without development test cucumber" if bundler
     directory = app_folder.nil? ? @application : "#{@application}/#{app_folder}"
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}'"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}'"
   end
 
   def setup(subject)
@@ -87,6 +87,7 @@ describe Inploy::Deploy do
       subject.ssh_opts = @ssh_opts = "-A"
       subject.branch = @branch = "onions"
       subject.environment = @environment = "staging"
+      subject.login_shell = @login_shell = false
     end
 
     context "on remote setup" do
@@ -101,7 +102,7 @@ describe Inploy::Deploy do
       end
 
       it "should pass skip_steps params to local setup" do
-        subject.skip_steps = %w(migrate_database gems_install)
+        subject.skip_steps = %w(migrate_database gems_install bundle_install)
         expect_setup_with @branch, @environment, subject.skip_steps
         subject.remote_setup
       end
@@ -121,7 +122,6 @@ describe Inploy::Deploy do
     end
 
     context "on local setup" do
-
       it "should use staging for the environment" do
         expect_command "rake db:migrate RAILS_ENV=staging"
         subject.local_setup
@@ -136,14 +136,14 @@ describe Inploy::Deploy do
       it "should exec the commands in all hosts" do
         subject.hosts = ['host0', 'host1', 'host2']
         3.times.each do |i|
-          expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update environment=#{@environment}'"
+          expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{@environment} environment=#{@environment}'"
         end
         subject.remote_update
       end
 
       it "should exec the commands in the app_folder" do
         subject.app_folder = 'project'
-        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake inploy:local:update environment=#{@environment}'"
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake inploy:local:update RAILS_ENV=#{@environment} environment=#{@environment}'"
         subject.remote_update
       end
 
@@ -181,6 +181,14 @@ describe Inploy::Deploy do
         task = 'build'
         expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake #{task} RAILS_ENV=#{@environment}'"
         subject.remote_rake task
+      end
+    end
+
+    context "on remote reset" do
+      it "should execute 'git reset --hard {:to}' in the servers" do
+        commit = "fa3ed118970d8ddb0655be94b4c85d996c695476"
+        expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && git reset --hard #{commit}'"
+        subject.remote_reset :to => commit
       end
     end
   end

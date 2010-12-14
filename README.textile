@@ -26,6 +26,14 @@ As a gem:
 
 Please remember that when used as a gem, Inploy should be available in the deploy servers.
 
+h3. Rails 2.3.x note
+
+When using rails 2.3.x, you should include the follow line into you Rakefile:
+
+<pre><code>##### Rakefile
+load "tasks/inploy.rake"
+</code></pre>
+
 h2. USAGE
 
 When using Inploy with Rake, there are five tasks:
@@ -117,6 +125,7 @@ sudo = true                                  # default false
 cache_dirs = ['public/cache', 'tmp/cache']   # default ['public/cache']
 skip_steps = ['install_gems', 'clear_cache'] # default []
 app_folder = 'project_folder'                # default empty 
+login_shell = true                           # default false
 </code></pre>
 
 h2. SKIP STEPS

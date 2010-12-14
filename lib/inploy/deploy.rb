@@ -4,7 +4,7 @@ module Inploy
     include DSL
 
     attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment,
-      :port, :skip_steps, :cache_dirs, :sudo
+      :port, :skip_steps, :cache_dirs, :sudo, :login_shell
 
     define_callbacks :after_setup, :before_restarting_server
 
@@ -41,11 +41,11 @@ module Inploy
     end
 
     def remote_setup
-      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application_folder} #{checkout}#{bundle} && #{@sudo}rake inploy:local:setup environment=#{environment}#{skip_steps_cmd}"
+      remote_run "cd #{path} && #{@sudo}git clone --depth 1 #{repository} #{application} && cd #{application_folder} #{checkout}#{bundle} && #{@sudo}rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}"
     end
 
     def local_setup
-      create_folders 'tmp/pids', 'db'
+      create_folders 'public', 'tmp/pids', 'db'
       copy_sample_files
       rake "db:create RAILS_ENV=#{environment}"
       run "./init.sh" if file_exists?("init.sh")
@@ -54,11 +54,15 @@ module Inploy
     end
 
     def remote_update
-      remote_run "cd #{application_path} && #{@sudo}rake inploy:local:update environment=#{environment}#{skip_steps_cmd}"
+      remote_run "cd #{application_path} && #{@sudo}rake inploy:local:update RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}"
     end
 
     def remote_rake(task)
       remote_run "cd #{application_path} && rake #{task} RAILS_ENV=#{environment}"
+    end
+
+    def remote_reset(params)
+      remote_run "cd #{application_path} && git reset --hard #{params[:to]}"
     end
 
     def local_update

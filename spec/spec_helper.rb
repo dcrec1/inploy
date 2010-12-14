@@ -10,7 +10,7 @@ end
 require 'rubygems'
 require 'inploy'
 require 'inploy/cli'
-require 'spec'
+require 'rspec'
 require 'fakefs'
 
 require 'shared_examples'

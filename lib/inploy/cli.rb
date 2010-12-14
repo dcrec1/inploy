@@ -16,7 +16,8 @@ module Inploy
 
     def self.parse(param)
       if param.include? '='
-        { :from => param.sub("from=", "") }
+        keys = param.split "="
+        { keys.first.to_sym => keys.last }
       else
         param
       end
