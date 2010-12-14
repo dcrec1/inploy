@@ -21,7 +21,7 @@ describe Inploy::Deploy do
       it "should init and configure an empty repository, push to it and run the local setup" do
         expect_command "ssh #{@ssh_opts} batman@gothic 'mkdir -p /fakie/path/robin && cd /fakie/path/robin && git init && sed -i'' -e 's/master/live/' .git/HEAD && git config --bool receive.denyNonFastForwards false && git config receive.denyCurrentBranch ignore'"
         expect_command "git push -f batman@gothic:/fakie/path/robin live"
-        expect_command "ssh #{@ssh_opts} batman@gothic 'cd /fakie/path/robin && git reset --hard && git clean -f -d && git submodule update --init && bundle install --deployment'"
+        expect_command "ssh #{@ssh_opts} batman@gothic 'cd /fakie/path/robin && git reset --hard && git clean -f -d -e public/system && git submodule update --init && bundle install --deployment'"
         expect_command "ssh #{@ssh_opts} batman@gothic 'cd /fakie/path/robin && rake inploy:local:setup RAILS_ENV=production environment=production'"
         subject.remote_setup
       end
@@ -34,7 +34,7 @@ describe Inploy::Deploy do
         subject.hosts = ['host0', 'host1', 'host2']
         3.times.each do |i|
           expect_command "git push -f batman@host#{i}:/fakie/path/robin live"
-          expect_command "ssh #{@ssh_opts} batman@host#{i} 'cd /fakie/path/robin && git reset --hard && git clean -f -d && git submodule update --init && bundle install --deployment'"
+          expect_command "ssh #{@ssh_opts} batman@host#{i} 'cd /fakie/path/robin && git reset --hard && git clean -f -d -e public/system && git submodule update --init && bundle install --deployment'"
           expect_command "ssh #{@ssh_opts} batman@host#{i} 'cd /fakie/path/robin && rake inploy:local:update RAILS_ENV=production environment=production'"
         end
         subject.remote_update
