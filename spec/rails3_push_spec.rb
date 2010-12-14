@@ -32,7 +32,7 @@ describe Inploy::Deploy do
 
       it "should push git repository and runs the local update on all hosts" do
         subject.hosts = ['host0', 'host1', 'host2']
-        3.times.each do |i|
+        3.times do |i|
           expect_command "git push -f batman@host#{i}:/fakie/path/robin live"
           expect_command "ssh #{@ssh_opts} batman@host#{i} 'cd /fakie/path/robin && git reset --hard && git clean -f -d -e public/system && git submodule update --init && bundle install --deployment'"
           expect_command "ssh #{@ssh_opts} batman@host#{i} 'cd /fakie/path/robin && rake inploy:local:update RAILS_ENV=production environment=production'"

@@ -3,9 +3,11 @@ module Inploy
     module ClassMethods
       def define_callbacks(*callbacks)
         callbacks.each do |callback|
-          define_method callback do |&block|
-            instance_variable_set "@#{callback}", block
-          end
+          class_eval <<-METHOD
+            def #{callback} &block
+              instance_variable_set("@#{callback}", block)
+            end
+          METHOD
         end
       end
     end
