@@ -5,8 +5,8 @@ require 'rake/gempackagetask'
 require 'rspec/core/rake_task'
 
 GEM = "inploy"
-GEM_VERSION = "1.7.2"
-SUMMARY = "Rails deployment made easy"
+GEM_VERSION = "1.8"
+SUMMARY = "Rails and Sinatra deployment made easy"
 AUTHOR = "Diego Carrion"
 EMAIL = "dc.rec1@gmail.com"
 HOMEPAGE = "http://www.diegocarrion.com"
