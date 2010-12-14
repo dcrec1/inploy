@@ -45,7 +45,7 @@ module Inploy
     end
 
     def local_setup
-      create_folders 'tmp/pids', 'db'
+      create_folders 'public', 'tmp/pids', 'db'
       copy_sample_files
       rake "db:create RAILS_ENV=#{environment}"
       run "./init.sh" if file_exists?("init.sh")
