@@ -240,6 +240,17 @@ shared_examples_for "local update" do
     subject.local_update
   end
 
+  it "should compile the coffeescripts with barista if the rake task exist" do
+    subject.stub!(:tasks).and_return("rake acceptance rake barista:brew rake asset:packager:create_yml")
+    expect_command "rake barista:brew"
+    subject.local_update
+  end
+
+  it "should not compile the coffeescripts with barista if the rake task doesnt't exist" do
+    dont_accept_command "rake barista:brew"
+    subject.local_update
+  end
+
   it "should install gems" do
     subject.environment = "env6"
     expect_command "rake gems:install RAILS_ENV=#{subject.environment}"
