@@ -351,4 +351,18 @@ shared_examples_for "local update" do
     dont_accept_command "compass compile"
     subject.local_update
   end
+
+  it "should restart the delayed job worker if script/delayed_job exist" do
+    subject.environment = "env9"
+    file_exists "script/delayed_job"
+    expect_command "RAILS_ENV=env9 script/delayed_job restart"
+    subject.local_update
+  end
+
+  it "should not restart the delayed job worker if script/delayed_job doesnt exist" do
+    subject.environment = "env9"
+    file_doesnt_exists "script/delayed_job"
+    dont_accept_command "RAILS_ENV=env9 script/delayed_job restart"
+    subject.local_update
+  end
 end

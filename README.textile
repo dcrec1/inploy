@@ -70,6 +70,7 @@ When using Inploy with Rake, there are five tasks:
 - updates the crontab from Whenever if being used
 - cleans the cache, default tmp/cache
 - cleans cached assets in public/assets if Jammit is installed
+- starts the Delayed Job worker if script/delayed_job exist
 - parses less files if more:parse task exists
 - parses compass files if config/initializers/compass.rb exists
 - parses coffeescript files with Barista if barista:brew task exist
@@ -88,6 +89,7 @@ When using Inploy with Rake, there are five tasks:
 - updates the crontab from Whenever if being used
 - cleans the cache, default tmp/cache
 - cleans cached assets in public/assets if Jammit is installed
+- restarts the Delayed Job worker if script/delayed_job exists
 - parses less files if more:parse task exists
 - parses compass files if config/initializers/compass.rb exists
 - parses coffeescript files with Barista if barista:brew task exist

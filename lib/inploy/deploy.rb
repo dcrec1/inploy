@@ -3,8 +3,7 @@ module Inploy
     include Helper
     include DSL
 
-    attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment,
-      :port, :skip_steps, :cache_dirs, :sudo, :login_shell
+    attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment, :port, :skip_steps, :cache_dirs, :sudo, :login_shell
 
     define_callbacks :after_setup, :before_restarting_server
 
@@ -92,6 +91,7 @@ module Inploy
       update_crontab
       clear_cache
       run "rm -R -f public/assets" if jammit_is_installed?
+      run "RAILS_ENV=#{environment} script/delayed_job restart" if file_exists?("script/delayed_job")
       rake_if_included "more:parse"
       run "compass compile" if file_exists?("config/initializers/compass.rb")
       rake_if_included "barista:brew"
