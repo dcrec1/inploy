@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{inploy}
-  s.version = "1.9"
+  s.version = "1.9.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Diego Carrion"]
-  s.date = %q{2011-01-06}
+  s.date = %q{2011-03-25}
   s.default_executable = %q{inploy}
   s.email = %q{dc.rec1@gmail.com}
   s.executables = ["inploy"]
@@ -14,11 +14,10 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://www.diegocarrion.com}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{inploy}
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.5.3}
   s.summary = %q{Rails and Sinatra deployment made easy}
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
