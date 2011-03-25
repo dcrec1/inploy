@@ -312,6 +312,26 @@ shared_examples_for "local update" do
     subject.local_update
   end
 
+  it "should notify new relic rpm if config/newrelic.yml exists" do
+    file_exists "config/newrelic.yml"
+    expect_command("newrelic_cmd deployments")
+    subject.local_update
+  end
+
+  it "should not notify new relic rpm if doesn't exists as plugin neither config/newrelic.yml" do
+    file_doesnt_exists "config/newrelic.yml"
+    file_doesnt_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd"
+    dont_accept_command("newrelic_cmd deployments")
+    subject.local_update
+  end
+
+  it "should not notify new relic rpm with the gem command if exists as plugin and config/newrelic.yml, too" do
+    file_exists "config/newrelic.yml"
+    file_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd"
+    dont_accept_command("newrelic_cmd deployments")
+    subject.local_update
+  end
+
   it "should execute before_restarting_server hook" do
     subject.before_restarting_server do
       rake "test"

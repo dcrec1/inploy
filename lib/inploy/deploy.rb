@@ -97,7 +97,7 @@ module Inploy
       rake_if_included "barista:brew"
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy RAILS_ENV=#{environment} TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
-      ruby_if_exists "vendor/plugins/newrelic_rpm/bin/newrelic_cmd", :params => "deployments"
+      notify_new_relic
       callback :before_restarting_server
       restart_server
     end
