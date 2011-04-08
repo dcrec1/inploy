@@ -57,7 +57,7 @@ module Inploy
     end
 
     def bundle_cmd
-      "bundle install --path ~/.bundle --without development test cucumber"
+      "bundle install --path #{bundler_path || '~/.bundle'} --without development test cucumber"
     end
 
     def bundle_install
