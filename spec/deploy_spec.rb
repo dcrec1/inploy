@@ -4,14 +4,14 @@ describe Inploy::Deploy do
 
   subject { Inploy::Deploy.new }
 
-  def expect_setup_with(branch, environment = 'production', skip_steps = nil, bundler = false, app_folder = nil)
+  def expect_setup_with(branch, environment = 'production', skip_steps = nil, bundler = false, app_folder = nil, bundle_path = '~/.bundle')
     if branch.eql? 'master'
       checkout = ""
     else
       checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
     end
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
-    bundler_cmd = " && bundle install --path ~/.bundle --without development test cucumber" if bundler
+    bundler_cmd = " && bundle install --path #{bundle_path} --without development test cucumber" if bundler
     directory = app_folder.nil? ? @application : "#{@application}/#{app_folder}"
     expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}'"
   end
@@ -90,7 +90,7 @@ describe Inploy::Deploy do
       subject.login_shell = @login_shell = false
     end
 
-    context "on remote setup" do
+    context "on remote setup" do       
       it "should clone the repository with the application name, checkout the branch and execute local setup" do
         expect_setup_with @branch, @environment
         subject.remote_setup
@@ -119,6 +119,16 @@ describe Inploy::Deploy do
         subject.remote_setup
         file_doesnt_exists "Gemfile"
       end
+      
+      it "should execute bundle install with configured param" do
+           file_exists "Gemfile"
+           subject.bundler_path = "another_path"
+           expect_setup_with @branch, @environment, nil, true, nil, 'another_path'
+
+           subject.remote_setup
+           file_doesnt_exists "Gemfile"
+       end
+      
     end
 
     context "on local setup" do
@@ -146,8 +156,7 @@ describe Inploy::Deploy do
         expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application}/#{subject.app_folder} && rake inploy:local:update RAILS_ENV=#{@environment} environment=#{@environment}'"
         subject.remote_update
       end
-
-    end
+     end
 
     context "on local update" do
       it "should pull the repository" do
