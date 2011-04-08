@@ -130,6 +130,7 @@ cache_dirs = ['public/cache', 'tmp/cache']   # default ['public/cache']
 skip_steps = ['install_gems', 'clear_cache'] # default []
 app_folder = 'project_folder'                # default empty 
 login_shell = true                           # default false
+bundler_path = 'another_path'	             # default ~/.bundle
 </code></pre>
 
 h2. SKIP STEPS
