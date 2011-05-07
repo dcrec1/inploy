@@ -360,14 +360,14 @@ shared_examples_for "local update" do
     subject.local_update
   end
 
-  it "should compile compass files if the file config/initializers/compass.rb exists" do
-    file_exists "config/initializers/compass.rb"
+  it "should compile compass files if the file config/compass.rb exists" do
+    file_exists "config/compass.rb"
     expect_command "compass compile"
     subject.local_update
   end
 
-  it "should not compile compass files if the file config/initializers/compass.rb doesn't exists" do
-    file_doesnt_exists "config/initializers/compass.rb"
+  it "should not compile compass files if the file config/compass.rb doesn't exists" do
+    file_doesnt_exists "config/compass.rb"
     dont_accept_command "compass compile"
     subject.local_update
   end

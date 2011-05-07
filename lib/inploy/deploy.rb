@@ -93,7 +93,7 @@ module Inploy
       run "rm -R -f public/assets" if jammit_is_installed?
       run "RAILS_ENV=#{environment} script/delayed_job restart" if file_exists?("script/delayed_job")
       rake_if_included "more:parse"
-      run "compass compile" if file_exists?("config/initializers/compass.rb")
+      run "compass compile" if file_exists?("config/compass.rb")
       rake_if_included "barista:brew"
       rake_if_included "asset:packager:build_all"
       rake_if_included "hoptoad:deploy RAILS_ENV=#{environment} TO=#{environment} REPO=#{repository} REVISION=#{`git log | head -1 | cut -d ' ' -f 2`}"
