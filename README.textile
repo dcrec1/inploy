@@ -124,13 +124,14 @@ end
 path = '/opt'                                # default /var/local/apps
 user = 'dcrec1'                              # default deploy
 ssh_opts = '-A'                              # default empty
-branch = 'production'                        # default master
+branch = 'new_version'                       # default master
+environment = 'staging'                      # default production
 sudo = true                                  # default false
 cache_dirs = ['public/cache', 'tmp/cache']   # default ['public/cache']
 skip_steps = ['install_gems', 'clear_cache'] # default []
-app_folder = 'project_folder'                # default empty 
+app_folder = 'project_folder'                # default empty
 login_shell = true                           # default false
-bundler_path = 'another_path'	             # default ~/.bundle
+bundler_path = 'another_path'                # default ~/.bundle
 </code></pre>
 
 h2. SKIP STEPS
