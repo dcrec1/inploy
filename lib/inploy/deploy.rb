@@ -89,7 +89,6 @@ module Inploy
       return unless install_gems
       migrate_database
       update_crontab
-      clear_cache
       run "rm -R -f public/assets" if jammit_is_installed?
       run "RAILS_ENV=#{environment} script/delayed_job restart" if file_exists?("script/delayed_job")
       rake_if_included "more:parse"
@@ -100,6 +99,7 @@ module Inploy
       notify_new_relic
       callback :before_restarting_server
       restart_server
+      clear_cache
     end
   end
 end

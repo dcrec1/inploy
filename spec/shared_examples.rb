@@ -385,4 +385,11 @@ shared_examples_for "local update" do
     dont_accept_command "RAILS_ENV=env9 script/delayed_job restart"
     subject.local_update
   end
+
+  it "should clean the cache after restarting the server" do
+    expect_command("touch tmp/restart.txt").ordered
+    subject.cache_dirs = ['my/cache']
+    expect_command("rm -R -f #{subject.cache_dirs.first}").ordered
+    subject.local_update
+  end
 end
