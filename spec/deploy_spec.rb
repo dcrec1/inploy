@@ -41,6 +41,11 @@ describe Inploy::Deploy do
       expect_command "sudo ls"
       subject.run "ls"
     end
+
+    it "should be run with a clean env" do
+      Bundler.should_receive :with_clean_env
+      subject.run "ls"
+    end
   end
 
   it "should be extendable" do
@@ -90,7 +95,7 @@ describe Inploy::Deploy do
       subject.login_shell = @login_shell = false
     end
 
-    context "on remote setup" do       
+    context "on remote setup" do
       it "should clone the repository with the application name, checkout the branch and execute local setup" do
         expect_setup_with @branch, @environment
         subject.remote_setup
@@ -112,14 +117,14 @@ describe Inploy::Deploy do
         expect_setup_with @branch, @environment, nil, false, subject.app_folder
         subject.remote_setup
       end
-      
+
       it "should execute bundle install before local setup if Gemfile exists" do
         file_exists "Gemfile"
         expect_setup_with @branch, @environment, nil, true
         subject.remote_setup
         file_doesnt_exists "Gemfile"
       end
-      
+
       it "should execute bundle install with configured param" do
            file_exists "Gemfile"
            subject.bundler_path = "another_path"
@@ -128,7 +133,7 @@ describe Inploy::Deploy do
            subject.remote_setup
            file_doesnt_exists "Gemfile"
        end
-      
+
     end
 
     context "on local setup" do
