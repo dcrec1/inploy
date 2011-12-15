@@ -4,14 +4,14 @@ describe Inploy::Deploy do
 
   subject { Inploy::Deploy.new }
 
-  def expect_setup_with(branch, environment = 'production', skip_steps = nil, bundler = false, app_folder = nil, bundle_path = '~/.bundle')
+  def expect_setup_with(branch, environment = 'production', skip_steps = nil, bundler = false, app_folder = nil, bundler_opts = '--deployment --without development test cucumber')
     if branch.eql? 'master'
       checkout = ""
     else
       checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
     end
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
-    bundler_cmd = " && bundle install --path #{bundle_path} --without development test cucumber" if bundler
+    bundler_cmd = " && bundle install #{bundler_opts}" if bundler
     directory = app_folder.nil? ? @application : "#{@application}/#{app_folder}"
     expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}'"
   end
@@ -127,8 +127,8 @@ describe Inploy::Deploy do
 
       it "should execute bundle install with configured param" do
            file_exists "Gemfile"
-           subject.bundler_path = "another_path"
-           expect_setup_with @branch, @environment, nil, true, nil, 'another_path'
+           subject.bundler_opts = "--binstubs"
+           expect_setup_with @branch, @environment, nil, true, nil, '--binstubs'
 
            subject.remote_setup
            file_doesnt_exists "Gemfile"
