@@ -3,7 +3,9 @@ module Inploy
     include Helper
     include DSL
 
-    attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment, :port, :skip_steps, :cache_dirs, :sudo, :login_shell, :bundler_path
+    attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment, :port, :skip_steps, :cache_dirs, :sudo, :login_shell, :bundler_opts
+
+    alias :bundle_opts :bundler_opts
 
     define_callbacks :after_setup, :before_restarting_server
 
