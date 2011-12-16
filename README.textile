@@ -142,6 +142,7 @@ You can skip some steps when running a Rake task, just add "skip_steps" into you
 
 Currently the steps available to skip are:
 
+- copy_sample_files: skip copying config/*.sample and config/*.example files to config/*
 - install_gems: skip rake gems:install
 - migrate_database: skip rake db:migrate
 - clear_cache: skip removing cache directories

@@ -21,6 +21,12 @@ shared_examples_for "local setup" do
     subject.local_setup
   end
 
+  it "should not copy sample files if it's on skip_steps" do
+    subject.skip_steps = ['copy_sample_files']
+    dont_accept_command "copy_sample_files"
+    subject.local_setup
+  end
+
   it "should run init.sh if exists" do
     file_exists "init.sh"
     expect_command "./init.sh"

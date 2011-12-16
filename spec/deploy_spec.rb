@@ -107,7 +107,7 @@ describe Inploy::Deploy do
       end
 
       it "should pass skip_steps params to local setup" do
-        subject.skip_steps = %w(migrate_database gems_install bundle_install)
+        subject.skip_steps = %w(copy_sample_files migrate_database gems_install bundle_install)
         expect_setup_with @branch, @environment, subject.skip_steps
         subject.remote_setup
       end
