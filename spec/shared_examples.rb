@@ -151,7 +151,7 @@ shared_examples_for "remote update" do
   it "should not run bundle install if it's on skip_steps" do
     subject.environment = "en3"
     subject.skip_steps = ['bundle_install']
-    dont_accept_command "bundle install --path ~/.bundle  --without development test cucumber"
+    dont_accept_command "bundle install --deployment --without development test cucumber"
     subject.local_setup
   end
 
@@ -259,13 +259,13 @@ shared_examples_for "local update" do
 
   it "should execute bundle install if Gemfile exists" do
     file_exists "Gemfile"
-    expect_command "bundle install --path ~/.bundle --without development test cucumber"
+    expect_command "bundle install --deployment --without development test cucumber"
     subject.local_update
   end
 
   it "should not execute bundle install if Gemfile doesn't exists" do
     file_doesnt_exists "Gemfile"
-    dont_accept_command "bundle install --path ~/.bundle  --without development test cucumber"
+    dont_accept_command "bundle install --deployment --without development test cucumber"
     subject.local_update
   end
 

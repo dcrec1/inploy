@@ -131,8 +131,10 @@ cache_dirs = ['public/cache', 'tmp/cache']   # default ['public/cache']
 skip_steps = ['install_gems', 'clear_cache'] # default []
 app_folder = 'project_folder'                # default empty
 login_shell = true                           # default false
-bundler_path = 'another_path'                # default ~/.bundle
+bundler_opts = '--binstubs'                  # default '--deployment --without development test cucumber'
 </code></pre>
+
+The <code>bundler_path</code> option has been removed. To migrate your existing config/deploy.rb file simply replace <code>bundler_path = '/path/to/gems'</code> with <code>bundler_opts = '--path /path/to/gems'</code>
 
 h2. SKIP STEPS
 
@@ -171,7 +173,7 @@ Inploy is brought to you by:
  * Erik Dahlstrand
  * Carlos Brando
  * Thomas Ritz
-
+ * Sven Schwyn
 
 h2. LICENSE:
 
