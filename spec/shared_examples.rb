@@ -128,11 +128,19 @@ shared_examples_for "local setup" do
     subject.local_setup
   end
 
+  it "should call the after_git callback" do
+    subject.after_git do
+      rake "test_after_git"
+    end
+    expect_command("rake test_after_git").ordered
+    subject.local_setup
+  end
+
   it "should call the after_setup callback" do
     subject.after_setup do
-      rake "test"
+      rake "test_after_setup"
     end
-    expect_command("rake test")
+    expect_command("rake test_after_setup")
     subject.local_setup
   end
 end

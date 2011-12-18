@@ -204,6 +204,24 @@ describe Inploy::Deploy do
         expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path}/#{@application} && git reset --hard #{commit}'"
         subject.remote_reset :to => commit
       end
+
+      it "should call the after_git callback" do
+        subject.after_git do
+          rake "test_after_git"
+        end
+        expect_command("rake test_after_git").ordered
+        subject.update_code
+      end
+    end
+    
+    context "on code update" do
+      it "should call the after_git callback" do
+        subject.after_git do
+          rake "test_after_git"
+        end
+        expect_command("rake test_after_git").ordered
+        subject.update_code
+      end      
     end
   end
 
@@ -233,4 +251,5 @@ describe Inploy::Deploy do
       subject.user.should eql("my_user")
     end
   end
+
 end
