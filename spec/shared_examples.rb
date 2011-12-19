@@ -21,6 +21,12 @@ shared_examples_for "local setup" do
     subject.local_setup
   end
 
+  it "should not copy sample files if it's on skip_steps" do
+    subject.skip_steps = ['copy_sample_files']
+    dont_accept_command "copy_sample_files"
+    subject.local_setup
+  end
+
   it "should run init.sh if exists" do
     file_exists "init.sh"
     expect_command "./init.sh"
@@ -122,11 +128,19 @@ shared_examples_for "local setup" do
     subject.local_setup
   end
 
+  it "should call the after_git callback" do
+    subject.after_git do
+      rake "test_after_git"
+    end
+    expect_command("rake test_after_git").ordered
+    subject.local_setup
+  end
+
   it "should call the after_setup callback" do
     subject.after_setup do
-      rake "test"
+      rake "test_after_setup"
     end
-    expect_command("rake test")
+    expect_command("rake test_after_setup")
     subject.local_setup
   end
 end
@@ -151,7 +165,7 @@ shared_examples_for "remote update" do
   it "should not run bundle install if it's on skip_steps" do
     subject.environment = "en3"
     subject.skip_steps = ['bundle_install']
-    dont_accept_command "bundle install --path ~/.bundle  --without development test cucumber"
+    dont_accept_command "bundle install --deployment --without development test cucumber"
     subject.local_setup
   end
 
@@ -259,13 +273,13 @@ shared_examples_for "local update" do
 
   it "should execute bundle install if Gemfile exists" do
     file_exists "Gemfile"
-    expect_command "bundle install --path ~/.bundle --without development test cucumber"
+    expect_command "bundle install --deployment --without development test cucumber"
     subject.local_update
   end
 
   it "should not execute bundle install if Gemfile doesn't exists" do
     file_doesnt_exists "Gemfile"
-    dont_accept_command "bundle install --path ~/.bundle  --without development test cucumber"
+    dont_accept_command "bundle install --deployment --without development test cucumber"
     subject.local_update
   end
 

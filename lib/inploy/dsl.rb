@@ -81,7 +81,7 @@ module Inploy
 
     def secure_copy(src, dest)
       unless file_exists?(dest)
-        log "mv #{src} #{dest}"
+        log "cp #{src} #{dest}"
         FileUtils.cp src, dest
       end
     end

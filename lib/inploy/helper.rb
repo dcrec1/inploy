@@ -41,9 +41,11 @@ module Inploy
     end
 
     def copy_sample_files
-      ["example", "sample"].each do |extension|
-        Dir.glob("config/*.#{extension}").each do |file|
-          secure_copy file, file.gsub(".#{extension}", '')
+      unless skip_step?('copy_sample_files')
+        ["example", "sample"].each do |extension|
+          Dir.glob("config/*.#{extension}").each do |file|
+            secure_copy file, file.gsub(".#{extension}", '')
+          end
         end
       end
     end
@@ -57,7 +59,7 @@ module Inploy
     end
 
     def bundle_cmd
-      "bundle install --path #{bundler_path || '~/.bundle'} --without development test cucumber"
+      "bundle install #{bundler_opts || '--deployment --without development test cucumber'}"
     end
 
     def bundle_install
