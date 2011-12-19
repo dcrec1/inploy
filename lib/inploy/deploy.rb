@@ -3,9 +3,9 @@ module Inploy
     include Helper
     include DSL
 
-    attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment, :port, :skip_steps, :cache_dirs, :sudo, :login_shell, :bundler_path
+    attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment, :port, :skip_steps, :cache_dirs, :sudo, :login_shell, :bundler_opts
 
-    define_callbacks :after_setup, :before_restarting_server
+    define_callbacks :after_git, :after_setup, :before_restarting_server
 
     def initialize
       self.server = :passenger
@@ -45,6 +45,7 @@ module Inploy
 
     def local_setup
       create_folders 'public', 'tmp/pids', 'db'
+      callback :after_git
       copy_sample_files
       rake "db:create RAILS_ENV=#{environment}"
       run "./init.sh" if file_exists?("init.sh")
@@ -62,6 +63,7 @@ module Inploy
 
     def remote_reset(params)
       remote_run "cd #{application_path} && git reset --hard #{params[:to]}"
+      callback :after_git
     end
 
     def local_update
@@ -71,6 +73,7 @@ module Inploy
 
     def update_code
       run "git pull origin #{branch}"
+      callback :after_git
     end
 
     private

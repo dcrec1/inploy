@@ -131,8 +131,10 @@ cache_dirs = ['public/cache', 'tmp/cache']   # default ['public/cache']
 skip_steps = ['install_gems', 'clear_cache'] # default []
 app_folder = 'project_folder'                # default empty
 login_shell = true                           # default false
-bundler_path = 'another_path'                # default ~/.bundle
+bundler_opts = '--binstubs'                  # default '--deployment --without development test cucumber'
 </code></pre>
+
+The <code>bundler_path</code> option has been removed. To migrate your existing config/deploy.rb file simply replace <code>bundler_path = '/path/to/gems'</code> with <code>bundler_opts = '--path /path/to/gems'</code>
 
 h2. SKIP STEPS
 
@@ -140,6 +142,7 @@ You can skip some steps when running a Rake task, just add "skip_steps" into you
 
 Currently the steps available to skip are:
 
+- copy_sample_files: skip copying config/*.sample and config/*.example files to config/*
 - install_gems: skip rake gems:install
 - migrate_database: skip rake db:migrate
 - clear_cache: skip removing cache directories
@@ -151,7 +154,13 @@ Currently the steps available to skip are:
 
 h2. HOOKS
 
-Currently the only hook is called before restarting the server. If you need another hook, please fork the project and implemented it or created an issue, it's very easy.
+Currently, the following three hooks are available:
+
+- after_git
+- after_setup
+- before_restarting_server
+
+If you need another hook, please fork the project and implemented it or created an issue, it's very easy.
 
 h2. CONTRIBUTORS:
 
@@ -171,7 +180,7 @@ Inploy is brought to you by:
  * Erik Dahlstrand
  * Carlos Brando
  * Thomas Ritz
-
+ * Sven Schwyn
 
 h2. LICENSE:
 
