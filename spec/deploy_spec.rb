@@ -210,7 +210,7 @@ describe Inploy::Deploy do
           rake "test_after_git"
         end
         expect_command("rake test_after_git").ordered
-        subject.update_code
+        subject.remote_reset :to => "fa3ed118970d8ddb0655be94b4c85d996c695476"
       end
     end
     
