@@ -156,6 +156,7 @@ h2. HOOKS
 
 Currently, the following three hooks are available:
 
+- before_git (not called before initial git clone)
 - after_git
 - after_setup
 - before_restarting_server

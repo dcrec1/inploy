@@ -5,7 +5,7 @@ module Inploy
 
     attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment, :port, :skip_steps, :cache_dirs, :sudo, :login_shell, :bundler_opts
 
-    define_callbacks :after_git, :after_setup, :before_restarting_server
+    define_callbacks :before_git, :after_git, :after_setup, :before_restarting_server
 
     def initialize
       self.server = :passenger
@@ -62,6 +62,7 @@ module Inploy
     end
 
     def remote_reset(params)
+      callback :before_git
       remote_run "cd #{application_path} && git reset --hard #{params[:to]}"
       callback :after_git
     end
@@ -72,6 +73,7 @@ module Inploy
     end
 
     def update_code
+      callback :before_git
       run "git pull origin #{branch}"
       callback :after_git
     end
