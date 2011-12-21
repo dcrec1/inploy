@@ -205,16 +205,32 @@ describe Inploy::Deploy do
         subject.remote_reset :to => commit
       end
 
+      it "should call the before_git callback" do
+        subject.before_git do
+          rake "test_before_git"
+        end
+        expect_command("rake test_before_git").ordered
+        subject.remote_reset :to => "fa3ed118970d8ddb0655be94b4c85d996c695476"
+      end
+
       it "should call the after_git callback" do
         subject.after_git do
           rake "test_after_git"
         end
         expect_command("rake test_after_git").ordered
-        subject.update_code
+        subject.remote_reset :to => "fa3ed118970d8ddb0655be94b4c85d996c695476"
       end
     end
     
     context "on code update" do
+      it "should call the before_git callback" do
+        subject.before_git do
+          rake "test_before_git"
+        end
+        expect_command("rake test_before_git").ordered
+        subject.update_code
+      end 
+
       it "should call the after_git callback" do
         subject.after_git do
           rake "test_after_git"
