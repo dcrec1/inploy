@@ -2,7 +2,7 @@ h2. ABOUT:
 
 Inploy was born as an option to setup and deploy Rails applications in an easier and smarter way.
 
-It executes automatically common tasks like migrate the database, install gems, package the assets, clean the cache, notify Hoptoad, restart the server, etc. This means you will not have a big deploy script calld 'recipe' like with other tools, only a simple deploy script with a few lines.
+It automatically executes common tasks like migrate the database, install gems, package the assets, clean the cache, notify Hoptoad, restart the server, etc. This means you will not have a big deploy script calld 'recipe' like with other tools, only a simple deploy script with a few lines.
 
 It uses Git to version the deploys and to pull or push only the modifications in each one. This means you will not have a lot of folders in the server (only one) with duplicated code and that ech deploy will be very fast.
 
