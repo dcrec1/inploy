@@ -81,7 +81,7 @@ module Inploy
     private
 
     def checkout
-      branch.eql?("master") ? "" : "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
+      branch.eql?("master") ? "" : "&& git checkout -f -b #{branch} origin/#{branch}"
     end
 
     def bundle
