@@ -8,7 +8,7 @@ describe Inploy::Deploy do
     if branch.eql? 'master'
       checkout = ""
     else
-      checkout = "&& $(git branch | grep -vq #{branch}) && git checkout -f -b #{branch} origin/#{branch}"
+      checkout = "&& git checkout -f -b #{branch} origin/#{branch}"
     end
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
     bundler_cmd = " && bundle install #{bundler_opts}" if bundler
@@ -221,7 +221,7 @@ describe Inploy::Deploy do
         subject.remote_reset :to => "fa3ed118970d8ddb0655be94b4c85d996c695476"
       end
     end
-    
+
     context "on code update" do
       it "should call the before_git callback" do
         subject.before_git do
@@ -229,7 +229,7 @@ describe Inploy::Deploy do
         end
         expect_command("rake test_before_git").ordered
         subject.update_code
-      end 
+      end
 
       it "should call the after_git callback" do
         subject.after_git do
@@ -237,7 +237,7 @@ describe Inploy::Deploy do
         end
         expect_command("rake test_after_git").ordered
         subject.update_code
-      end      
+      end
     end
   end
 
