@@ -61,6 +61,10 @@ module Inploy
     def bundle_cmd
       "bundle install #{bundler_opts || '--deployment --without development test cucumber'}"
     end
+    
+    def rake_cmd
+      using_bundler? ? "bundle exec rake" : "rake"
+    end
 
     def bundle_install
       run bundle_cmd unless skip_step?('bundle_install')
