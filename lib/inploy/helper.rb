@@ -55,7 +55,7 @@ module Inploy
     end
 
     def tasks
-      `rake -T`
+      `#{rake_cmd} -T`
     end
 
     def bundle_cmd

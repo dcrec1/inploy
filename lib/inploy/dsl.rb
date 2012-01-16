@@ -37,11 +37,11 @@ module Inploy
     end
 
     def rake(command)
-      run "rake #{command}"
+      run "#{rake_cmd} #{command}"
     end
 
     def rake_if_included(command)
-      rake command if tasks.include?("rake #{command.split[0]}")
+      rake command if tasks.include?("#{rake_cmd} #{command.split[0]}")
     end
 
     def ruby_if_exists(file, opts)

@@ -58,7 +58,7 @@ module Inploy
     end
 
     def remote_rake(task)
-      remote_run "cd #{application_path} && rake #{task} RAILS_ENV=#{environment}"
+      remote_run "cd #{application_path} && #{rake_cmd} #{task} RAILS_ENV=#{environment}"
     end
 
     def remote_reset(params)
