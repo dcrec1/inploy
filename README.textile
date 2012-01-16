@@ -61,7 +61,7 @@ When using Inploy with Rake, there are five tasks:
 * inploy:local:setup
 
 - creates directories db and tmp/pids
-- copies config/*.sample and config/*.example files to config/*
+- copies config/*.[example|sample|template] files to config/*
 - creates the database
 - executes init.sh file case it exists
 - inits and updates the git submodules
@@ -83,7 +83,7 @@ When using Inploy with Rake, there are five tasks:
 
 - pulls the repository
 - inits and updates the git submodules
-- copies config/*.sample and config/*.example files to config/*
+- copies config/*.[example|sample|template] files to config/*
 - installs gems
 - migrates the database
 - updates the crontab from Whenever if being used
@@ -142,7 +142,7 @@ You can skip some steps when running a Rake task, just add "skip_steps" into you
 
 Currently the steps available to skip are:
 
-- copy_sample_files: skip copying config/*.sample and config/*.example files to config/*
+- copy_sample_files: skip copying config/*.[example|sample|template] files to config/*
 - install_gems: skip rake gems:install
 - migrate_database: skip rake db:migrate
 - clear_cache: skip removing cache directories
