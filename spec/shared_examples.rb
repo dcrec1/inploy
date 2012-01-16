@@ -55,6 +55,13 @@ shared_examples_for "local setup" do
     subject.local_setup
     File.exists?("config/database.yml").should be_true
   end
+  
+  it "should copy config/*.template* to config/*" do
+    path_exists "config"
+    file_exists "config/database.template.yml"
+    subject.local_setup
+    File.exists?("config/database.yml").should be_true
+  end
 
   it "should not copy config/*.sample to config/* if destination file exists" do
     content = "asfasfasfe"
