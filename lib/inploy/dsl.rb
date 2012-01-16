@@ -1,5 +1,6 @@
 module Inploy
   module DSL
+    include Helper
     module ClassMethods
       def define_callbacks(*callbacks)
         callbacks.each do |callback|

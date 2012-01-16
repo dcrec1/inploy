@@ -12,8 +12,9 @@ describe Inploy::Deploy do
     end
     skip_steps_cmd = " skip_steps=#{skip_steps.join(',')}" unless skip_steps.nil?
     bundler_cmd = " && bundle install #{bundler_opts}" if bundler
+    rake_cmd = bundler ? "bundle exec rake" : "rake"
     directory = app_folder.nil? ? @application : "#{@application}/#{app_folder}"
-    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}'"
+    expect_command "ssh #{@ssh_opts} #{@user}@#{@host} 'cd #{@path} && git clone --depth 1 #{@repository} #{@application} && cd #{directory} #{checkout}#{bundler_cmd} && #{rake_cmd} inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}'"
   end
 
   def setup(subject)
