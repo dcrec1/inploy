@@ -42,8 +42,8 @@ module Inploy
 
     def copy_sample_files
       unless skip_step?('copy_sample_files')
-        ["example", "sample"].each do |extension|
-          Dir.glob("config/*.#{extension}").each do |file|
+        ["example", "sample", "template"].each do |extension|
+          Dir.glob("config/*.#{extension}*").each do |file|
             secure_copy file, file.gsub(".#{extension}", '')
           end
         end
