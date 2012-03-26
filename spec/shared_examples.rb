@@ -396,14 +396,14 @@ shared_examples_for "local update" do
   it "should restart the delayed job worker if script/delayed_job exist" do
     subject.environment = "env9"
     file_exists "script/delayed_job"
-    expect_command "RAILS_ENV=env9 script/delayed_job restart"
+    expect_command "script/delayed_job -e env9 restart"
     subject.local_update
   end
 
   it "should not restart the delayed job worker if script/delayed_job doesnt exist" do
     subject.environment = "env9"
     file_doesnt_exists "script/delayed_job"
-    dont_accept_command "RAILS_ENV=env9 script/delayed_job restart"
+    dont_accept_command "script/delayed_job -e env9 restart"
     subject.local_update
   end
 
