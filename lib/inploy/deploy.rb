@@ -95,7 +95,7 @@ module Inploy
       migrate_database
       update_crontab
       run "rm -R -f public/assets" if jammit_is_installed?
-      run "script/delayed_job -e #{environment} restart" if file_exists?("script/delayed_job")
+      run "script/delayed_job restart RAILS_ENV=#{environment}" if file_exists?("script/delayed_job")
       rake_if_included "more:parse"
       run "compass compile" if file_exists?("config/compass.rb")
       rake_if_included "barista:brew"
