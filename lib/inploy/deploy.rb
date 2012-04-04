@@ -74,7 +74,7 @@ module Inploy
 
     def update_code
       callback :before_git
-      run "git pull origin #{branch}"
+      raise "ERROR: git pull failed with error status = #{$?}" unless run "git pull origin #{branch}"
       callback :after_git
     end
 
