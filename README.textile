@@ -160,10 +160,26 @@ Currently, the following three hooks are available:
 - after_git
 - after_setup
 - before_restarting_server
+- after_restarting_server
 
-If you need another hook, please fork the project and implemented it or created an issue, it's very easy.
+To show a "down for maintenance" page during the deployment, use the before_git and after_restarting_server hooks.
 
-h2. CONTRIBUTORS:
+If you need another hook, please fork the project and implement it. Or submit an issue, it's very easy.
+
+h3. say
+
+Use the <code>say</code> method to show messages issued by your hooks.
+
+<pre><code># Show a simple message
+say 'restart custom daemons'
+
+# Show a message (blank output lines are suppressed)
+say 'revert local changes' do |output|
+  output << `git checkout . 2>&1`
+end
+</pre></code>
+
+h2. CONTRIBUTORS
 
 Inploy is brought to you by:
 
