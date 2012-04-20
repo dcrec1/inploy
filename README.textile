@@ -166,7 +166,20 @@ To show a "down for maintenance" page during the deployment, use the before_git 
 
 If you need another hook, please fork the project and implement it. Or submit an issue, it's very easy.
 
-h2. CONTRIBUTORS:
+h3. say
+
+Use the <code>say</code> method to show messages issued by your hooks.
+
+<pre><code># Show a simple message
+say 'restart custom daemons'
+
+# Show a message (blank output lines are suppressed)
+say 'revert local changes' do |output|
+  output << `git checkout . 2>&1`
+end
+</pre></code>
+
+h2. CONTRIBUTORS
 
 Inploy is brought to you by:
 
