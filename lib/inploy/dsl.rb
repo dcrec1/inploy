@@ -32,10 +32,6 @@ module Inploy
       extend eval(filename.split("/").map { |word| camelize(word) }.join("::"))
     end
 
-    def log(command)
-      puts "Inploy => #{command}"
-    end
-
     def rake(command)
       run "rake #{command}"
     end
@@ -56,8 +52,15 @@ module Inploy
       file_exists?("Gemfile")
     end
 
+    def say(message)
+      puts "Inploy => #{message}"
+      output = []
+      yield output if block_given?
+      output.each {|o| puts o if o =~ /\S/ }
+    end
+
     def run(command, disable_sudo = false)
-      log command
+      say command
 
       Bundler.with_clean_env do
         if disable_sudo
@@ -81,7 +84,7 @@ module Inploy
 
     def secure_copy(src, dest)
       unless file_exists?(dest)
-        log "cp #{src} #{dest}"
+        say "cp #{src} #{dest}"
         FileUtils.cp src, dest
       end
     end
