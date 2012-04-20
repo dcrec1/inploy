@@ -5,7 +5,7 @@ module Inploy
 
     attr_accessor :repository, :user, :application, :hosts, :path, :app_folder, :ssh_opts, :branch, :environment, :port, :skip_steps, :cache_dirs, :sudo, :login_shell, :bundler_opts
 
-    define_callbacks :before_git, :after_git, :after_setup, :before_restarting_server
+    define_callbacks :before_git, :after_git, :after_setup, :before_restarting_server, :after_restarting_server
 
     def initialize
       self.server = :passenger
@@ -105,6 +105,7 @@ module Inploy
       callback :before_restarting_server
       restart_server
       clear_cache
+      callback :after_restarting_server
     end
   end
 end

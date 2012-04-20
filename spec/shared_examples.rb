@@ -355,10 +355,18 @@ shared_examples_for "local update" do
 
   it "should execute before_restarting_server hook" do
     subject.before_restarting_server do
-      rake "test"
+      rake "test_before_restarting_server"
     end
-    expect_command("rake test").ordered
+    expect_command("rake test_before_restarting_server").ordered
     expect_command("touch tmp/restart.txt").ordered
+    subject.local_update
+  end
+
+  it "should execute after_restarting_server hook" do
+    subject.after_restarting_server do
+      rake "test_after_restarting_server"
+    end
+    expect_command("rake test_after_restarting_server").ordered
     subject.local_update
   end
 

@@ -160,8 +160,11 @@ Currently, the following three hooks are available:
 - after_git
 - after_setup
 - before_restarting_server
+- after_restarting_server
 
-If you need another hook, please fork the project and implemented it or created an issue, it's very easy.
+To show a "down for maintenance" page during the deployment, use the before_git and after_restarting_server hooks.
+
+If you need another hook, please fork the project and implement it. Or submit an issue, it's very easy.
 
 h2. CONTRIBUTORS:
 
