@@ -55,7 +55,7 @@ shared_examples_for "local setup" do
     subject.local_setup
     File.exists?("config/database.yml").should be_true
   end
-  
+
   it "should copy config/*.template* to config/*" do
     path_exists "config"
     file_exists "config/database.template.yml"
@@ -269,6 +269,17 @@ shared_examples_for "local update" do
 
   it "should not compile the coffeescripts with barista if the rake task doesnt't exist" do
     dont_accept_command "rake barista:brew"
+    subject.local_update
+  end
+
+  it "should compile the assets if the rake task exists" do
+    subject.stub!(:tasks).and_return("rake acceptance rake assets:precompile")
+    expect_command "rake assets:precompile"
+    subject.local_update
+  end
+
+  it "should not compile the assets if the rake task doesnt exists" do
+    dont_accept_command "rake assets:precompile"
     subject.local_update
   end
 

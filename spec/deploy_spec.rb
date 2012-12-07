@@ -126,14 +126,12 @@ describe Inploy::Deploy do
       end
 
       it "should execute bundle install with configured params" do
-           file_exists "Gemfile"
-           subject.bundler_opts = "--binstubs"
-           expect_setup_with @branch, @environment, nil, true, nil, '--binstubs'
-
-           subject.remote_setup
-           file_doesnt_exists "Gemfile"
+        file_exists "Gemfile"
+        subject.bundler_opts = "--binstubs"
+        expect_setup_with @branch, @environment, nil, true, nil, '--binstubs'
+        subject.remote_setup
+        file_doesnt_exists "Gemfile"
        end
-
     end
 
     context "on local setup" do

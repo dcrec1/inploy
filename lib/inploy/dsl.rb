@@ -1,3 +1,5 @@
+require 'bundler'
+
 module Inploy
   module DSL
     module ClassMethods
