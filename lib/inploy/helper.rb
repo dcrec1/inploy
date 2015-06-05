@@ -55,11 +55,15 @@ module Inploy
     end
 
     def tasks
-      `rake -T`
+      `#{rake_cmd} -T`
     end
 
     def bundle_cmd
       "bundle install #{bundler_opts || '--deployment --without development test cucumber'}"
+    end
+    
+    def rake_cmd
+      using_bundler? ? "bundle exec rake" : "rake"
     end
 
     def bundle_install

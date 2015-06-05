@@ -40,7 +40,7 @@ module Inploy
     end
 
     def remote_setup
-      remote_run "cd #{path} && #{sudo_if_should}git clone --depth 1 #{repository} #{application} && cd #{application_folder} #{checkout}#{bundle} && #{sudo_if_should}rake inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}"
+      remote_run "cd #{path} && #{sudo_if_should}git clone --depth 1 #{repository} #{application} && cd #{application_folder} #{checkout}#{bundle} && #{sudo_if_should}#{rake_cmd} inploy:local:setup RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}"
     end
 
     def local_setup
@@ -54,11 +54,11 @@ module Inploy
     end
 
     def remote_update
-      remote_run "cd #{application_path} && #{sudo_if_should}rake inploy:local:update RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}"
+      remote_run "cd #{application_path} && #{sudo_if_should}#{rake_cmd} inploy:local:update RAILS_ENV=#{environment} environment=#{environment}#{skip_steps_cmd}"
     end
 
     def remote_rake(task)
-      remote_run "cd #{application_path} && rake #{task} RAILS_ENV=#{environment}"
+      remote_run "cd #{application_path} && #{rake_cmd} #{task} RAILS_ENV=#{environment}"
     end
 
     def remote_reset(params)
