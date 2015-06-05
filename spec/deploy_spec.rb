@@ -148,7 +148,7 @@ describe Inploy::Deploy do
 
       it "should exec the commands in all hosts" do
         subject.hosts = ['host0', 'host1', 'host2']
-        3.times.each do |i|
+        3.times do |i|
           expect_command "ssh #{@ssh_opts} #{@user}@host#{i} 'cd #{@path}/#{@application} && rake inploy:local:update RAILS_ENV=#{@environment} environment=#{@environment}'"
         end
         subject.remote_update
