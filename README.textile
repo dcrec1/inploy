@@ -147,6 +147,7 @@ Currently the steps available to skip are:
 - migrate_database: skip rake db:migrate
 - clear_cache: skip removing cache directories
 - update_crontab: skip updating the crontab with Whenever
+- compass_compile: skip compass compile
 
 * Usage (params are comma separated):
 

@@ -412,6 +412,13 @@ shared_examples_for "local update" do
     subject.local_update
   end
 
+  it "should not compile compass files if compass_compile is in the skip steps" do
+    file_exists "config/compass.rb"
+    subject.skip_steps = %w(compass_compile)
+    dont_accept_command "compass compile"
+    subject.local_update
+  end
+
   it "should restart the delayed job worker if script/delayed_job exist" do
     subject.environment = "env9"
     file_exists "script/delayed_job"

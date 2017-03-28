@@ -79,11 +79,15 @@ module Inploy
     end
 
     def notify_new_relic
-      if file_exists? "vendor/plugins/newrelic_rpm/bin/newrelic_cmd" 
+      if file_exists? "vendor/plugins/newrelic_rpm/bin/newrelic_cmd"
         run "ruby vendor/plugins/newrelic_rpm/bin/newrelic_cmd deployments"
       elsif file_exists? "config/newrelic.yml"
         run "newrelic_cmd deployments"
       end
+    end
+
+    def compass_compile?
+      file_exists?("config/compass.rb") and !skip_step?('compass_compile')
     end
   end
 end
